@@ -6,10 +6,12 @@ public class Die {
 	
     private int face1 ,face2, moveNumber, moveStep1, moveStep2;
     private Random rand;
-    private View view = new View();
+    private View view;
     
     Die () {
         rand = new Random();
+        view = new View();
+        
         moveNumber = 2;
         moveStep1 = 1;
         moveStep2 = 1;

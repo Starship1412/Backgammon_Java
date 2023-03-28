@@ -17,18 +17,18 @@ public class Board {
 	private List<Stack<Piece>> terminus_;
 	
 	private Player player1, player2, currentPlayer;
-	private View view = new View();
+	private View view;
 	private Scanner in;
 	private Die die;
 	
 	Board () {
-		lanes = new ArrayList<>(NUM_LANES);
-		bars = new ArrayList<>(NUM_BARS);
-		terminus_ = new ArrayList<>(NUM_TERMINUS);
-		
+		view = new View();
 		in = new Scanner(System.in);
 		die = new Die();
 		
+		lanes = new ArrayList<>(NUM_LANES);
+		bars = new ArrayList<>(NUM_BARS);
+		terminus_ = new ArrayList<>(NUM_TERMINUS);
 		
 		for (int i=0; i<NUM_LANES; i++)
 			lanes.add(new Stack<>());

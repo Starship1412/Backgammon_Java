@@ -2,7 +2,6 @@ package backgammon;
 
 /**
  * This class stores the ASCII colour escape sequences.
-// Note, this class is not needed for the assignment
 // Requires Eclipse 22.09 or later
  */
 

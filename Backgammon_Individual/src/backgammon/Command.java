@@ -8,7 +8,6 @@ package backgammon;
 public class Command {
 	
 	private enum CommandType {
-		
 		ROLL,
 		MOVE,
 		QUIT,
