@@ -6,28 +6,28 @@ package backgammon;
 
 public class Piece {
 	
-	public Suit suit;
+	private PieceEntity pieceEntity;
 	
 	Piece () {
-		suit = Suit.R;
+		pieceEntity = PieceEntity.R;
 	}
 	
-	Piece (Suit suit) {
-		this.suit = suit;
+	Piece (PieceEntity pieceEntity) {
+		this.pieceEntity = pieceEntity;
 	}
 	
-	private boolean isSameSuit  (Piece piece) {
-		return suit == piece.getSuit();
+	private boolean isSamePieceEntity  (Piece piece) {
+		return pieceEntity == piece.getPieceEntity();
 	}
 	
 	private boolean isDifferentColour (Piece piece) {
-		return this.suit.getColour() != piece.suit.getColour();
+		return this.pieceEntity.getColour() != piece.pieceEntity.getColour();
 	}
 	
 	
 	
-	public Suit getSuit () {
-		return suit;
+	public PieceEntity getPieceEntity () {
+		return pieceEntity;
 	}
 	
 	public boolean isNextInLane (Piece piece) {
@@ -35,10 +35,10 @@ public class Piece {
 	}
 	
 	public boolean isNextInSuit (Piece piece) {
-		return this.isSameSuit(piece);
+		return this.isSamePieceEntity(piece);
 	}
 	
 	public String toString() {
-		return suit.toString();
+		return pieceEntity.toString();
 	}
 }

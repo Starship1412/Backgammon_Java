@@ -4,13 +4,11 @@ public class Player {
 	
     private int pips;
     private String name;
-    private Suit suit;
-    private Board board;
-    Die die = new Die();
+    private PieceEntity pieceEntity;
     
-    Player (String name, Suit suit) {
+    Player (String name, PieceEntity pieceEntity) {
         this.name = name;
-        this.suit = suit;
+        this.pieceEntity = pieceEntity;
         this.pips = 167;
     }
     
@@ -24,16 +22,16 @@ public class Player {
     }
     
     public String getNamewithColor () {
-        return suit.getDisplay() + name + DisplayColour.RESET;
+        return pieceEntity.getDisplay() + name + DisplayColour.RESET;
     }
     
     // Return player suit
-    public Suit getSuit () {
-        return suit;
+    public PieceEntity getPieceEntity () {
+        return pieceEntity;
     }
     
-    public SuitColour getColourName () {
-        return suit.getColour();
+    public ColourName getColourName () {
+        return pieceEntity.getColour();
     }
     
     // Return player pips
@@ -52,6 +50,6 @@ public class Player {
     }
     
     public String toString () {
-        return suit.getDisplay() + name + DisplayColour.RESET + "<" + this.pips + ">pips";
+        return pieceEntity.getDisplay() + name + DisplayColour.RESET + "<" + this.pips + ">pips";
     }
 }

@@ -1,6 +1,6 @@
 package backgammon;
 
-public enum SuitColour {
+public enum ColourName {
 	
 	RED,
 	WHITE

@@ -9,17 +9,17 @@ import java.util.*;
 public class Board {
 	
 	public static final int NUM_LANES = 24;
-	public static final int NUM_BARS = Suit.values().length; // = 2
-	public static final int NUM_TERMINUS = Suit.values().length; // = 2
+	public static final int NUM_BARS = PieceEntity.values().length; // = 2
+	public static final int NUM_TERMINUS = PieceEntity.values().length; // = 2
 	
 	private List<Stack<Piece>> lanes;
 	private List<Stack<Piece>> bars;
 	private List<Stack<Piece>> terminus_;
 	
-	public Player player1, player2, currentPlayer;
+	private Player player1, player2, currentPlayer;
 	private View view = new View();
-	Scanner in;
-	Die die;
+	private Scanner in;
+	private Die die;
 	
 	Board () {
 		lanes = new ArrayList<>(NUM_LANES);
@@ -40,12 +40,12 @@ public class Board {
 	
 	public void initializePlayer1 () {
 		String player_1 = in.nextLine();
-		player1 = new Player(player_1, Suit.R);
+		player1 = new Player(player_1, PieceEntity.R);
 	}
 	
 	public void initializePlayer2 () {
 		String player_2 = in.nextLine();
-		player2 = new Player(player_2, Suit.W);
+		player2 = new Player(player_2, PieceEntity.W);
 	}
 	
 	public void endTurn () {
@@ -60,18 +60,18 @@ public class Board {
 	
 	public void initializeBoard () {
 		for (int i = 0; i < 2; i++) {
-			lanes.get(0).push(new Piece(Suit.W));
-			lanes.get(23).push(new Piece(Suit.R));
+			lanes.get(0).push(new Piece(PieceEntity.W));
+			lanes.get(23).push(new Piece(PieceEntity.R));
 		}
 		for (int i = 0; i < 3; i++) {
-			lanes.get(16).push(new Piece(Suit.W));
-			lanes.get(7).push(new Piece(Suit.R));
+			lanes.get(16).push(new Piece(PieceEntity.W));
+			lanes.get(7).push(new Piece(PieceEntity.R));
 		}
 		for (int i = 0; i < 5; i++) {
-			lanes.get(11).push(new Piece(Suit.W));
-			lanes.get(18).push(new Piece(Suit.W));
-			lanes.get(5).push(new Piece(Suit.R));
-			lanes.get(12).push(new Piece(Suit.R));
+			lanes.get(11).push(new Piece(PieceEntity.W));
+			lanes.get(18).push(new Piece(PieceEntity.W));
+			lanes.get(5).push(new Piece(PieceEntity.R));
+			lanes.get(12).push(new Piece(PieceEntity.R));
 		}
 	}
 	
@@ -83,21 +83,21 @@ public class Board {
 			Stack<Piece> bar = bars.get(command.getFromIndex());
 			Stack<Piece> lane = lanes.get(command.getToIndex());
 			if (!bar.empty())
-				if ( (bar.peek().getSuit() == currentPlayer.getSuit()) && ((lane.empty()) || lane.size() == 1 || bar.peek().getSuit() == lane.peek().getSuit()) && (die.moveNumber != 0) ) {
+				if ( (bar.peek().getPieceEntity() == currentPlayer.getPieceEntity()) && ((lane.empty()) || lane.size() == 1 || bar.peek().getPieceEntity() == lane.peek().getPieceEntity()) && (die.getMoveNumber() != 0) ) {
 					if (die.getFace(1) != die.getFace(2)) {
-						if ( (currentPlayer == player1) && (die.dieFace1 != 0) && (command.getFromIndex() + 24 - die.getFace(1) == command.getToIndex()) || (currentPlayer == player2) && (die.dieFace1 != 0) && (command.getFromIndex() + die.getFace(1) - 2 == command.getToIndex()) ) {
+						if ( (currentPlayer == player1) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + 24 - die.getFace(1) == command.getToIndex()) || (currentPlayer == player2) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + die.getFace(1) - 2 == command.getToIndex()) ) {
 							isPossible = true;
-							die.dieFace1--;
+							die.minusMoveStep(1);
 						}
-						if ( (currentPlayer == player1) && (die.dieFace2 != 0) && (command.getFromIndex() + 24 - die.getFace(2) == command.getToIndex()) || (currentPlayer == player2) && (die.dieFace2 != 0) && (command.getFromIndex() + die.getFace(2) - 2 == command.getToIndex()) ) {
+						if ( (currentPlayer == player1) && (die.getMoveStep(2) != 0) && (command.getFromIndex() + 24 - die.getFace(2) == command.getToIndex()) || (currentPlayer == player2) && (die.getMoveStep(2) != 0) && (command.getFromIndex() + die.getFace(2) - 2 == command.getToIndex()) ) {
 							isPossible = true;
-							die.dieFace2--;
+							die.minusMoveStep(2);
 						}
 					}
 					if (die.getFace(1) == die.getFace(2)) {
-						if ( (currentPlayer == player1) && (die.dieFace1 != 0) && (command.getFromIndex() + 24 - die.getFace(1) == command.getToIndex()) || (currentPlayer == player2) && (die.dieFace1 != 0) && (command.getFromIndex() + die.getFace(1) - 2 == command.getToIndex()) ) {
+						if ( (currentPlayer == player1) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + 24 - die.getFace(1) == command.getToIndex()) || (currentPlayer == player2) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + die.getFace(1) - 2 == command.getToIndex()) ) {
 							isPossible = true;
-							die.dieFace1--;
+							die.minusMoveStep(1);
 						}
 					}
 				}
@@ -107,39 +107,39 @@ public class Board {
 			int finalStage = terminus.size();
 			for (int i = 0; i < 6; i++) {
 				if (!lanes.get(i).empty()) {
-					if ( (currentPlayer == player1) && (lanes.get(i).peek().getSuit() == currentPlayer.getSuit()) ) {
+					if ( (currentPlayer == player1) && (lanes.get(i).peek().getPieceEntity() == currentPlayer.getPieceEntity()) ) {
 						finalStage += lanes.get(i).size();
 					}
 				}
 				if (!lanes.get(i+18).empty()) {
-					if ( (currentPlayer == player2) && (lanes.get(i+18).peek().getSuit() == currentPlayer.getSuit()) ) {
+					if ( (currentPlayer == player2) && (lanes.get(i+18).peek().getPieceEntity() == currentPlayer.getPieceEntity()) ) {
 						finalStage += lanes.get(i+18).size();
 					}
 				}
 			}
 			if (!lane.empty())
-				if ( (getPlayerNumber(currentPlayer) == command.getToIndex()) && (lane.peek().getSuit() == currentPlayer.getSuit()) && (finalStage == 15) && (die.moveNumber != 0) ) {
+				if ( (getPlayerNumber(currentPlayer) == command.getToIndex()) && (lane.peek().getPieceEntity() == currentPlayer.getPieceEntity()) && (finalStage == 15) && (die.getMoveNumber() != 0) ) {
 					if (die.getFace(1) != die.getFace(2)) {
 						int compare = die.getFace(1) - die.getFace(2);
-						if ( (currentPlayer == player1) && (die.dieFace1 != 0) && (command.getFromIndex() + 1 <= command.getToIndex() + die.getFace(1)) || (currentPlayer == player2) && (die.dieFace1 != 0) && (command.getFromIndex() + die.getFace(1) >= command.getToIndex() + 23) ) {
+						if ( (currentPlayer == player1) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + 1 <= command.getToIndex() + die.getFace(1)) || (currentPlayer == player2) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + die.getFace(1) >= command.getToIndex() + 23) ) {
 							isPossible = true;
-							die.dieFace1--;
+							die.minusMoveStep(1);
 						}
-						if ( (currentPlayer == player1) && (die.dieFace2 != 0) && (command.getFromIndex() + 1 <= command.getToIndex() + die.getFace(2)) || (currentPlayer == player2) && (die.dieFace2 != 0) && (command.getFromIndex() + die.getFace(2) >= command.getToIndex() + 23) ) {
+						if ( (currentPlayer == player1) && (die.getMoveStep(2) != 0) && (command.getFromIndex() + 1 <= command.getToIndex() + die.getFace(2)) || (currentPlayer == player2) && (die.getMoveStep(2) != 0) && (command.getFromIndex() + die.getFace(2) >= command.getToIndex() + 23) ) {
 							isPossible = true;
-							die.dieFace2--;
+							die.minusMoveStep(2);
 						}
-						if (die.dieFace1 == 0 && die.dieFace2 == 0) {
+						if (die.getMoveStep(1) == 0 && die.getMoveStep(2) == 0) {
 							if (compare > 0) {
-								die.dieFace1++;
+								die.addMoveStep(1);
 							} else if (compare < 0)
-								die.dieFace2++;
+								die.addMoveStep(2);
 						}
 					}
 					if (die.getFace(1) == die.getFace(2)) {
-						if ( (currentPlayer == player1) && (die.dieFace1 != 0) && (command.getFromIndex() + 1 <= command.getToIndex() + die.getFace(1)) || (currentPlayer == player2) && (die.dieFace1 != 0) && (command.getFromIndex() + die.getFace(1) >= command.getToIndex() + 23) ) {
+						if ( (currentPlayer == player1) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + 1 <= command.getToIndex() + die.getFace(1)) || (currentPlayer == player2) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + die.getFace(1) >= command.getToIndex() + 23) ) {
 							isPossible = true;
-							die.dieFace1--;
+							die.minusMoveStep(1);
 						}
 					}
 				}
@@ -147,21 +147,21 @@ public class Board {
 			Stack<Piece> fromLane = lanes.get(command.getFromIndex());
 			Stack<Piece> toLane = lanes.get(command.getToIndex());
 			if (!fromLane.empty())
-				if ( (bars.get(getPlayerNumber(currentPlayer)).empty()) && (fromLane.peek().getSuit() == currentPlayer.getSuit()) && ((toLane.empty()) || toLane.size() == 1 || fromLane.peek().getSuit() == toLane.peek().getSuit()) && (die.moveNumber != 0) ) {
+				if ( (bars.get(getPlayerNumber(currentPlayer)).empty()) && (fromLane.peek().getPieceEntity() == currentPlayer.getPieceEntity()) && ((toLane.empty()) || toLane.size() == 1 || fromLane.peek().getPieceEntity() == toLane.peek().getPieceEntity()) && (die.getMoveNumber() != 0) ) {
 					if (die.getFace(1) != die.getFace(2)) {
-						if ( (currentPlayer == player1) && (die.dieFace1 != 0) && (command.getFromIndex() == command.getToIndex() + die.getFace(1)) || (currentPlayer == player2) && (die.dieFace1 != 0) && (command.getFromIndex() + die.getFace(1) == command.getToIndex()) ) {
+						if ( (currentPlayer == player1) && (die.getMoveStep(1) != 0) && (command.getFromIndex() == command.getToIndex() + die.getFace(1)) || (currentPlayer == player2) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + die.getFace(1) == command.getToIndex()) ) {
 							isPossible = true;
-							die.dieFace1--;
+							die.minusMoveStep(1);
 						}
-						if ( (currentPlayer == player1) && (die.dieFace2 != 0) && (command.getFromIndex() == command.getToIndex() + die.getFace(2)) || (currentPlayer == player2) && (die.dieFace2 != 0) && (command.getFromIndex() + die.getFace(2) == command.getToIndex()) ) {
+						if ( (currentPlayer == player1) && (die.getMoveStep(2) != 0) && (command.getFromIndex() == command.getToIndex() + die.getFace(2)) || (currentPlayer == player2) && (die.getMoveStep(2) != 0) && (command.getFromIndex() + die.getFace(2) == command.getToIndex()) ) {
 							isPossible = true;
-							die.dieFace2--;
+							die.minusMoveStep(2);
 						}
 					}
 					if (die.getFace(1) == die.getFace(2)) {
-						if ( (currentPlayer == player1) && (die.dieFace1 != 0) && (command.getFromIndex() == command.getToIndex() + die.getFace(1)) || (currentPlayer == player2) && (die.dieFace1 != 0) && (command.getFromIndex() + die.getFace(1) == command.getToIndex()) ) {
+						if ( (currentPlayer == player1) && (die.getMoveStep(1) != 0) && (command.getFromIndex() == command.getToIndex() + die.getFace(1)) || (currentPlayer == player2) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + die.getFace(1) == command.getToIndex()) ) {
 							isPossible = true;
-							die.dieFace1--;
+							die.minusMoveStep(1);
 						}
 					}
 				}
@@ -173,12 +173,12 @@ public class Board {
 		if (command.isMoveFromBar() && command.isMoveToLane()) {
 			Stack<Piece> bar = bars.get(command.getFromIndex());
 			Stack<Piece> lane = lanes.get(command.getToIndex());
-			if (lane.size() == 1 && bar.peek().getSuit() != lane.peek().getSuit()) {
+			if (lane.size() == 1 && bar.peek().getPieceEntity() != lane.peek().getPieceEntity()) {
 				Piece barPiece = bar.pop();
-				if (lane.peek().getSuit() == Suit.W) {
+				if (lane.peek().getPieceEntity() == PieceEntity.W) {
 					Piece lanePiece = lane.pop();
 					bars.get(1).push(lanePiece);
-				} else if (lane.peek().getSuit() == Suit.R) {
+				} else if (lane.peek().getPieceEntity() == PieceEntity.R) {
 					Piece lanePiece = lane.pop();
 					bars.get(0).push(lanePiece);
 				}
@@ -188,22 +188,22 @@ public class Board {
 				Piece barPiece = bar.pop();
 				lane.push(barPiece);
 			}
-			die.moveNumber--;
+			die.minusMoveNumber();
 		} else if (command.isMoveFromLane() && command.isMoveToTerminus()) {
 			Stack<Piece> lane = lanes.get(command.getFromIndex());
 			Stack<Piece> terminus = terminus_.get(command.getToIndex());
 			Piece lanePiece = lane.pop();
 			terminus.push(lanePiece);
-			die.moveNumber--;
+			die.minusMoveNumber();
 		} else if (command.isMoveFromLane() && command.isMoveToLane()) {
 			Stack<Piece> fromLane = lanes.get(command.getFromIndex());
 			Stack<Piece> toLane = lanes.get(command.getToIndex());
-			if (toLane.size() == 1 && fromLane.peek().getSuit() != toLane.peek().getSuit()) {
+			if (toLane.size() == 1 && fromLane.peek().getPieceEntity() != toLane.peek().getPieceEntity()) {
 				Piece fromLanePiece = fromLane.pop();
-				if (toLane.peek().getSuit() == Suit.W) {
+				if (toLane.peek().getPieceEntity() == PieceEntity.W) {
 					Piece toLanePiece = toLane.pop();
 					bars.get(1).push(toLanePiece);
-				} else if (toLane.peek().getSuit() == Suit.R) {
+				} else if (toLane.peek().getPieceEntity() == PieceEntity.R) {
 					Piece toLanePiece = toLane.pop();
 					bars.get(0).push(toLanePiece);
 				}
@@ -212,7 +212,7 @@ public class Board {
 				Piece fromLanePiece = fromLane.pop();
 				toLane.push(fromLanePiece);
 			}
-			die.moveNumber--;
+			die.minusMoveNumber();
 		}
 	}
 	
@@ -256,10 +256,10 @@ public class Board {
 		int pip2 = 0;
    		for (int i=0; i<24; i++) {
    			if (!lanes.get(i).empty())
-   				if (lanes.get(i).peek().getSuit() == Suit.R)
+   				if (lanes.get(i).peek().getPieceEntity() == PieceEntity.R)
    					pip1 += (i+1)*lanes.get(i).size();
    			if (!lanes.get(i).empty())
-   				if (lanes.get(i).peek().getSuit() == Suit.W)
+   				if (lanes.get(i).peek().getPieceEntity() == PieceEntity.W)
    					pip2 += (24-i)*lanes.get(i).size();
    			if (terminus_.get(0).size() == 15)
    				pip1 = 0;
@@ -270,11 +270,44 @@ public class Board {
    		}
 	}
 	
+	public int getDieFace (int index) {
+		return switch (index) {
+			case 1 -> die.getFace(1);
+			case 2 -> die.getFace(2);
+			default -> 0;
+		};
+	}
+	
+	public void makeDieRoll () {
+		die.roll();
+	}
+	
+	public int getDieMoveNumber () {
+		return die.getMoveNumber();
+	}
+	
+	public void makeDieSetZero () {
+		die.setZero();
+	}
+	
     public int getPlayerNumber (Player player) {
-    	if (currentPlayer.getSuit() == Suit.W) {
+    	if (currentPlayer.getPieceEntity() == PieceEntity.W) {
     		return 1;
     	} else // currentPlayer.getSuit() == Suit.R
     		return 0;
+    }
+    
+    public Player getPlayer (String player) {
+    	return switch (player) {
+			case "player1" -> player1;
+			case "player2" -> player2;
+			case "currentPlayer" -> currentPlayer;
+			default -> currentPlayer;
+    	};
+    }
+    
+    public void setCurrentPlayer (Player player) {
+    	currentPlayer = player;
     }
 	
 	public Stack<Piece> getLane (int index) {

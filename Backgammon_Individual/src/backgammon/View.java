@@ -10,10 +10,9 @@ public class View {
 	
 	private final static String BLANK2 = "  ";
 	private final static String BLANK3 = "   ";
-	private String input1;
-	private String input2;
-	Scanner in;
-	Command command;
+	private String input1, input2;
+	private Scanner in;
+	private Command command;
 	
 	View () {
 		in = new Scanner(System.in);
@@ -26,24 +25,24 @@ public class View {
 	}
 	
 	public void displayPiece (Board board) {
-		String numberString = Integer.toString(board.currentPlayer.getPips());
+		String numberString = Integer.toString(board.getPlayer("currentPlayer").getPips());
 		int numberOfSpaces = 4 - numberString.length();
 		int numberupLane = Math.max(board.getSize("upLane"),1);
 		int numberdownLane = Math.max(board.getSize("downLane"),1);
 		System.out.println("|---------------------------------------------------------------------|");
-		if (board.currentPlayer.getColourName() == SuitColour.RED) {
-			System.out.print("| Current player's color: " + DisplayColour.BOLD_RED + board.currentPlayer.getColourName() + DisplayColour.RESET + "                               pips: " + board.currentPlayer.getPips());
-		} else if (board.currentPlayer.getColourName() == SuitColour.WHITE)
-			System.out.print("| Current player's color: " + DisplayColour.BOLD_WHITE + board.currentPlayer.getColourName() + DisplayColour.RESET + "                             pips: " + board.currentPlayer.getPips());
+		if (board.getPlayer("currentPlayer").getColourName() == ColourName.RED) {
+			System.out.print("| Current player's color: " + DisplayColour.BOLD_RED + board.getPlayer("currentPlayer").getColourName() + DisplayColour.RESET + "                               pips: " + board.getPlayer("currentPlayer").getPips());
+		} else if (board.getPlayer("currentPlayer").getColourName() == ColourName.WHITE)
+			System.out.print("| Current player's color: " + DisplayColour.BOLD_WHITE + board.getPlayer("currentPlayer").getColourName() + DisplayColour.RESET + "                             pips: " + board.getPlayer("currentPlayer").getPips());
 		for (int i = 0; i < numberOfSpaces; i++)
             System.out.print(" ");
 		System.out.println("|");
 		System.out.println("|---------------------------------------------------------------------|");
-		if (board.die.face1 != board.die.face2) {
-			System.out.println("| Dice:                     " + board.die.face1 + "              " + board.die.face2 + "                          |");
+		if (board.getDieFace(1) != board.getDieFace(2)) {
+			System.out.println("| Dice:                     " + board.getDieFace(1) + "              " + board.getDieFace(2) + "                          |");
 		}
-		if (board.die.face1 == board.die.face2) {
-			System.out.println("| Dice:      " + board.die.face1 + "              " + board.die.face1 + "              " + board.die.face1 + "              " + board.die.face1  + "           |");
+		if (board.getDieFace(1) == board.getDieFace(2)) {
+			System.out.println("| Dice:      " + board.getDieFace(1) + "              " + board.getDieFace(1) + "              " + board.getDieFace(1) + "              " + board.getDieFace(1)  + "           |");
 		}
 		System.out.println("|---------------------------------------------------------------------|");
 		System.out.println("| " + DisplayColour.WHITE + "13   14   15   16   17   18" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "B2" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "19   20   21   22   23   24" + DisplayColour.RESET + " | " + DisplayColour.RED + "T1" + DisplayColour.RESET + " |");
@@ -151,7 +150,7 @@ public class View {
 			String input = in.nextLine();
 			if (Command.isValid(input)) {
 				command = new Command(input);
-				if (board.currentPlayer == board.player2 && command.isMove()) {
+				if (board.getPlayer("currentPlayer") == board.getPlayer("player2") && command.isMove()) {
 					String inputFormatted = input.trim();
 					input1 = inputFormatted.substring(0, 2);
 					input2 = inputFormatted.substring(2, 4);
@@ -178,22 +177,22 @@ public class View {
 	public void getUserStartInput (Board board) {
 		System.out.print("Enter Name of Player Red: ");
 		board.initializePlayer1();
-		System.out.println("The Name of Player Red is " + board.player1);
+		System.out.println("The Name of Player Red is " + board.getPlayer("player1"));
 		System.out.print("Enter Name of Player White: ");
 		board.initializePlayer2();
-		System.out.println("The Name of Player White is " + board.player2);
+		System.out.println("The Name of Player White is " + board.getPlayer("player2"));
 		do {
-			board.die.roll();
-			if (board.die.getFace(1) > board.die.getFace(2)) {
-				System.out.println("Die 1 is " + board.die.getFace(1) + ". Die 2 is " + board.die.getFace(2)+ ". The number in Die 1 is bigger than the number in Die 2. So Red goes first.");
-				board.currentPlayer = board.player1;
-			} else if (board.die.getFace(1) < board.die.getFace(2)) {
-				System.out.println("Die 1 is " + board.die.getFace(1) + ". Die 2 is " + board.die.getFace(2)+ ". The number in Die 2 is bigger than the number in Die 1. So White goes first.");
-				board.currentPlayer = board.player2;
-			} else if (board.die.getFace(1) == board.die.getFace(2)) {
-				System.out.println("Die 1 is " + board.die.getFace(1) + ". Die 2 is " + board.die.getFace(2)+ ". The number in Die 1 is equal to the number in Die 2. So Reroll the dies.");
+			board.makeDieRoll();
+			if (board.getDieFace(1) > board.getDieFace(2)) {
+				System.out.println("Die 1 is " + board.getDieFace(1) + ". Die 2 is " + board.getDieFace(2)+ ". The number in Die 1 is bigger than the number in Die 2. So Red goes first.");
+				board.setCurrentPlayer(board.getPlayer("player1"));
+			} else if (board.getDieFace(1) < board.getDieFace(2)) {
+				System.out.println("Die 1 is " + board.getDieFace(1) + ". Die 2 is " + board.getDieFace(2)+ ". The number in Die 2 is bigger than the number in Die 1. So White goes first.");
+				board.setCurrentPlayer(board.getPlayer("player2"));
+			} else if (board.getDieFace(1) == board.getDieFace(2)) {
+				System.out.println("Die 1 is " + board.getDieFace(1) + ". Die 2 is " + board.getDieFace(2)+ ". The number in Die 1 is equal to the number in Die 2. So Reroll the dies.");
 			}
-		} while (board.die.getFace(1) == board.die.getFace(2));
+		} while (board.getDieFace(1) == board.getDieFace(2));
 	}
 	
 	public void displayCommandNotPossible () {

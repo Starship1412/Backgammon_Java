@@ -19,7 +19,7 @@ public class Backgammon {
 				command = view.getUserInput(board);
 				if (once == 1) {
 					if (command.isRoll()) {
-						board.die.roll();
+						board.makeDieRoll();
 						view.displayPiece(board);
 						commandDone = true;
 					} else if (command.isMove()) {
@@ -27,7 +27,7 @@ public class Backgammon {
 							board.move(command);
 							board.calculatePips();
 							view.displayPiece(board);
-							if (board.die.moveNumber == 0)
+							if (board.getDieMoveNumber() == 0)
 								board.endTurn();
 							commandDone = true;
 						} else
@@ -37,12 +37,12 @@ public class Backgammon {
 					} else if (command.isQuit()) {
 						commandDone = true;
 					} else if (command.isWaive()) {
-						view.displayWaive(board.currentPlayer);
+						view.displayWaive(board.getPlayer("currentPlayer"));
 						board.endTurn();
-						board.die.setZero();
+						board.makeDieSetZero();
 						commandDone = true;
 					} else if (command.isShowPips()) {
-						view.displayPips(board.currentPlayer);
+						view.displayPips(board.getPlayer("currentPlayer"));
 					} else if (command.isShowHint()) {
 						view.showHint();
 					}
@@ -64,9 +64,8 @@ public class Backgammon {
 			} while (!commandDone);
 		} while (!command.isQuit() && !board.isGameOver());
 		if (board.isGameOver()) {
-			view.displayGameOver(board.currentPlayer);
+			view.displayGameOver(board.getPlayer("currentPlayer"));
 		} else
 			view.displayQuit();
 	}
 }
-/////
