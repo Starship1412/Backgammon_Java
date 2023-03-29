@@ -12,12 +12,13 @@ public class Backgammon {
 		Command command;
 		view.displayWelcome();
 		board.initializeBoard();
-		int once = 0;
+		int startControl = 0;
+		int restartControl = 0;
 		do {
 			boolean commandDone = false;
 			do {
 				command = view.getUserInput(board);
-				if (once == 1) {
+				if (startControl == 1 && restartControl == 0) {
 					if (command.isRoll()) {
 						board.makeDieRoll();
 						view.displayPiece(board);
@@ -33,7 +34,10 @@ public class Backgammon {
 						} else
 							view.displayCommandNotPossible();
 					} else if (command.isStart()) {
-						view.displayCommandTemporarilyInvalid();
+						view.displayStart();
+						startControl--;
+						restartControl++;
+						commandDone = true;
 					} else if (command.isQuit()) {
 						commandDone = true;
 					} else if (command.isWaive()) {
@@ -51,10 +55,10 @@ public class Backgammon {
 						view.showHint();
 					}
 				}
-				if (once == 0) {
+				if (startControl == 0 && restartControl == 0) {
 					if (command.isStart()) {
 						view.getUserStartInput(board);
-						once++;
+						startControl++;
 						board.calculatePips();
 						view.displayPiece(board);
 						commandDone = true;
@@ -65,6 +69,8 @@ public class Backgammon {
 					} else if (command.isQuit())
 						commandDone = true;
 				}
+				if (restartControl == 1)
+					restartControl--;
 			} while (!commandDone);
 		} while (!command.isQuit() && !board.isGameOver());
 		if (board.isGameOver()) {

@@ -20,21 +20,26 @@ public class View {
 	
 	public void displayWelcome () {
 		System.out.println("Welcome to Backgammon");
-		System.out.println("Enter S to start the game. Enter Q to exit the game. Enter H to view all allowed commands.\n"
+		System.out.println("Enter S to start the game or restart the game. Enter Q to exit the game. Enter H to view all allowed commands.\n"
+				+ "Note that some commands are temporarily invalid in some cases.");
+	}
+	
+	public void displayStart () {
+		System.out.println("Enter S to start the game or restart the game. Enter Q to exit the game. Enter H to view all allowed commands.\n"
 				+ "Note that some commands are temporarily invalid in some cases.");
 	}
 	
 	public void displayPiece (Board board) {
 		String numberString = Integer.toString(board.getPlayer(0).getPips());
-		int numberOfSpaces = 4 - numberString.length();
-		int numberupLane = Math.max(board.getSize("upLane"),1);
-		int numberdownLane = Math.max(board.getSize("downLane"),1);
+		int numberSpaces = 4 - numberString.length();
+		int numberUpLane = Math.max(board.getSize("upLane"),1);
+		int numberDownLane = Math.max(board.getSize("downLane"),1);
 		System.out.println("|---------------------------------------------------------------------|");
 		if (board.getPlayer(0).getColourName() == "RED") {
 			System.out.print("| Current player's color: " + DisplayColour.BOLD_RED + board.getPlayer(0).getColourName() + DisplayColour.RESET + "                               pips: " + board.getPlayer(0).getPips());
 		} else if (board.getPlayer(0).getColourName() == "WHITE")
 			System.out.print("| Current player's color: " + DisplayColour.BOLD_WHITE + board.getPlayer(0).getColourName() + DisplayColour.RESET + "                             pips: " + board.getPlayer(0).getPips());
-		for (int i = 0; i < numberOfSpaces; i++)
+		for (int i = 0; i < numberSpaces; i++)
             System.out.print(" ");
 		System.out.println("|");
 		System.out.println("|---------------------------------------------------------------------|");
@@ -50,7 +55,7 @@ public class View {
 		System.out.print(" | " + DisplayColour.WHITE + "B2"  + DisplayColour.RESET + " | ");
 		System.out.println(DisplayColour.RED + "06   05   04   03   02   01" + DisplayColour.RESET + " | " + DisplayColour.RED + "E1" + DisplayColour.RESET + " |");
 		
-		for (int row = 0; row < numberupLane; row++) {
+		for (int row = 0; row < numberUpLane; row++) {
 			System.out.print("| ");
 			for (int up = 11; up > 6; up--) {
 				Stack<Piece> lane = board.getLane(up);
@@ -91,38 +96,38 @@ public class View {
 			System.out.println();
 		}
 		System.out.println("|-----------------------------|----|-----------------------------|----|");
-		for (int row = 0; row < numberdownLane; row++) {
+		for (int row = 0; row < numberDownLane; row++) {
 			System.out.print("| ");
 			for (int up = 12; up < 17; up++) {
 				Stack<Piece> lane = board.getLane(up);
-				if (row < numberdownLane - lane.size()) {
+				if (row < numberDownLane - lane.size()) {
 					System.out.print(BLANK2 + BLANK3);
 		        } else
-		            System.out.print(lane.get(numberdownLane - row - 1) + BLANK3);
+		            System.out.print(lane.get(numberDownLane - row - 1) + BLANK3);
 			}
 			Stack<Piece> lane17 = board.getLane(17);
-			if (row < numberdownLane - lane17.size()) {
+			if (row < numberDownLane - lane17.size()) {
 				System.out.print(BLANK2 + " | ");
 	        } else
-	            System.out.print(lane17.get(numberdownLane - row - 1) + " | ");
+	            System.out.print(lane17.get(numberDownLane - row - 1) + " | ");
 			Stack<Piece> bar = board.getBar(0);
-				if (row < numberdownLane - bar.size()) {
+				if (row < numberDownLane - bar.size()) {
 					System.out.print(BLANK2 + " | ");
 		        } else
-		        	System.out.print(bar.get(numberdownLane - row - 1) + " | ");
+		        	System.out.print(bar.get(numberDownLane - row - 1) + " | ");
 			for (int up = 18; up < 23; up++) {
 				Stack<Piece> lane = board.getLane(up);
-				if (row < numberdownLane - lane.size()) {
+				if (row < numberDownLane - lane.size()) {
 					System.out.print(BLANK2 + BLANK3);
 		        } else
-		        	System.out.print(lane.get(numberdownLane - row - 1) + BLANK3);
+		        	System.out.print(lane.get(numberDownLane - row - 1) + BLANK3);
 			}
 			Stack<Piece> lane23 = board.getLane(23);
-			if (row < numberdownLane - lane23.size()) {
+			if (row < numberDownLane - lane23.size()) {
 				System.out.print(BLANK2);
 	        } else
-	            System.out.print(lane23.get(numberdownLane - row - 1));
-			if (row == numberdownLane - 1) {
+	            System.out.print(lane23.get(numberDownLane - row - 1));
+			if (row == numberDownLane - 1) {
 				if (board.getEndpointSize(1) < 10)
 			        System.out.print(" | " + DisplayColour.BOLD_WHITE + "0" + board.getEndpointSize(1) + DisplayColour.RESET + " |");
 			    else
@@ -234,7 +239,7 @@ public class View {
 	}
 	
 	public void showHint () {
-		System.out.println("S: Start Backgammon\n"
+		System.out.println("S: Start Backgammon or restart Backgammon\n"
 				+ "R: Roll the dice\n"
 				+ "R + 2 digits: roll the specified number of dice\n"
 				+ "W: Abandon the turn\n"

@@ -40,13 +40,13 @@ public class Board {
 	}
 	
 	public void initializePlayer1 () {
-		String player_1 = in.nextLine();
-		players[1] = new Player(player_1, PieceEntity.R);
+		String player1 = in.nextLine();
+		players[1] = new Player(player1, PieceEntity.R);
 	}
 	
 	public void initializePlayer2 () {
-		String player_2 = in.nextLine();
-		players[2] = new Player(player_2, PieceEntity.W);
+		String player2 = in.nextLine();
+		players[2] = new Player(player2, PieceEntity.W);
 	}
 	
 	public void endTurn () {
@@ -298,7 +298,7 @@ public class Board {
     public int getPlayerNumber (Player player) {
     	if (players[0].getPieceEntity() == PieceEntity.W) {
     		return 1;
-    	} else // player[0].getPieceEntity() == PieceEntity.R
+    	} else // players[0].getPieceEntity() == PieceEntity.R
     		return 0;
     }
     
