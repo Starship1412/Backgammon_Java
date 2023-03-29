@@ -185,10 +185,10 @@ public class View {
 			board.makeDieRoll();
 			if (board.getDieFace(1) > board.getDieFace(2)) {
 				System.out.println("Die 1 is " + board.getDieFace(1) + ". Die 2 is " + board.getDieFace(2)+ ". The number in Die 1 is bigger than the number in Die 2. So Red goes first.");
-				board.setCurrentPlayer(board.getPlayer(1));
+				board.setCurrentPlayer(1);
 			} else if (board.getDieFace(1) < board.getDieFace(2)) {
 				System.out.println("Die 1 is " + board.getDieFace(1) + ". Die 2 is " + board.getDieFace(2)+ ". The number in Die 2 is bigger than the number in Die 1. So White goes first.");
-				board.setCurrentPlayer(board.getPlayer(2));
+				board.setCurrentPlayer(2);
 			} else if (board.getDieFace(1) == board.getDieFace(2)) {
 				System.out.println("Die 1 is " + board.getDieFace(1) + ". Die 2 is " + board.getDieFace(2)+ ". The number in Die 1 is equal to the number in Die 2. So Reroll the dies.");
 			}

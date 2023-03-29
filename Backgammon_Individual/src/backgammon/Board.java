@@ -311,8 +311,8 @@ public class Board {
     	};
     }
     
-    public void setCurrentPlayer (Player player) {
-    	players[0] = player;
+    public void setCurrentPlayer (int index) {
+    	players[0] = players[index];
     }
 	
 	public Stack<Piece> getLane (int index) {
