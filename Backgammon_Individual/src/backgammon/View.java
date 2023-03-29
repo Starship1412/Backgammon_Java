@@ -30,9 +30,9 @@ public class View {
 		int numberupLane = Math.max(board.getSize("upLane"),1);
 		int numberdownLane = Math.max(board.getSize("downLane"),1);
 		System.out.println("|---------------------------------------------------------------------|");
-		if (board.getPlayer("currentPlayer").getColourName() == ColourName.RED) {
+		if (board.getPlayer("currentPlayer").getColourName() == "RED") {
 			System.out.print("| Current player's color: " + DisplayColour.BOLD_RED + board.getPlayer("currentPlayer").getColourName() + DisplayColour.RESET + "                               pips: " + board.getPlayer("currentPlayer").getPips());
-		} else if (board.getPlayer("currentPlayer").getColourName() == ColourName.WHITE)
+		} else if (board.getPlayer("currentPlayer").getColourName() == "WHITE")
 			System.out.print("| Current player's color: " + DisplayColour.BOLD_WHITE + board.getPlayer("currentPlayer").getColourName() + DisplayColour.RESET + "                             pips: " + board.getPlayer("currentPlayer").getPips());
 		for (int i = 0; i < numberOfSpaces; i++)
             System.out.print(" ");

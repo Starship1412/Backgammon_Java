@@ -20,7 +20,7 @@ public class Player {
         return pieceEntity;
     }
     
-    public ColourName getColourName () {
+    public String getColourName () {
         return pieceEntity.getColour();
     }
     

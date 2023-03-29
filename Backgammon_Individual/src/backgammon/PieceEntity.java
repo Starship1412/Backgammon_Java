@@ -6,24 +6,23 @@ package backgammon;
 
 public enum PieceEntity {
 	
-	R (DisplayColour.RED + " ●" + DisplayColour.RESET, ColourName.RED, DisplayColour.RED),
-	W (DisplayColour.WHITE + " ●" + DisplayColour.RESET, ColourName.WHITE, DisplayColour.WHITE);
+	R (DisplayColour.RED + " ●" + DisplayColour.RESET, DisplayColour.RED, "RED"),
+	W (DisplayColour.WHITE + " ●" + DisplayColour.RESET, DisplayColour.WHITE, "WHITE");
 	
-	private String symbol, display;
-	private ColourName colour;
+	private String symbol, display, colour;
 	
-	PieceEntity (String symbol, ColourName colour, String display) {
+	PieceEntity (String symbol, String display, String colour) {
 		this.symbol = symbol;
-		this.colour = colour;
 		this.display = display;
-	}
-	
-	public ColourName getColour () {
-		return colour;
+		this.colour = colour;
 	}
 	
 	public String getDisplay () {
 		return display;
+	}
+	
+	public String getColour () {
+		return colour;
 	}
 	
 	public String toString () {
