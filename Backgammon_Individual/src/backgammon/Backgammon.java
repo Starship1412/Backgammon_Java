@@ -42,7 +42,7 @@ public class Backgammon {
 						board.makeDieSetZero();
 						commandDone = true;
 					} else if (command.isShowPips()) {
-						view.displayPips(board.getPlayer(0));
+						view.displayPips(board);
 					} else if (command.isSetFace()) {
 						board.setFace(command);
 						view.displayPiece(board);

@@ -228,8 +228,9 @@ public class View {
 		System.out.println(player + " forfeits the turn as he has no pieces to play legally or he doesn't know how to move the pieces further. Now skip to the other player's turn.");
 	}
 	
-	public void displayPips (Player player) {
-		System.out.println(player.getNamewithColor() + "'s current pips are " + player.getPips() + ".");
+	public void displayPips (Board board) {
+		System.out.println(board.getPlayer(1).getNamewithColor() + "'s current pips are " + board.getPlayer(1).getPips() + ".");
+		System.out.println(board.getPlayer(2).getNamewithColor() + "'s current pips are " + board.getPlayer(2).getPips() + ".");
 	}
 	
 	public void showHint () {
@@ -240,7 +241,7 @@ public class View {
 				+ "P: Check the current player's pips\n"
 				+ "2 digits + 2 digits: Move a piece on Lane\n"
 				+ "B + 1 digit + 2 digits: move pieces from Bar to outside\n"
-				+ "2 digits + T + 1 digit: Move a piece to Terminus\n"
+				+ "2 digits + E + 1 digit: Move a piece to Terminus\n"
 				+ "H: View all allowed commands\n"
 				+ "Q: Quit the game");
 	}

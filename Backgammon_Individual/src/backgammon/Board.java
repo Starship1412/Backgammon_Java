@@ -25,7 +25,7 @@ public class Board {
 		view = new View();
 		in = new Scanner(System.in);
 		die = new Die();
-		this.players = new Player[3]; // player[0] is current player.
+		this.players = new Player[3]; // players[0] is current player. players[1] is RED player. players[2] is WHITE player.
 		
 		lanes = new ArrayList<>(NUM_LANES);
 		bars = new ArrayList<>(NUM_BARS);
