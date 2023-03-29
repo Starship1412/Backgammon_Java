@@ -8,10 +8,6 @@ public class Piece {
 	
 	private PieceEntity pieceEntity;
 	
-	Piece () {
-		pieceEntity = PieceEntity.R;
-	}
-	
 	Piece (PieceEntity pieceEntity) {
 		this.pieceEntity = pieceEntity;
 	}
