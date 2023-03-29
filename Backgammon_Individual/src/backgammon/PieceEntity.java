@@ -1,7 +1,7 @@
 package backgammon;
 
 /**
- * This class enumerates the suits in a deck of playing cards.
+ * This class enumerates the hues in pieces.
  */
 
 public enum PieceEntity {

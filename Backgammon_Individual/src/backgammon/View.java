@@ -1,5 +1,10 @@
 package backgammon;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -154,6 +159,28 @@ public class View {
 			System.out.print("Enter command: ");
 			String input = in.nextLine();
 			if (Command.isValid(input)) {
+				if (Command.isText(input)) {
+	                String fileName = Command.getText(input);
+	                File dir = new File(".");
+	                File[] exactMatches = dir.listFiles((dir1, name) -> name.equals(fileName));
+	                File[] caseInsensitiveMatches = dir.listFiles((dir1, name) -> name.equalsIgnoreCase(fileName));
+	                if ( !( (caseInsensitiveMatches != null && caseInsensitiveMatches.length > 0) && !(exactMatches != null && exactMatches.length > 0) ) ) {
+		                try {
+		                    BufferedReader br = new BufferedReader(new FileReader(fileName));
+		                    StringBuilder fileContent = new StringBuilder();
+		                    String line;
+		                    while ((line = br.readLine()) != null)
+		                        fileContent.append(line).append("\n");
+		                    br.close();
+		                    input = fileContent.toString();
+		                } catch (FileNotFoundException e) {
+		                    System.out.println("Error: File not found - " + e.getMessage());
+		                } catch (IOException e) {
+		                    System.out.println("Error reading file: " + e.getMessage());   
+		                }
+	                } else
+	                	System.out.println("A file exists with only the case of the file name different from the input file name.");
+                }
 				command = new Command(input);
 				if (board.getPlayer(0) == board.getPlayer(2) && command.isMove()) {
 					String inputFormatted = input.trim();
@@ -179,7 +206,7 @@ public class View {
 		return command;
 	}
 	
-	public void getUserStartInput (Board board) {
+	public void getUserName (Board board) {
 		System.out.print("Enter Name of Player Red: ");
 		board.initializePlayer1();
 		System.out.println("The Name of Player Red is " + board.getPlayer(1));

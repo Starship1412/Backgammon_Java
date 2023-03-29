@@ -15,7 +15,8 @@ public class Command {
 		WAIVE,
 		PIP,
 		HINT,
-		SETFACE
+		SETFACE,
+		TEXT
 	}
 	
 	private CommandType commandType;
@@ -25,30 +26,33 @@ public class Command {
 	Command (String input) {
 		this.face = new int[2];
 		
-		String inputFormatted = input.trim().toUpperCase();
-		if (inputFormatted.equals("Q")) {
+		String inputFormattedUpper = input.trim().toUpperCase();
+		String inputFormatted = input.trim();
+		if (inputFormattedUpper.equals("Q")) {
 			commandType = CommandType.QUIT;
-		} else if (inputFormatted.equals("R")) {
+		} else if (inputFormattedUpper.equals("R")) {
 			commandType = CommandType.ROLL;
-		} else if (inputFormatted.equals("S")) {
+		} else if (inputFormattedUpper.equals("S")) {
 			commandType = CommandType.START;
-		} else if (inputFormatted.equals("W")) {
+		} else if (inputFormattedUpper.equals("W")) {
 			commandType = CommandType.WAIVE;
-		} else if (inputFormatted.equals("P")) {
+		} else if (inputFormattedUpper.equals("P")) {
 			commandType = CommandType.PIP;
-		} else if (inputFormatted.equals("H")) {
+		} else if (inputFormattedUpper.equals("H")) {
 			commandType = CommandType.HINT;
-		} else if (inputFormatted.matches("R[1-6][1-6]")) {
+		} else if (inputFormattedUpper.matches("R[1-6][1-6]")) {
 			commandType = CommandType.SETFACE;
-			face1 = inputFormatted.substring(1, 2);
-			face2 = inputFormatted.substring(2, 3);
+			face1 = inputFormattedUpper.substring(1, 2);
+			face2 = inputFormattedUpper.substring(2, 3);
 			face[0] = Integer.parseInt(face1);
 			face[1] = Integer.parseInt(face2);
-		} else if (inputFormatted.matches("(0[1-9]|1[0-9]|2[0-4]|B[1-2])(0[1-9]|1[0-9]|2[0-4]|E[1-2])")) {
+		} else if (inputFormattedUpper.matches("(0[1-9]|1[0-9]|2[0-4]|B[1-2])(0[1-9]|1[0-9]|2[0-4]|E[1-2])")) {
 			commandType = CommandType.MOVE;
-			moveFrom = inputFormatted.substring(0, 2);
-			moveTo = inputFormatted.substring(2, 4);
-		} 	
+			moveFrom = inputFormattedUpper.substring(0, 2);
+			moveTo = inputFormattedUpper.substring(2, 4);
+		} else if (inputFormatted.matches("test:(.+\\.txt)")) {
+			commandType = CommandType.TEXT;
+		}
 	}
 	
 	private int suitToBar (String character) {
@@ -70,9 +74,10 @@ public class Command {
 	
 	
 	public static boolean isValid (String input) {
-		String inputFormatted = input.trim().toUpperCase();
-		return inputFormatted.equals("Q") || inputFormatted.equals("R") || inputFormatted.equals("S") || inputFormatted.equals("W") || inputFormatted.equals("P") || inputFormatted.equals("H") 
-				|| inputFormatted.matches("R[1-6][1-6]") || inputFormatted.matches("(0[1-9]|1[0-9]|2[0-4]|B[1-2])(0[1-9]|1[0-9]|2[0-4]|E[1-2])");
+		String inputFormattedUpper = input.trim().toUpperCase();
+		String inputFormatted = input.trim();
+		return inputFormattedUpper.equals("Q") || inputFormattedUpper.equals("R") || inputFormattedUpper.equals("S") || inputFormattedUpper.equals("W") || inputFormattedUpper.equals("P") || inputFormattedUpper.equals("H") 
+				|| inputFormattedUpper.matches("R[1-6][1-6]") || inputFormattedUpper.matches("(0[1-9]|1[0-9]|2[0-4]|B[1-2])(0[1-9]|1[0-9]|2[0-4]|E[1-2])") || inputFormatted.matches("test:(.+\\.txt)");
 	}
 	
 	public boolean isQuit () {
@@ -106,7 +111,17 @@ public class Command {
 	public boolean isMove () {
 		return commandType == CommandType.MOVE;
 	}
-
+	
+	public static boolean isText (String input) {
+		String inputFormatted = input.trim();
+		return inputFormatted.matches("test:(.+\\.txt)");
+	}
+	
+	public static String getText (String input) {
+		String inputFormatted = input.trim();
+		return inputFormatted.substring(5);
+	}
+	
 	public boolean isMoveFromBar () {
 		return moveFrom.matches("B1|B2");
 	}

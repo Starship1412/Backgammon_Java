@@ -1,7 +1,7 @@
 package backgammon;
 
 /**
- * This class models a single card.
+ * This class models a single piece.
  */
 
 public class Piece {

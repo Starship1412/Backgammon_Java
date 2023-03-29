@@ -57,7 +57,7 @@ public class Backgammon {
 				}
 				if (startControl == 0 && restartControl == 0) {
 					if (command.isStart()) {
-						view.getUserStartInput(board);
+						view.getUserName(board);
 						startControl++;
 						board.calculatePips();
 						view.displayPiece(board);
