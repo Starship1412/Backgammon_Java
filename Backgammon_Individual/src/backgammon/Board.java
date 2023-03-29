@@ -16,7 +16,7 @@ public class Board {
 	private List<Stack<Piece>> bars;
 	private List<Stack<Piece>> terminus_;
 	
-	private Player[] player;
+	private Player[] players;
 	private View view;
 	private Scanner in;
 	private Die die;
@@ -25,7 +25,7 @@ public class Board {
 		view = new View();
 		in = new Scanner(System.in);
 		die = new Die();
-		this.player = new Player[3]; // player[0] is current player.
+		this.players = new Player[3]; // player[0] is current player.
 		
 		lanes = new ArrayList<>(NUM_LANES);
 		bars = new ArrayList<>(NUM_BARS);
@@ -41,21 +41,21 @@ public class Board {
 	
 	public void initializePlayer1 () {
 		String player_1 = in.nextLine();
-		player[1] = new Player(player_1, PieceEntity.R);
+		players[1] = new Player(player_1, PieceEntity.R);
 	}
 	
 	public void initializePlayer2 () {
 		String player_2 = in.nextLine();
-		player[2] = new Player(player_2, PieceEntity.W);
+		players[2] = new Player(player_2, PieceEntity.W);
 	}
 	
 	public void endTurn () {
-        if (player[0] == player[1]) {
-            player[0] = player[2];
-            view.playerTurn(player[1], player[2]);
+        if (players[0] == players[1]) {
+            players[0] = players[2];
+            view.playerTurn(players[1], players[2]);
         } else {
-        	player[0] = player[1];
-            view.playerTurn(player[2], player[1]);
+        	players[0] = players[1];
+            view.playerTurn(players[2], players[1]);
         }
     }
 	
@@ -84,19 +84,19 @@ public class Board {
 			Stack<Piece> bar = bars.get(command.getFromIndex());
 			Stack<Piece> lane = lanes.get(command.getToIndex());
 			if (!bar.empty())
-				if ( (bar.peek().getPieceEntity() == player[0].getPieceEntity()) && ((lane.empty()) || lane.size() == 1 || bar.peek().getPieceEntity() == lane.peek().getPieceEntity()) && (die.getMoveNumber() != 0) ) {
+				if ( (bar.peek().getPieceEntity() == players[0].getPieceEntity()) && ((lane.empty()) || lane.size() == 1 || bar.peek().getPieceEntity() == lane.peek().getPieceEntity()) && (die.getMoveNumber() != 0) ) {
 					if (die.getFace(1) != die.getFace(2)) {
-						if ( (player[0] == player[1]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + 24 - die.getFace(1) == command.getToIndex()) || (player[0] == player[2]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + die.getFace(1) - 2 == command.getToIndex()) ) {
+						if ( (players[0] == players[1]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + 24 - die.getFace(1) == command.getToIndex()) || (players[0] == players[2]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + die.getFace(1) - 2 == command.getToIndex()) ) {
 							isPossible = true;
 							die.minusMoveStep(1);
 						}
-						if ( (player[0] == player[1]) && (die.getMoveStep(2) != 0) && (command.getFromIndex() + 24 - die.getFace(2) == command.getToIndex()) || (player[0] == player[2]) && (die.getMoveStep(2) != 0) && (command.getFromIndex() + die.getFace(2) - 2 == command.getToIndex()) ) {
+						if ( (players[0] == players[1]) && (die.getMoveStep(2) != 0) && (command.getFromIndex() + 24 - die.getFace(2) == command.getToIndex()) || (players[0] == players[2]) && (die.getMoveStep(2) != 0) && (command.getFromIndex() + die.getFace(2) - 2 == command.getToIndex()) ) {
 							isPossible = true;
 							die.minusMoveStep(2);
 						}
 					}
 					if (die.getFace(1) == die.getFace(2)) {
-						if ( (player[0] == player[1]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + 24 - die.getFace(1) == command.getToIndex()) || (player[0] == player[2]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + die.getFace(1) - 2 == command.getToIndex()) ) {
+						if ( (players[0] == players[1]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + 24 - die.getFace(1) == command.getToIndex()) || (players[0] == players[2]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + die.getFace(1) - 2 == command.getToIndex()) ) {
 							isPossible = true;
 							die.minusMoveStep(1);
 						}
@@ -108,25 +108,25 @@ public class Board {
 			int finalStage = terminus.size();
 			for (int i = 0; i < 6; i++) {
 				if (!lanes.get(i).empty()) {
-					if ( (player[0] == player[1]) && (lanes.get(i).peek().getPieceEntity() == player[0].getPieceEntity()) ) {
+					if ( (players[0] == players[1]) && (lanes.get(i).peek().getPieceEntity() == players[0].getPieceEntity()) ) {
 						finalStage += lanes.get(i).size();
 					}
 				}
 				if (!lanes.get(i+18).empty()) {
-					if ( (player[0] == player[2]) && (lanes.get(i+18).peek().getPieceEntity() == player[0].getPieceEntity()) ) {
+					if ( (players[0] == players[2]) && (lanes.get(i+18).peek().getPieceEntity() == players[0].getPieceEntity()) ) {
 						finalStage += lanes.get(i+18).size();
 					}
 				}
 			}
 			if (!lane.empty())
-				if ( (getPlayerNumber(player[0]) == command.getToIndex()) && (lane.peek().getPieceEntity() == player[0].getPieceEntity()) && (finalStage == 15) && (die.getMoveNumber() != 0) ) {
+				if ( (getPlayerNumber(players[0]) == command.getToIndex()) && (lane.peek().getPieceEntity() == players[0].getPieceEntity()) && (finalStage == 15) && (die.getMoveNumber() != 0) ) {
 					if (die.getFace(1) != die.getFace(2)) {
 						int compare = die.getFace(1) - die.getFace(2);
-						if ( (player[0] == player[1]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + 1 <= command.getToIndex() + die.getFace(1)) || (player[0] == player[2]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + die.getFace(1) >= command.getToIndex() + 23) ) {
+						if ( (players[0] == players[1]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + 1 <= command.getToIndex() + die.getFace(1)) || (players[0] == players[2]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + die.getFace(1) >= command.getToIndex() + 23) ) {
 							isPossible = true;
 							die.minusMoveStep(1);
 						}
-						if ( (player[0] == player[1]) && (die.getMoveStep(2) != 0) && (command.getFromIndex() + 1 <= command.getToIndex() + die.getFace(2)) || (player[0] == player[2]) && (die.getMoveStep(2) != 0) && (command.getFromIndex() + die.getFace(2) >= command.getToIndex() + 23) ) {
+						if ( (players[0] == players[1]) && (die.getMoveStep(2) != 0) && (command.getFromIndex() + 1 <= command.getToIndex() + die.getFace(2)) || (players[0] == players[2]) && (die.getMoveStep(2) != 0) && (command.getFromIndex() + die.getFace(2) >= command.getToIndex() + 23) ) {
 							isPossible = true;
 							die.minusMoveStep(2);
 						}
@@ -138,7 +138,7 @@ public class Board {
 						}
 					}
 					if (die.getFace(1) == die.getFace(2)) {
-						if ( (player[0] == player[1]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + 1 <= command.getToIndex() + die.getFace(1)) || (player[0] == player[2]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + die.getFace(1) >= command.getToIndex() + 23) ) {
+						if ( (players[0] == players[1]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + 1 <= command.getToIndex() + die.getFace(1)) || (players[0] == players[2]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + die.getFace(1) >= command.getToIndex() + 23) ) {
 							isPossible = true;
 							die.minusMoveStep(1);
 						}
@@ -148,19 +148,19 @@ public class Board {
 			Stack<Piece> fromLane = lanes.get(command.getFromIndex());
 			Stack<Piece> toLane = lanes.get(command.getToIndex());
 			if (!fromLane.empty())
-				if ( (bars.get(getPlayerNumber(player[0])).empty()) && (fromLane.peek().getPieceEntity() == player[0].getPieceEntity()) && ((toLane.empty()) || toLane.size() == 1 || fromLane.peek().getPieceEntity() == toLane.peek().getPieceEntity()) && (die.getMoveNumber() != 0) ) {
+				if ( (bars.get(getPlayerNumber(players[0])).empty()) && (fromLane.peek().getPieceEntity() == players[0].getPieceEntity()) && ((toLane.empty()) || toLane.size() == 1 || fromLane.peek().getPieceEntity() == toLane.peek().getPieceEntity()) && (die.getMoveNumber() != 0) ) {
 					if (die.getFace(1) != die.getFace(2)) {
-						if ( (player[0] == player[1]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() == command.getToIndex() + die.getFace(1)) || (player[0] == player[2]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + die.getFace(1) == command.getToIndex()) ) {
+						if ( (players[0] == players[1]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() == command.getToIndex() + die.getFace(1)) || (players[0] == players[2]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + die.getFace(1) == command.getToIndex()) ) {
 							isPossible = true;
 							die.minusMoveStep(1);
 						}
-						if ( (player[0] == player[1]) && (die.getMoveStep(2) != 0) && (command.getFromIndex() == command.getToIndex() + die.getFace(2)) || (player[0] == player[2]) && (die.getMoveStep(2) != 0) && (command.getFromIndex() + die.getFace(2) == command.getToIndex()) ) {
+						if ( (players[0] == players[1]) && (die.getMoveStep(2) != 0) && (command.getFromIndex() == command.getToIndex() + die.getFace(2)) || (players[0] == players[2]) && (die.getMoveStep(2) != 0) && (command.getFromIndex() + die.getFace(2) == command.getToIndex()) ) {
 							isPossible = true;
 							die.minusMoveStep(2);
 						}
 					}
 					if (die.getFace(1) == die.getFace(2)) {
-						if ( (player[0] == player[1]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() == command.getToIndex() + die.getFace(1)) || (player[0] == player[2]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + die.getFace(1) == command.getToIndex()) ) {
+						if ( (players[0] == players[1]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() == command.getToIndex() + die.getFace(1)) || (players[0] == players[2]) && (die.getMoveStep(1) != 0) && (command.getFromIndex() + die.getFace(1) == command.getToIndex()) ) {
 							isPossible = true;
 							die.minusMoveStep(1);
 						}
@@ -270,8 +270,8 @@ public class Board {
    				pip1 = 0;
    			if (terminus_.get(1).size() == 15)
    				pip2 = 0;
-   			player[1].setPips(pip1);
-   			player[2].setPips(pip2);
+   			players[1].setPips(pip1);
+   			players[2].setPips(pip2);
    		}
 	}
 	
@@ -295,8 +295,8 @@ public class Board {
 		die.setZero();
 	}
 	
-    public int getPlayerNumber (Player player_) {
-    	if (player[0].getPieceEntity() == PieceEntity.W) {
+    public int getPlayerNumber (Player player) {
+    	if (players[0].getPieceEntity() == PieceEntity.W) {
     		return 1;
     	} else // player[0].getPieceEntity() == PieceEntity.R
     		return 0;
@@ -304,15 +304,15 @@ public class Board {
     
     public Player getPlayer (int index) {
     	return switch (index) {
-			case 0 -> player[0];
-			case 1 -> player[1];
-			case 2 -> player[2];
-			default -> player[0];
+			case 0 -> players[0];
+			case 1 -> players[1];
+			case 2 -> players[2];
+			default -> players[0];
     	};
     }
     
-    public void setCurrentPlayer (Player player_) {
-    	player[0] = player_;
+    public void setCurrentPlayer (Player player) {
+    	players[0] = player;
     }
 	
 	public Stack<Piece> getLane (int index) {
