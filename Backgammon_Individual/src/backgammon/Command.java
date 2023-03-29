@@ -44,7 +44,7 @@ public class Command {
 			face2 = inputFormatted.substring(2, 3);
 			face[0] = Integer.parseInt(face1);
 			face[1] = Integer.parseInt(face2);
-		} else if (inputFormatted.matches("(0[1-9]|1[0-9]|2[0-4]|B[1-2])(0[1-9]|1[0-9]|2[0-4]|T[1-2])")) {
+		} else if (inputFormatted.matches("(0[1-9]|1[0-9]|2[0-4]|B[1-2])(0[1-9]|1[0-9]|2[0-4]|E[1-2])")) {
 			commandType = CommandType.MOVE;
 			moveFrom = inputFormatted.substring(0, 2);
 			moveTo = inputFormatted.substring(2, 4);
@@ -59,10 +59,10 @@ public class Command {
 		};
 	}
 	
-	private int suitToTerminus (String character) {
+	private int suitToEndpoint (String character) {
 		return switch(character) {
-			case "T1" -> 0;
-			case "T2" -> 1;
+			case "E1" -> 0;
+			case "E2" -> 1;
 			default -> 0;
 		};
 	}
@@ -72,7 +72,7 @@ public class Command {
 	public static boolean isValid (String input) {
 		String inputFormatted = input.trim().toUpperCase();
 		return inputFormatted.equals("Q") || inputFormatted.equals("R") || inputFormatted.equals("S") || inputFormatted.equals("W") || inputFormatted.equals("P") || inputFormatted.equals("H") 
-				|| inputFormatted.matches("R[1-6][1-6]") || inputFormatted.matches("(0[1-9]|1[0-9]|2[0-4]|B[1-2])(0[1-9]|1[0-9]|2[0-4]|T[1-2])");
+				|| inputFormatted.matches("R[1-6][1-6]") || inputFormatted.matches("(0[1-9]|1[0-9]|2[0-4]|B[1-2])(0[1-9]|1[0-9]|2[0-4]|E[1-2])");
 	}
 	
 	public boolean isQuit () {
@@ -119,8 +119,8 @@ public class Command {
 		return moveTo.matches("0[1-9]|1[0-9]|2[0-4]");
 	}
 	
-	public boolean isMoveToTerminus () {
-		return moveTo.matches("T1|T2");
+	public boolean isMoveToEndpoint () {
+		return moveTo.matches("E1|E2");
 	}
 	
 	public int getFromIndex () {
@@ -133,8 +133,8 @@ public class Command {
 	public int getToIndex () {
 		if (isMoveToLane())
 			return Integer.parseInt(moveTo) - 1;
-		else // isMoveToTerminus()
-			return suitToTerminus(moveTo);
+		else // isMoveToEndpoint()
+			return suitToEndpoint(moveTo);
 	}
 	
 	public int getFaceInput (int index) {

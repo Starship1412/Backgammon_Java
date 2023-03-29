@@ -14,7 +14,7 @@ public class Board {
 	
 	private List<Stack<Piece>> lanes;
 	private List<Stack<Piece>> bars;
-	private List<Stack<Piece>> terminus_;
+	private List<Stack<Piece>> endpoints;
 	
 	private Player[] players;
 	private View view;
@@ -29,14 +29,14 @@ public class Board {
 		
 		lanes = new ArrayList<>(NUM_LANES);
 		bars = new ArrayList<>(NUM_BARS);
-		terminus_ = new ArrayList<>(NUM_TERMINUS);
+		endpoints = new ArrayList<>(NUM_TERMINUS);
 		
 		for (int i=0; i<NUM_LANES; i++)
 			lanes.add(new Stack<>());
 		for (int i=0; i<NUM_BARS; i++)
 			bars.add(new Stack<>());
 		for (int i=0; i<NUM_TERMINUS; i++)
-			terminus_.add(new Stack<>());
+			endpoints.add(new Stack<>());
 	}
 	
 	public void initializePlayer1 () {
@@ -102,10 +102,10 @@ public class Board {
 						}
 					}
 				}
-		} else if (command.isMoveFromLane() && command.isMoveToTerminus()) {
+		} else if (command.isMoveFromLane() && command.isMoveToEndpoint()) {
 			Stack<Piece> lane = lanes.get(command.getFromIndex());
-			Stack<Piece> terminus = terminus_.get(command.getToIndex());
-			int finalStage = terminus.size();
+			Stack<Piece> endpoint = endpoints.get(command.getToIndex());
+			int finalStage = endpoint.size();
 			for (int i = 0; i < 6; i++) {
 				if (!lanes.get(i).empty()) {
 					if ( (players[0] == players[1]) && (lanes.get(i).peek().getPieceEntity() == players[0].getPieceEntity()) ) {
@@ -190,11 +190,11 @@ public class Board {
 				lane.push(barPiece);
 			}
 			die.minusMoveNumber();
-		} else if (command.isMoveFromLane() && command.isMoveToTerminus()) {
+		} else if (command.isMoveFromLane() && command.isMoveToEndpoint()) {
 			Stack<Piece> lane = lanes.get(command.getFromIndex());
-			Stack<Piece> terminus = terminus_.get(command.getToIndex());
+			Stack<Piece> endpoint = endpoints.get(command.getToIndex());
 			Piece lanePiece = lane.pop();
-			terminus.push(lanePiece);
+			endpoint.push(lanePiece);
 			die.minusMoveNumber();
 		} else if (command.isMoveFromLane() && command.isMoveToLane()) {
 			Stack<Piece> fromLane = lanes.get(command.getFromIndex());
@@ -222,8 +222,8 @@ public class Board {
 	}
 	
 	public boolean isGameOver () {
-		for (Stack<Piece> terminus : terminus_)
-			if (terminus.size() == 15)
+		for (Stack<Piece> endpoint : endpoints)
+			if (endpoint.size() == 15)
 				return true;
 		return false;
 	}
@@ -266,9 +266,9 @@ public class Board {
    			if (!lanes.get(i).empty())
    				if (lanes.get(i).peek().getPieceEntity() == PieceEntity.W)
    					pip2 += (24-i)*lanes.get(i).size();
-   			if (terminus_.get(0).size() == 15)
+   			if (endpoints.get(0).size() == 15)
    				pip1 = 0;
-   			if (terminus_.get(1).size() == 15)
+   			if (endpoints.get(1).size() == 15)
    				pip2 = 0;
    			players[1].setPips(pip1);
    			players[2].setPips(pip2);
@@ -323,11 +323,7 @@ public class Board {
 		return bars.get(index);
 	}
 	
-	public Stack<Piece> getTerminus (int index) {
-		return terminus_.get(index);
-	}
-	
-	public int getTerminusSize (int index) {
-		return terminus_.get(index).size();
+	public int getEndpointSize (int index) {
+		return endpoints.get(index).size();
 	}
 }

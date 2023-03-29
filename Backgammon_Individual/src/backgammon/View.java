@@ -45,10 +45,10 @@ public class View {
 			System.out.println("| Dice:      " + board.getDieFace(1) + "              " + board.getDieFace(1) + "              " + board.getDieFace(1) + "              " + board.getDieFace(1)  + "           |");
 		}
 		System.out.println("|---------------------------------------------------------------------|");
-		System.out.println("| " + DisplayColour.WHITE + "13   14   15   16   17   18" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "B2" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "19   20   21   22   23   24" + DisplayColour.RESET + " | " + DisplayColour.RED + "T1" + DisplayColour.RESET + " |");
+		System.out.println("| " + DisplayColour.WHITE + "13   14   15   16   17   18" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "B2" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "19   20   21   22   23   24" + DisplayColour.RESET + " | " + DisplayColour.RED + "E1" + DisplayColour.RESET + " |");
 		System.out.print("| " + DisplayColour.RED + "12   11   10   09   08   07" + DisplayColour.RESET);
 		System.out.print(" | " + DisplayColour.WHITE + "B2"  + DisplayColour.RESET + " | ");
-		System.out.println(DisplayColour.RED + "06   05   04   03   02   01" + DisplayColour.RESET + " | " + DisplayColour.RED + "T1" + DisplayColour.RESET + " |");
+		System.out.println(DisplayColour.RED + "06   05   04   03   02   01" + DisplayColour.RESET + " | " + DisplayColour.RED + "E1" + DisplayColour.RESET + " |");
 		
 		for (int row = 0; row < numberupLane; row++) {
 			System.out.print("| ");
@@ -82,10 +82,10 @@ public class View {
 	        } else
 	            System.out.print(BLANK2);
 			if (row==0) {
-				if (board.getTerminusSize(0) < 10)
-			        System.out.print(" | " + DisplayColour.BOLD_RED + "0" + board.getTerminusSize(0) + DisplayColour.RESET + " |");
+				if (board.getEndpointSize(0) < 10)
+			        System.out.print(" | " + DisplayColour.BOLD_RED + "0" + board.getEndpointSize(0) + DisplayColour.RESET + " |");
 			    else
-			    	System.out.print(" | " + DisplayColour.BOLD_RED + board.getTerminusSize(0) + DisplayColour.RESET + " |");
+			    	System.out.print(" | " + DisplayColour.BOLD_RED + board.getEndpointSize(0) + DisplayColour.RESET + " |");
 			} else
 				System.out.print(" |    |");
 			System.out.println();
@@ -123,10 +123,10 @@ public class View {
 	        } else
 	            System.out.print(lane23.get(numberdownLane - row - 1));
 			if (row == numberdownLane - 1) {
-				if (board.getTerminusSize(1) < 10)
-			        System.out.print(" | " + DisplayColour.BOLD_WHITE + "0" + board.getTerminusSize(1) + DisplayColour.RESET + " |");
+				if (board.getEndpointSize(1) < 10)
+			        System.out.print(" | " + DisplayColour.BOLD_WHITE + "0" + board.getEndpointSize(1) + DisplayColour.RESET + " |");
 			    else
-			    	System.out.print(" | " + DisplayColour.BOLD_WHITE + board.getTerminusSize(1) + DisplayColour.RESET + " |");
+			    	System.out.print(" | " + DisplayColour.BOLD_WHITE + board.getEndpointSize(1) + DisplayColour.RESET + " |");
 			} else
 				System.out.print(" |    |");
 			System.out.println();
@@ -134,8 +134,8 @@ public class View {
 		
 		System.out.print("| " + DisplayColour.WHITE + "12   11   10   09   08   07" + DisplayColour.RESET);
 		System.out.print(" | " + DisplayColour.RED + "B1" + DisplayColour.RESET + " | ");
-		System.out.println(DisplayColour.WHITE + "06   05   04   03   02   01" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "T2" + DisplayColour.RESET + " |");
-		System.out.println("| " + DisplayColour.RED + "13   14   15   16   17   18" + DisplayColour.RESET + " | " + DisplayColour.RED + "B1" + DisplayColour.RESET + " | " + DisplayColour.RED + "19   20   21   22   23   24" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "T2" + DisplayColour.RESET + " |");
+		System.out.println(DisplayColour.WHITE + "06   05   04   03   02   01" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "E2" + DisplayColour.RESET + " |");
+		System.out.println("| " + DisplayColour.RED + "13   14   15   16   17   18" + DisplayColour.RESET + " | " + DisplayColour.RED + "B1" + DisplayColour.RESET + " | " + DisplayColour.RED + "19   20   21   22   23   24" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "E2" + DisplayColour.RESET + " |");
 		System.out.println("|---------------------------------------------------------------------|");
 	}
 	
