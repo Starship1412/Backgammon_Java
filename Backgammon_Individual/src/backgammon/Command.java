@@ -15,14 +15,16 @@ public class Command {
 		WAIVE,
 		PIP,
 		HINT,
-		ROLLNUMBER
+		SETFACE
 	}
 	
 	private CommandType commandType;
-	private String moveFrom;
-	private String moveTo;
+	private String moveFrom, moveTo, face1, face2;
+	private int[] face;
 	
 	Command (String input) {
+		this.face = new int[2];
+		
 		String inputFormatted = input.trim().toUpperCase();
 		if (inputFormatted.equals("Q")) {
 			commandType = CommandType.QUIT;
@@ -37,7 +39,11 @@ public class Command {
 		} else if (inputFormatted.equals("H")) {
 			commandType = CommandType.HINT;
 		} else if (inputFormatted.matches("R[1-6][1-6]")) {
-			commandType = CommandType.ROLLNUMBER;
+			commandType = CommandType.SETFACE;
+			face1 = inputFormatted.substring(1, 2);
+			face2 = inputFormatted.substring(2, 3);
+			face[0] = Integer.parseInt(face1);
+			face[1] = Integer.parseInt(face2);
 		} else if (inputFormatted.matches("(0[1-9]|1[0-9]|2[0-4]|B[1-2])(0[1-9]|1[0-9]|2[0-4]|T[1-2])")) {
 			commandType = CommandType.MOVE;
 			moveFrom = inputFormatted.substring(0, 2);
@@ -93,8 +99,8 @@ public class Command {
 		return commandType == CommandType.HINT;
 	}
 	
-	public boolean isRollNumber () {
-		return commandType == CommandType.ROLLNUMBER;
+	public boolean isSetFace () {
+		return commandType == CommandType.SETFACE;
 	}
 	
 	public boolean isMove () {
@@ -115,7 +121,7 @@ public class Command {
 	
 	public boolean isMoveToTerminus () {
 		return moveTo.matches("T1|T2");
-	}		
+	}
 	
 	public int getFromIndex () {
 		if (isMoveFromLane())
@@ -129,5 +135,13 @@ public class Command {
 			return Integer.parseInt(moveTo) - 1;
 		else // isMoveToTerminus()
 			return suitToTerminus(moveTo);
+	}
+	
+	public int getFaceInput (int index) {
+		return switch (index) {
+			case 1 -> face[0];
+			case 2 -> face[1];
+			default -> 0;
+		};
 	}
 }

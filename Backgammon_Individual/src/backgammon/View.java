@@ -25,15 +25,15 @@ public class View {
 	}
 	
 	public void displayPiece (Board board) {
-		String numberString = Integer.toString(board.getPlayer("currentPlayer").getPips());
+		String numberString = Integer.toString(board.getPlayer(0).getPips());
 		int numberOfSpaces = 4 - numberString.length();
 		int numberupLane = Math.max(board.getSize("upLane"),1);
 		int numberdownLane = Math.max(board.getSize("downLane"),1);
 		System.out.println("|---------------------------------------------------------------------|");
-		if (board.getPlayer("currentPlayer").getColourName() == "RED") {
-			System.out.print("| Current player's color: " + DisplayColour.BOLD_RED + board.getPlayer("currentPlayer").getColourName() + DisplayColour.RESET + "                               pips: " + board.getPlayer("currentPlayer").getPips());
-		} else if (board.getPlayer("currentPlayer").getColourName() == "WHITE")
-			System.out.print("| Current player's color: " + DisplayColour.BOLD_WHITE + board.getPlayer("currentPlayer").getColourName() + DisplayColour.RESET + "                             pips: " + board.getPlayer("currentPlayer").getPips());
+		if (board.getPlayer(0).getColourName() == "RED") {
+			System.out.print("| Current player's color: " + DisplayColour.BOLD_RED + board.getPlayer(0).getColourName() + DisplayColour.RESET + "                               pips: " + board.getPlayer(0).getPips());
+		} else if (board.getPlayer(0).getColourName() == "WHITE")
+			System.out.print("| Current player's color: " + DisplayColour.BOLD_WHITE + board.getPlayer(0).getColourName() + DisplayColour.RESET + "                             pips: " + board.getPlayer(0).getPips());
 		for (int i = 0; i < numberOfSpaces; i++)
             System.out.print(" ");
 		System.out.println("|");
@@ -150,7 +150,7 @@ public class View {
 			String input = in.nextLine();
 			if (Command.isValid(input)) {
 				command = new Command(input);
-				if (board.getPlayer("currentPlayer") == board.getPlayer("player2") && command.isMove()) {
+				if (board.getPlayer(0) == board.getPlayer(2) && command.isMove()) {
 					String inputFormatted = input.trim();
 					input1 = inputFormatted.substring(0, 2);
 					input2 = inputFormatted.substring(2, 4);
@@ -177,18 +177,18 @@ public class View {
 	public void getUserStartInput (Board board) {
 		System.out.print("Enter Name of Player Red: ");
 		board.initializePlayer1();
-		System.out.println("The Name of Player Red is " + board.getPlayer("player1"));
+		System.out.println("The Name of Player Red is " + board.getPlayer(1));
 		System.out.print("Enter Name of Player White: ");
 		board.initializePlayer2();
-		System.out.println("The Name of Player White is " + board.getPlayer("player2"));
+		System.out.println("The Name of Player White is " + board.getPlayer(2));
 		do {
 			board.makeDieRoll();
 			if (board.getDieFace(1) > board.getDieFace(2)) {
 				System.out.println("Die 1 is " + board.getDieFace(1) + ". Die 2 is " + board.getDieFace(2)+ ". The number in Die 1 is bigger than the number in Die 2. So Red goes first.");
-				board.setCurrentPlayer(board.getPlayer("player1"));
+				board.setCurrentPlayer(board.getPlayer(1));
 			} else if (board.getDieFace(1) < board.getDieFace(2)) {
 				System.out.println("Die 1 is " + board.getDieFace(1) + ". Die 2 is " + board.getDieFace(2)+ ". The number in Die 2 is bigger than the number in Die 1. So White goes first.");
-				board.setCurrentPlayer(board.getPlayer("player2"));
+				board.setCurrentPlayer(board.getPlayer(2));
 			} else if (board.getDieFace(1) == board.getDieFace(2)) {
 				System.out.println("Die 1 is " + board.getDieFace(1) + ". Die 2 is " + board.getDieFace(2)+ ". The number in Die 1 is equal to the number in Die 2. So Reroll the dies.");
 			}

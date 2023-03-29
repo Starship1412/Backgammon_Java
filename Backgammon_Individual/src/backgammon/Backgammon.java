@@ -37,12 +37,16 @@ public class Backgammon {
 					} else if (command.isQuit()) {
 						commandDone = true;
 					} else if (command.isWaive()) {
-						view.displayWaive(board.getPlayer("currentPlayer"));
+						view.displayWaive(board.getPlayer(0));
 						board.endTurn();
 						board.makeDieSetZero();
 						commandDone = true;
 					} else if (command.isShowPips()) {
-						view.displayPips(board.getPlayer("currentPlayer"));
+						view.displayPips(board.getPlayer(0));
+					} else if (command.isSetFace()) {
+						board.setFace(command);
+						view.displayPiece(board);
+						commandDone = true;
 					} else if (command.isShowHint()) {
 						view.showHint();
 					}
@@ -54,7 +58,7 @@ public class Backgammon {
 						board.calculatePips();
 						view.displayPiece(board);
 						commandDone = true;
-					} else if (command.isRoll() || command.isMove() || command.isWaive() || command.isShowPips() || command.isRollNumber()) {
+					} else if (command.isRoll() || command.isMove() || command.isWaive() || command.isShowPips() || command.isSetFace()) {
 						view.displayCommandTemporarilyInvalid();
 					} else if (command.isShowHint()) {
 						view.showHint();
@@ -64,7 +68,7 @@ public class Backgammon {
 			} while (!commandDone);
 		} while (!command.isQuit() && !board.isGameOver());
 		if (board.isGameOver()) {
-			view.displayGameOver(board.getPlayer("currentPlayer"));
+			view.displayGameOver(board.getPlayer(0));
 		} else
 			view.displayQuit();
 	}
