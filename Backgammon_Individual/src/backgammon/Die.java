@@ -68,7 +68,7 @@ public class Die {
         view.showDice(faces[0],faces[1]);
     }
     
-    public int getMoveStep(int index) {
+    public int getMoveStep (int index) {
     	return switch (index) {
 			case 1 -> moveSteps[0];
 			case 2 -> moveSteps[1];

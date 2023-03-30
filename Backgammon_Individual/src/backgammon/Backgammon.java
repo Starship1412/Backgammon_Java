@@ -5,7 +5,7 @@ package backgammon;
  */
 
 public class Backgammon {
-		
+	
 	public static void main (String... args) {
 		Board board = new Board();
 		View view = new View();
