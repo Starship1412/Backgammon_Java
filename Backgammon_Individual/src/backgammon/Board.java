@@ -39,14 +39,14 @@ public class Board {
 			endpoints.add(new Stack<>());
 	}
 	
-	public void initializePlayer1 () {
-		String player1 = in.nextLine();
-		players[1] = new Player(player1, PieceEntity.R);
-	}
-	
-	public void initializePlayer2 () {
-		String player2 = in.nextLine();
-		players[2] = new Player(player2, PieceEntity.W);
+	public void initializePlayer (int index) {
+		String playerName = in.nextLine();
+		if (Command.isText(playerName))
+			playerName = view.readContentFromFile(playerName, in, "Please enter a new player name: ");
+		if (index == 1) {
+			players[index] = new Player(playerName, PieceEntity.R);
+		} else if (index == 2)
+			players[index] = new Player(playerName, PieceEntity.W);
 	}
 	
 	public void endTurn () {
@@ -75,8 +75,6 @@ public class Board {
 			lanes.get(12).push(new Piece(PieceEntity.R));
 		}
 	}
-	
-	
 	
 	public boolean moveIsPossible (Command command) {
 		boolean isPossible = false;

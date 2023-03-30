@@ -15,8 +15,7 @@ public class Command {
 		WAIVE,
 		PIP,
 		HINT,
-		SETFACE,
-		TEXT
+		SETFACE
 	}
 	
 	private CommandType commandType;
@@ -29,7 +28,6 @@ public class Command {
 		this.dice = new String[2];
 		
 		String inputFormattedUpper = input.trim().toUpperCase();
-		String inputFormatted = input.trim();
 		if (inputFormattedUpper.equals("Q")) {
 			commandType = CommandType.QUIT;
 		} else if (inputFormattedUpper.equals("R")) {
@@ -52,8 +50,6 @@ public class Command {
 			commandType = CommandType.MOVE;
 			moveFrom = inputFormattedUpper.substring(0, 2);
 			moveTo = inputFormattedUpper.substring(2, 4);
-		} else if (inputFormatted.matches("test:(.+\\.txt)")) {
-			commandType = CommandType.TEXT;
 		}
 	}
 	
@@ -77,9 +73,8 @@ public class Command {
 	
 	public static boolean isValid (String input) {
 		String inputFormattedUpper = input.trim().toUpperCase();
-		String inputFormatted = input.trim();
 		return inputFormattedUpper.equals("Q") || inputFormattedUpper.equals("R") || inputFormattedUpper.equals("S") || inputFormattedUpper.equals("W") || inputFormattedUpper.equals("P") || inputFormattedUpper.equals("H") 
-				|| inputFormattedUpper.matches("R[1-6][1-6]") || inputFormattedUpper.matches("(0[1-9]|1[0-9]|2[0-4]|B[1-2])(0[1-9]|1[0-9]|2[0-4]|E[1-2])") || inputFormatted.matches("test:(.+\\.txt)");
+				|| inputFormattedUpper.matches("R[1-6][1-6]") || inputFormattedUpper.matches("(0[1-9]|1[0-9]|2[0-4]|B[1-2])(0[1-9]|1[0-9]|2[0-4]|E[1-2])");
 	}
 	
 	public static boolean isText (String input) {

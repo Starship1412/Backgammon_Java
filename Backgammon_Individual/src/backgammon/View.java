@@ -157,29 +157,9 @@ public class View {
 		do {
 			System.out.print("Enter command: ");
 			String input = in.nextLine();
+			if (Command.isText(input))
+				input = readContentFromFile(input, in, "Please enter a new command: ");
 			if (Command.isValid(input)) {
-				if (Command.isText(input)) {
-	                String fileName = Command.getText(input);
-	                File dir = new File(".");
-	                File[] exactMatches = dir.listFiles((dir1, name) -> name.equals(fileName));
-	                File[] caseInsensitiveMatches = dir.listFiles((dir1, name) -> name.equalsIgnoreCase(fileName));
-	                if ( !( (caseInsensitiveMatches != null && caseInsensitiveMatches.length > 0) && !(exactMatches != null && exactMatches.length > 0) ) ) {
-		                try {
-		                    BufferedReader br = new BufferedReader(new FileReader(fileName));
-		                    StringBuilder fileContent = new StringBuilder();
-		                    String line;
-		                    while ((line = br.readLine()) != null)
-		                        fileContent.append(line).append("\n");
-		                    br.close();
-		                    input = fileContent.toString();
-		                } catch (FileNotFoundException e) {
-		                    System.out.println("Error: File not found - " + e.getMessage());
-		                } catch (IOException e) {
-		                    System.out.println("Error reading file: " + e.getMessage());   
-		                }
-	                } else
-	                	System.out.println("A file exists with only the case of the file name different from the input file name.");
-                }
 				command = new Command(input);
 				if (board.getPlayer(0) == board.getPlayer(2) && command.isMove()) {
 					String inputFormatted = input.trim();
@@ -208,10 +188,10 @@ public class View {
 	
 	public void getUserName (Board board) {
 		System.out.print("Enter Name of Player Red: ");
-		board.initializePlayer1();
+		board.initializePlayer(1);
 		System.out.println("The Name of Player Red is " + board.getPlayer(1));
 		System.out.print("Enter Name of Player White: ");
-		board.initializePlayer2();
+		board.initializePlayer(2);
 		System.out.println("The Name of Player White is " + board.getPlayer(2));
 		do {
 			board.makeDieRoll();
@@ -263,6 +243,38 @@ public class View {
 	public void displayPips (Board board) {
 		System.out.println(board.getPlayer(1).getNamewithColor() + "'s current pips are " + board.getPlayer(1).getPips() + ".");
 		System.out.println(board.getPlayer(2).getNamewithColor() + "'s current pips are " + board.getPlayer(2).getPips() + ".");
+	}
+	
+	public String readContentFromFile (String string, Scanner in, String promptMessage) {
+		boolean fileReadSuccess = false;
+        do {
+			String fileName = Command.getText(string);
+	        File dir = new File(".");
+	        File[] exactMatches = dir.listFiles((dir1, name) -> name.equals(fileName));
+	        File[] caseInsensitiveMatches = dir.listFiles((dir1, name) -> name.equalsIgnoreCase(fileName));
+	        if ( !( (caseInsensitiveMatches != null && caseInsensitiveMatches.length > 0) && !(exactMatches != null && exactMatches.length > 0) ) ) {
+	            try {
+	                BufferedReader br = new BufferedReader(new FileReader(fileName));
+	                StringBuilder fileContent = new StringBuilder();
+	                String line;
+	                while ((line = br.readLine()) != null)
+	                    fileContent.append(line);
+	                br.close();
+	                string = fileContent.toString();
+	                fileReadSuccess = true;
+	            } catch (FileNotFoundException e) {
+	                System.out.println("Error: File not found - " + e.getMessage());
+	            } catch (IOException e) {
+	                System.out.println("Error reading file: " + e.getMessage());
+	            }
+	        } else
+	        	System.out.println("A file exists with only the case of the file name different from the input file name.");
+	        if (!fileReadSuccess) {
+	            System.out.print(promptMessage);
+	            string = in.nextLine();
+	        }
+        } while (!fileReadSuccess);
+        return string;
 	}
 	
 	public void showHint () {
