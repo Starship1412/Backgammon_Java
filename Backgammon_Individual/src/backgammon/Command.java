@@ -82,6 +82,16 @@ public class Command {
 				|| inputFormattedUpper.matches("R[1-6][1-6]") || inputFormattedUpper.matches("(0[1-9]|1[0-9]|2[0-4]|B[1-2])(0[1-9]|1[0-9]|2[0-4]|E[1-2])") || inputFormatted.matches("test:(.+\\.txt)");
 	}
 	
+	public static boolean isText (String input) {
+		String inputFormatted = input.trim();
+		return inputFormatted.matches("test:(.+\\.txt)");
+	}
+	
+	public static String getText (String input) {
+		String inputFormatted = input.trim();
+		return inputFormatted.substring(5);
+	}
+	
 	public boolean isQuit () {
 		return commandType == CommandType.QUIT;
 	}
@@ -112,16 +122,6 @@ public class Command {
 	
 	public boolean isMove () {
 		return commandType == CommandType.MOVE;
-	}
-	
-	public static boolean isText (String input) {
-		String inputFormatted = input.trim();
-		return inputFormatted.matches("test:(.+\\.txt)");
-	}
-	
-	public static String getText (String input) {
-		String inputFormatted = input.trim();
-		return inputFormatted.substring(5);
 	}
 	
 	public boolean isMoveFromBar () {
