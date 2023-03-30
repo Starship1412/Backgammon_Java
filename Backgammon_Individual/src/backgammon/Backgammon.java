@@ -51,9 +51,8 @@ public class Backgammon {
 						board.setFace(command);
 						view.displayPiece(board);
 						commandDone = true;
-					} else if (command.isShowHint()) {
+					} else if (command.isShowHint())
 						view.showHint();
-					}
 				}
 				if (startControl == 0 && restartControl == 0) {
 					if (command.isStart()) {
