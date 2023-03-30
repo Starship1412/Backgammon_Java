@@ -10,10 +10,11 @@ public class Backgammon {
 		Board board = new Board();
 		View view = new View();
 		Command command;
-		view.displayWelcome();
-		board.initializeBoard();
 		int startControl = 0;
 		int restartControl = 0;
+		board.initializeBoard();
+		view.displayWelcome();
+		view.displayStart();
 		do {
 			boolean commandDone = false;
 			do {

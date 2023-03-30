@@ -24,13 +24,11 @@ public class View {
 	
 	public void displayWelcome () {
 		System.out.println("Welcome to Backgammon");
-		System.out.println("Enter S to start the game or restart the game. Enter Q to exit the game. Enter H to view all allowed commands.\n"
-				+ "Note that some commands are temporarily invalid in some cases.");
 	}
 	
 	public void displayStart () {
-		System.out.println("Enter S to start the game or restart the game. Enter Q to exit the game. Enter H to view all allowed commands.\n"
-				+ "Note that some commands are temporarily invalid in some cases.");
+		System.out.println("Enter S to start the game or restart the game. Enter Q to exit the game. Enter H to view all allowed commands.");
+		System.out.println("Note that some commands are temporarily invalid in some cases.");
 	}
 	
 	public void displayPiece (Board board) {
@@ -187,12 +185,12 @@ public class View {
 	}
 	
 	public void getUserName (Board board) {
-		System.out.print("Enter Name of Player Red: ");
+		System.out.print("Enter name of player RED: ");
 		board.initializePlayer(1);
-		System.out.println("The Name of Player Red is " + board.getPlayer(1));
-		System.out.print("Enter Name of Player White: ");
+		System.out.println("The name of player RED is " + board.getPlayer(1) + ".");
+		System.out.print("Enter name of player WHITE: ");
 		board.initializePlayer(2);
-		System.out.println("The Name of Player White is " + board.getPlayer(2));
+		System.out.println("The name of player WHITE is " + board.getPlayer(2) + ".");
 		do {
 			board.makeDieRoll();
 			if (board.getDieFace(1) > board.getDieFace(2)) {
@@ -288,6 +286,6 @@ public class View {
 		System.out.println("2 digits + E + 1 digit: Move a piece to Terminus.");
 		System.out.println("H: View all allowed commands.");
 		System.out.println("Q: Quit the game.");
-		System.out.println("If you type \"test:fileName.txt\", the game will read the commands in that file.");
+		System.out.println("If you type \"test:file_name.txt\", the game will read the commands in that file.");
 	}
 }

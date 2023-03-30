@@ -53,7 +53,7 @@ public class Board {
         if (players[0] == players[1]) {
             players[0] = players[2];
             view.playerTurn(players[1], players[2]);
-        } else {
+        } else if (players[0] == players[2]) {
         	players[0] = players[1];
             view.playerTurn(players[2], players[1]);
         }
