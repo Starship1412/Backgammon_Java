@@ -15,7 +15,6 @@ public class View {
 	
 	private final static String BLANK2 = "  ";
 	private final static String BLANK3 = "   ";
-	private String input1, input2;
 	private Scanner in;
 	private Command command;
 	
@@ -184,19 +183,20 @@ public class View {
 				command = new Command(input);
 				if (board.getPlayer(0) == board.getPlayer(2) && command.isMove()) {
 					String inputFormatted = input.trim();
-					input1 = inputFormatted.substring(0, 2);
-					input2 = inputFormatted.substring(2, 4);
-					if (input1.matches("\\d+")) {
-						int number1 = Integer.parseInt(input1);
+					String[] inputs = new String[2];
+					inputs[0] = inputFormatted.substring(0, 2);
+					inputs[1] = inputFormatted.substring(2, 4);
+					if (inputs[0].matches("\\d+")) {
+						int number1 = Integer.parseInt(inputs[0]);
 						int result1 = 25 - number1;
-						input1 = String.format("%02d", result1);
+						inputs[0] = String.format("%02d", result1);
 					}
-					if (input2.matches("\\d+")) {
-						int number2 = Integer.parseInt(input2);
+					if (inputs[1].matches("\\d+")) {
+						int number2 = Integer.parseInt(inputs[1]);
 						int result2 = 25 - number2;
-						input2 = String.format("%02d", result2);
+						inputs[1] = String.format("%02d", result2);
 					}
-					input = input1 + input2;
+					input = inputs[0] + inputs[1];
 				}
 				command = new Command(input);
 				commandEntered = true;
@@ -266,15 +266,16 @@ public class View {
 	}
 	
 	public void showHint () {
-		System.out.println("S: Start Backgammon or restart Backgammon\n"
-				+ "R: Roll the dice\n"
-				+ "R + 2 digits: roll the specified number of dice\n"
-				+ "W: Abandon the turn\n"
-				+ "P: Check the current player's pips\n"
-				+ "2 digits + 2 digits: Move a piece on Lane\n"
-				+ "B + 1 digit + 2 digits: move pieces from Bar to outside\n"
-				+ "2 digits + E + 1 digit: Move a piece to Terminus\n"
-				+ "H: View all allowed commands\n"
-				+ "Q: Quit the game");
+		System.out.println("S: Start Backgammon or restart Backgammon.");
+		System.out.println("R: Roll the dice.");
+		System.out.println("R + 2 digits: roll the specified number of dice.");
+		System.out.println("W: Abandon the turn.");
+		System.out.println("P: Check the current player's pips.");
+		System.out.println("2 digits + 2 digits: Move a piece on Lane.");
+		System.out.println("B + 1 digit + 2 digits: move pieces from Bar to outside.");
+		System.out.println("2 digits + E + 1 digit: Move a piece to Terminus.");
+		System.out.println("H: View all allowed commands.");
+		System.out.println("Q: Quit the game.");
+		System.out.println("If you type \"test:fileName.txt\", the game will read the commands in that file.");
 	}
 }

@@ -20,11 +20,13 @@ public class Command {
 	}
 	
 	private CommandType commandType;
-	private String moveFrom, moveTo, face1, face2;
-	private int[] face;
+	private String moveFrom, moveTo;
+	private String[] dice;
+	private int[] faces;
 	
 	Command (String input) {
-		this.face = new int[2];
+		this.faces = new int[2];
+		this.dice = new String[2];
 		
 		String inputFormattedUpper = input.trim().toUpperCase();
 		String inputFormatted = input.trim();
@@ -42,10 +44,10 @@ public class Command {
 			commandType = CommandType.HINT;
 		} else if (inputFormattedUpper.matches("R[1-6][1-6]")) {
 			commandType = CommandType.SETFACE;
-			face1 = inputFormattedUpper.substring(1, 2);
-			face2 = inputFormattedUpper.substring(2, 3);
-			face[0] = Integer.parseInt(face1);
-			face[1] = Integer.parseInt(face2);
+			dice[0] = inputFormattedUpper.substring(1, 2);
+			dice[1] = inputFormattedUpper.substring(2, 3);
+			faces[0] = Integer.parseInt(dice[0]);
+			faces[1] = Integer.parseInt(dice[1]);
 		} else if (inputFormattedUpper.matches("(0[1-9]|1[0-9]|2[0-4]|B[1-2])(0[1-9]|1[0-9]|2[0-4]|E[1-2])")) {
 			commandType = CommandType.MOVE;
 			moveFrom = inputFormattedUpper.substring(0, 2);
@@ -154,8 +156,8 @@ public class Command {
 	
 	public int getFaceInput (int index) {
 		return switch (index) {
-			case 1 -> face[0];
-			case 2 -> face[1];
+			case 1 -> faces[0];
+			case 2 -> faces[1];
 			default -> 0;
 		};
 	}
