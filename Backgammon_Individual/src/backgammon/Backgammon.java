@@ -21,7 +21,7 @@ public class Backgammon {
 				command = view.getUserInput(board);
 				if (startControl == 1 && restartControl == 0) {
 					if (command.isRoll()) {
-						board.makeDieRoll();
+						board.makeDiceRoll();
 						view.displayPiece(board);
 						commandDone = true;
 					} else if (command.isMove()) {
@@ -29,7 +29,7 @@ public class Backgammon {
 							board.move(command);
 							board.calculatePips();
 							view.displayPiece(board);
-							if (board.getDieMoveNumber() == 0)
+							if (board.getDiceMoveNumber() == 0)
 								board.endTurn();
 							commandDone = true;
 						} else
@@ -44,7 +44,7 @@ public class Backgammon {
 					} else if (command.isWaive()) {
 						view.displayWaive(board.getPlayer(0));
 						board.endTurn();
-						board.makeDieSetZero();
+						board.makeDiceSetZero();
 						commandDone = true;
 					} else if (command.isShowPips()) {
 						view.displayPips(board);

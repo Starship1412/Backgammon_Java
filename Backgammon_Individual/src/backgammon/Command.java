@@ -54,7 +54,7 @@ public class Command {
 	}
 	
 	private int suitToBar (String character) {
-		return switch(character) {
+		return switch (character) {
 			case "B1" -> 0;
 			case "B2" -> 1;
 			default -> 0;
@@ -62,7 +62,7 @@ public class Command {
 	}
 	
 	private int suitToEndpoint (String character) {
-		return switch(character) {
+		return switch (character) {
 			case "E1" -> 0;
 			case "E2" -> 1;
 			default -> 0;

@@ -45,11 +45,11 @@ public class View {
             System.out.print(" ");
 		System.out.println("|");
 		System.out.println("|---------------------------------------------------------------------|");
-		if (board.getDieFace(1) != board.getDieFace(2)) {
-			System.out.println("| Dice:                     " + board.getDieFace(1) + "              " + board.getDieFace(2) + "                          |");
+		if (board.getDiceFace(1) != board.getDiceFace(2)) {
+			System.out.println("| Dice:                     " + board.getDiceFace(1) + "              " + board.getDiceFace(2) + "                          |");
 		}
-		if (board.getDieFace(1) == board.getDieFace(2)) {
-			System.out.println("| Dice:      " + board.getDieFace(1) + "              " + board.getDieFace(1) + "              " + board.getDieFace(1) + "              " + board.getDieFace(1)  + "           |");
+		if (board.getDiceFace(1) == board.getDiceFace(2)) {
+			System.out.println("| Dice:      " + board.getDiceFace(1) + "              " + board.getDiceFace(1) + "              " + board.getDiceFace(1) + "              " + board.getDiceFace(1)  + "           |");
 		}
 		System.out.println("|---------------------------------------------------------------------|");
 		System.out.println("| " + DisplayColour.WHITE + "13   14   15   16   17   18" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "B2" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "19   20   21   22   23   24" + DisplayColour.RESET + " | " + DisplayColour.RED + "E1" + DisplayColour.RESET + " |");
@@ -192,17 +192,17 @@ public class View {
 		board.initializePlayer(2);
 		System.out.println("The name of player WHITE is " + board.getPlayer(2) + ".");
 		do {
-			board.makeDieRoll();
-			if (board.getDieFace(1) > board.getDieFace(2)) {
-				System.out.println("Die 1 is " + board.getDieFace(1) + ". Die 2 is " + board.getDieFace(2)+ ". The number in Die 1 is bigger than the number in Die 2. So Red goes first.");
+			board.makeDiceRoll();
+			if (board.getDiceFace(1) > board.getDiceFace(2)) {
+				System.out.println("Die 1 is " + board.getDiceFace(1) + ". Die 2 is " + board.getDiceFace(2)+ ". The number in Die 1 is bigger than the number in Die 2. So Red goes first.");
 				board.setCurrentPlayer(1);
-			} else if (board.getDieFace(1) < board.getDieFace(2)) {
-				System.out.println("Die 1 is " + board.getDieFace(1) + ". Die 2 is " + board.getDieFace(2)+ ". The number in Die 2 is bigger than the number in Die 1. So White goes first.");
+			} else if (board.getDiceFace(1) < board.getDiceFace(2)) {
+				System.out.println("Die 1 is " + board.getDiceFace(1) + ". Die 2 is " + board.getDiceFace(2)+ ". The number in Die 2 is bigger than the number in Die 1. So White goes first.");
 				board.setCurrentPlayer(2);
-			} else if (board.getDieFace(1) == board.getDieFace(2)) {
-				System.out.println("Die 1 is " + board.getDieFace(1) + ". Die 2 is " + board.getDieFace(2)+ ". The number in Die 1 is equal to the number in Die 2. So Reroll the dies.");
+			} else if (board.getDiceFace(1) == board.getDiceFace(2)) {
+				System.out.println("Die 1 is " + board.getDiceFace(1) + ". Die 2 is " + board.getDiceFace(2)+ ". The number in Die 1 is equal to the number in Die 2. So Reroll the dies.");
 			}
-		} while (board.getDieFace(1) == board.getDieFace(2));
+		} while (board.getDiceFace(1) == board.getDiceFace(2));
 	}
 	
 	public void displayCommandNotPossible () {
