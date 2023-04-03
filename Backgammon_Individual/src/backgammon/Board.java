@@ -39,22 +39,24 @@ public class Board {
 			endpoints.add(new Stack<>());
 	}
 	
-	private int getMaxLaneOnInnerTable (List<Stack<Piece>> lanes, int index) {
+	private int getMaxLaneOnInnerTable (Command command, List<Stack<Piece>> lanes, int playerIndex) {
 		int maxLane = -1;
-		if (index == 1) {
+		if (playerIndex == 1) {
 			for (int i = 0; i <= 5; i++) {
 	            Stack<Piece> lanei = lanes.get(i);
-	            if (!lanei.isEmpty()) {
+	            if (!lanei.isEmpty())
 	                maxLane = i;
-	            }
 	        }
-		} else if (index == 2) {
-			for (int i = 23; i <= 18; i--) {
+			if (command.getFromIndex() >= 6)
+            	maxLane = command.getFromIndex();
+		} else if (playerIndex == 2) {
+			for (int i = 23; i >= 18; i--) {
 	            Stack<Piece> lanei = lanes.get(i);
-	            if (!lanei.isEmpty()) {
+	            if (!lanei.isEmpty())
 	                maxLane = i;
-	            }
 	        }
+			if (command.getFromIndex() <= 17)
+            	maxLane = command.getFromIndex();
 		}
 		return maxLane;
 	}
@@ -106,6 +108,26 @@ public class Board {
 			lanes.get(12).push(new Piece(PieceEntity.R));
 		}
 	}
+	
+	/*public void initializeBoard () {						// just for testing
+		for (int i = 0; i < 1; i++) {
+			lanes.get(13).push(new Piece(PieceEntity.W));
+			lanes.get(21).push(new Piece(PieceEntity.W));
+			lanes.get(21).push(new Piece(PieceEntity.W));
+			lanes.get(21).push(new Piece(PieceEntity.W));
+			lanes.get(21).push(new Piece(PieceEntity.W));
+			
+			lanes.get(10).push(new Piece(PieceEntity.R));
+			lanes.get(2).push(new Piece(PieceEntity.R));
+			lanes.get(2).push(new Piece(PieceEntity.R));
+			lanes.get(2).push(new Piece(PieceEntity.R));
+			lanes.get(2).push(new Piece(PieceEntity.R));
+		}
+		for (int i = 0; i < 10; i++) {
+			endpoints.get(1).push(new Piece(PieceEntity.W));
+			endpoints.get(0).push(new Piece(PieceEntity.R));
+		}
+	}*/
 	
 	public boolean moveIsPossible (Command command) {
 		boolean isPossible = false;
@@ -181,23 +203,25 @@ public class Board {
 			Stack<Piece> endpoint = endpoints.get(command.getToIndex());
 			int finalStage = endpoint.size();
 			for (int i = 0; i < 6; i++) {
-				if (!lanes.get(i).empty()) {
+				if (!lanes.get(i).empty())
 					if (players[0] == players[1] && lanes.get(i).peek().getPieceEntity() == players[0].getPieceEntity()) {
 						finalStage += lanes.get(i).size();
+						if (command.getFromIndex() >= 6)
+							finalStage += 1;
 					}
-				}
-				if (!lanes.get(i+18).empty()) {
+				if (!lanes.get(i+18).empty())
 					if (players[0] == players[2] && lanes.get(i+18).peek().getPieceEntity() == players[0].getPieceEntity()) {
 						finalStage += lanes.get(i+18).size();
+						if (command.getFromIndex() <= 17)
+							finalStage += 1;
 					}
-				}
 			}
 			if (!lane.empty())
 				if (getPlayerNumber(players[0]) == command.getToIndex() && lane.peek().getPieceEntity() == players[0].getPieceEntity() && finalStage == 15 && dice.getMoveNumber() != 0) {
 					int maxLane = -1;
 					if (dice.getFace(1) != dice.getFace(2)) {
 						if (players[0] == players[1]) {
-							maxLane = getMaxLaneOnInnerTable(lanes, 1);
+							maxLane = getMaxLaneOnInnerTable(command, lanes, 1);
 							for (int i = 1; i <= 2; i++) {
 								if (dice.getMoveStep(i) != 0 && command.getFromIndex() == maxLane && command.getFromIndex() + 1 < command.getToIndex() + dice.getFace(i)) {
 									isPossible = true;
@@ -223,7 +247,7 @@ public class Board {
 							}
 						}
 						if (players[0] == players[2]) {
-							maxLane = getMaxLaneOnInnerTable(lanes, 2);
+							maxLane = getMaxLaneOnInnerTable(command, lanes, 2);
 							for (int i = 1; i <= 2; i++) {
 								if (dice.getMoveStep(i) != 0 && command.getFromIndex() == maxLane && command.getFromIndex() + dice.getFace(i) > command.getToIndex() + 23) {
 									isPossible = true;
@@ -252,8 +276,9 @@ public class Board {
 					if (dice.getFace(1) == dice.getFace(2) && dice.getMoveStep(1) != 0) {
 						boolean allConditionsMet = true;
 						boolean currentCondition = true;
+						boolean shouldBreak = false;
 						if (players[0] == players[1]) {
-							maxLane = getMaxLaneOnInnerTable(lanes, 1);
+							maxLane = getMaxLaneOnInnerTable(command, lanes, 1);
 							if (command.getFromIndex() == maxLane && command.getFromIndex() + 1 < command.getToIndex() + dice.getFace(1)) {
 								isPossible = true;
 								dice.minusMoveStep(1);
@@ -262,10 +287,10 @@ public class Board {
 								isPossible = true;
 								dice.minusMoveStep(1);
 							}
-							for (int i = 2; i <= dice.getMoveStep(1); i++) {
+							for (int i = 2; i <= dice.getMoveStep(1) && !shouldBreak; i++) {
 								if (command.getFromIndex() == maxLane && command.getFromIndex() + 1 < command.getToIndex() + dice.getFace(1) * i) {
 									for (int j = 1; j <= i - 1; j++) {
-										currentCondition = lanes.get(command.getFromIndex() - dice.getFace(1) * j).empty();
+										currentCondition = lanes.get(command.getFromIndex() - dice.getFace(1) * j).empty() || lanes.get(command.getFromIndex() - dice.getFace(1) * j).peek().getPieceEntity() == players[1].getPieceEntity();
 										allConditionsMet = allConditionsMet && currentCondition;
 									}
 									currentCondition = lane.size() == 1 && isPathClear(command.getFromIndex() - dice.getFace(1) * (i - 1), command.getFromIndex());
@@ -275,10 +300,11 @@ public class Board {
 										for (int j = 0; j < i; j++)
 											dice.minusMoveStep(1);
 									}
+									shouldBreak = true;
 								}
 								if (command.getFromIndex() + 1 == command.getToIndex() + dice.getFace(1) * i) {
 									for (int j = 1; j <= i - 1; j++) {
-										currentCondition = lanes.get(command.getFromIndex() - dice.getFace(1) * j).empty() || lanes.get(command.getFromIndex() - dice.getFace(1) * j).peek().getPieceEntity() == players[1].getPieceEntity();;
+										currentCondition = lanes.get(command.getFromIndex() - dice.getFace(1) * j).empty() || lanes.get(command.getFromIndex() - dice.getFace(1) * j).peek().getPieceEntity() == players[1].getPieceEntity();
 										allConditionsMet = allConditionsMet && currentCondition;
 									}
 									if (allConditionsMet) {
@@ -290,7 +316,7 @@ public class Board {
 							}
 						}
 						if (players[0] == players[2]) {
-							maxLane = getMaxLaneOnInnerTable(lanes, 2);
+							maxLane = getMaxLaneOnInnerTable(command, lanes, 2);
 							if (command.getFromIndex() == maxLane && command.getFromIndex() + dice.getFace(1) > command.getToIndex() + 23) {
 								isPossible = true;
 								dice.minusMoveStep(1);
@@ -299,10 +325,10 @@ public class Board {
 								isPossible = true;
 								dice.minusMoveStep(1);
 							}
-							for (int i = 2; i <= dice.getMoveStep(1); i++) {
+							for (int i = 2; i <= dice.getMoveStep(1) && !shouldBreak; i++) {
 								if (command.getFromIndex() == maxLane && command.getFromIndex() + dice.getFace(1) * i > command.getToIndex() + 23) {
 									for (int j = 1; j <= i - 1; j++) {
-										currentCondition = lanes.get(command.getFromIndex() + dice.getFace(1) * j).empty();
+										currentCondition = lanes.get(command.getFromIndex() + dice.getFace(1) * j).empty() || lanes.get(command.getFromIndex() + dice.getFace(1) * j).peek().getPieceEntity() == players[2].getPieceEntity();
 										allConditionsMet = allConditionsMet && currentCondition;
 									}
 									currentCondition = lane.size() == 1 && isPathClear(command.getFromIndex(), command.getFromIndex() + dice.getFace(1) * (i - 1));
@@ -312,10 +338,11 @@ public class Board {
 										for (int j = 0; j < i; j++)
 											dice.minusMoveStep(1);
 									}
+									shouldBreak = true;
 								}
 								if (command.getFromIndex() + dice.getFace(1) * i == command.getToIndex() + 23) {
 									for (int j = 1; j <= i - 1; j++) {
-										currentCondition = lanes.get(command.getFromIndex() + dice.getFace(1) * j).empty() || lanes.get(command.getFromIndex() + dice.getFace(1) * j).peek().getPieceEntity() == players[2].getPieceEntity();;
+										currentCondition = lanes.get(command.getFromIndex() + dice.getFace(1) * j).empty() || lanes.get(command.getFromIndex() + dice.getFace(1) * j).peek().getPieceEntity() == players[2].getPieceEntity();
 										allConditionsMet = allConditionsMet && currentCondition;
 									}
 									if (allConditionsMet) {
