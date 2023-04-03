@@ -90,12 +90,4 @@ public class Dice {
 		};
 		moveNumber = moveSteps[0] + moveSteps[1];
     }
-    
-    public void addMoveStep (int index) {
-    	switch (index) {
-			case 1 -> moveSteps[0]++;
-			case 2 -> moveSteps[1]++;
-		};
-		moveNumber = moveSteps[0] + moveSteps[1];
-    }
 }

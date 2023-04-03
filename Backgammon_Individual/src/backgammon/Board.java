@@ -59,6 +59,15 @@ public class Board {
 		return maxLane;
 	}
 	
+	private boolean isPathClear (int start, int end) {
+	    for (int i = start + 1; i < end; i++) {
+	        if (!lanes.get(i).empty() && lanes.get(i).peek().getPieceEntity() == players[0].getPieceEntity()) {
+	            return false;
+	        }
+	    }
+	    return true;
+	}
+	
 	
 	
 	public void initializePlayer (int index) {
@@ -120,51 +129,47 @@ public class Board {
 							dice.minusMoveStep(2);
 						}
 					}
-					if (dice.getFace(1) == dice.getFace(2)) {
-						boolean allConditionsMet = true;
-						boolean currentCondition = true;
-						if (dice.getMoveStep(1) != 0) {
-							if (players[0] == players[1]) {
-								if (command.getFromIndex() + 24 == command.getToIndex() + dice.getFace(1))
-									if (lanes.get(24 - dice.getFace(1)).empty() || lanes.get(24 - dice.getFace(1)).size() == 1 || lanes.get(24 - dice.getFace(1)).peek().getPieceEntity() == players[1].getPieceEntity()) {
-										isPossible = true;
-										dice.minusMoveStep(1);
-									}
-								for (int i = 2; i <= dice.getMoveStep(1); i++) {
-									if (command.getFromIndex() + 24 == command.getToIndex() + dice.getFace(1) * i && bar.size() == 1) {
-										for (int j = 1; j <= i - 1; j++) {
-											currentCondition = lanes.get(24 - dice.getFace(1) * j).empty() || lanes.get(24 - dice.getFace(1) * j).peek().getPieceEntity() == players[1].getPieceEntity();
-											allConditionsMet = allConditionsMet && currentCondition;
-										}
-										currentCondition = lanes.get(24 - dice.getFace(1) * i).empty() || lanes.get(24 - dice.getFace(1) * i).peek().getPieceEntity() == players[1].getPieceEntity() || lanes.get(24 - dice.getFace(1) * i).size() == 1;
+					if (dice.getFace(1) == dice.getFace(2) && dice.getMoveStep(1) != 0) {
+					boolean allConditionsMet = true;
+					boolean currentCondition = true;
+						if (players[0] == players[1]) {
+							if (command.getFromIndex() + 24 == command.getToIndex() + dice.getFace(1) && (lanes.get(24 - dice.getFace(1)).empty() || lanes.get(24 - dice.getFace(1)).size() == 1 || lanes.get(24 - dice.getFace(1)).peek().getPieceEntity() == players[1].getPieceEntity())) {
+								isPossible = true;
+								dice.minusMoveStep(1);
+							}
+							for (int i = 2; i <= dice.getMoveStep(1); i++) {
+								if (command.getFromIndex() + 24 == command.getToIndex() + dice.getFace(1) * i && bar.size() == 1) {
+									for (int j = 1; j <= i - 1; j++) {
+										currentCondition = lanes.get(24 - dice.getFace(1) * j).empty() || lanes.get(24 - dice.getFace(1) * j).peek().getPieceEntity() == players[1].getPieceEntity();
 										allConditionsMet = allConditionsMet && currentCondition;
-										if (allConditionsMet) {
-											isPossible = true;
-											for (int j = 0; j < i; j++)
-												dice.minusMoveStep(1);
-										}
+									}
+									currentCondition = lanes.get(24 - dice.getFace(1) * i).empty() || lanes.get(24 - dice.getFace(1) * i).peek().getPieceEntity() == players[1].getPieceEntity() || lanes.get(24 - dice.getFace(1) * i).size() == 1;
+									allConditionsMet = allConditionsMet && currentCondition;
+									if (allConditionsMet) {
+										isPossible = true;
+										for (int j = 0; j < i; j++)
+											dice.minusMoveStep(1);
 									}
 								}
 							}
-							if (players[0] == players[2]) {
-								if (command.getFromIndex() + dice.getFace(1) == command.getToIndex() + 2)
-									if (lanes.get(dice.getFace(1) - 1).empty() || lanes.get(dice.getFace(1) - 1).size() == 1 || lanes.get(dice.getFace(1) - 1).peek().getPieceEntity() == players[2].getPieceEntity()) {
-										isPossible = true;
-										dice.minusMoveStep(1);
-									}
-								for (int i = 2; i <= dice.getMoveStep(1); i++) {
-									if (command.getFromIndex() + dice.getFace(1) * i == command.getToIndex() + 2 && bar.size() == 1) {
-										for (int j = 1; j <= i - 1; j++) {
-											currentCondition = lanes.get(dice.getFace(1) * j - 1).empty() || lanes.get(dice.getFace(1) * j - 1).peek().getPieceEntity() == players[2].getPieceEntity();
-											allConditionsMet = allConditionsMet && currentCondition;
-										}
-										currentCondition = lanes.get(dice.getFace(1) * i - 1).empty() || lanes.get(dice.getFace(1) * i - 1).peek().getPieceEntity() == players[2].getPieceEntity() || lanes.get(dice.getFace(1) * i - 1).size() == 1;
+						}
+						if (players[0] == players[2]) {
+							if (command.getFromIndex() + dice.getFace(1) == command.getToIndex() + 2 && (lanes.get(dice.getFace(1) - 1).empty() || lanes.get(dice.getFace(1) - 1).size() == 1 || lanes.get(dice.getFace(1) - 1).peek().getPieceEntity() == players[2].getPieceEntity())) {
+								isPossible = true;
+								dice.minusMoveStep(1);
+							}
+							for (int i = 2; i <= dice.getMoveStep(1); i++) {
+								if (command.getFromIndex() + dice.getFace(1) * i == command.getToIndex() + 2 && bar.size() == 1) {
+									for (int j = 1; j <= i - 1; j++) {
+										currentCondition = lanes.get(dice.getFace(1) * j - 1).empty() || lanes.get(dice.getFace(1) * j - 1).peek().getPieceEntity() == players[2].getPieceEntity();
 										allConditionsMet = allConditionsMet && currentCondition;
-										if (allConditionsMet) {
-											isPossible = true;
-											for (int j = 0; j < i; j++)
-												dice.minusMoveStep(1);
-										}
+									}
+									currentCondition = lanes.get(dice.getFace(1) * i - 1).empty() || lanes.get(dice.getFace(1) * i - 1).peek().getPieceEntity() == players[2].getPieceEntity() || lanes.get(dice.getFace(1) * i - 1).size() == 1;
+									allConditionsMet = allConditionsMet && currentCondition;
+									if (allConditionsMet) {
+										isPossible = true;
+										for (int j = 0; j < i; j++)
+											dice.minusMoveStep(1);
 									}
 								}
 							}
@@ -191,60 +196,137 @@ public class Board {
 				if (getPlayerNumber(players[0]) == command.getToIndex() && lane.peek().getPieceEntity() == players[0].getPieceEntity() && finalStage == 15 && dice.getMoveNumber() != 0) {
 					int maxLane = -1;
 					if (dice.getFace(1) != dice.getFace(2)) {
+						int moveStepIndex = -1;
 						if (players[0] == players[1]) {
 							maxLane = getMaxLaneOnInnerTable(lanes, 1);
 							for (int i = 1; i <= 2; i++) {
-								if (command.getFromIndex() == maxLane && dice.getMoveStep(i) != 0 && command.getFromIndex() + 1 <= command.getToIndex() + dice.getFace(i)) {
+								if (dice.getMoveStep(i) != 0 && command.getFromIndex() == maxLane && command.getFromIndex() + 1 <= command.getToIndex() + dice.getFace(i)) {
 									isPossible = true;
-									dice.minusMoveStep(i);
+									moveStepIndex = i;
 								}
-								if (command.getFromIndex() != maxLane && dice.getMoveStep(i) != 0 && command.getFromIndex() + 1 == command.getToIndex() + dice.getFace(i)) {
+								if (dice.getMoveStep(i) != 0 && command.getFromIndex() != maxLane && command.getFromIndex() + 1 == command.getToIndex() + dice.getFace(i)) {
 									isPossible = true;
-									dice.minusMoveStep(i);
+									moveStepIndex = i;
 								}
+							}
+							if (dice.getMoveStep(1) != 0 && dice.getMoveStep(2) != 0 && command.getFromIndex() == maxLane && command.getFromIndex() + 1 <= command.getToIndex() + dice.getFace(1) + dice.getFace(2) && 
+								(lanes.get(command.getFromIndex() - dice.getFace(1)).empty() || lanes.get(command.getFromIndex() - dice.getFace(2)).empty() || lanes.get(command.getFromIndex() - dice.getFace(1)).peek().getPieceEntity() == players[1].getPieceEntity() || lanes.get(command.getFromIndex() - dice.getFace(2)).peek().getPieceEntity() == players[1].getPieceEntity()) &&
+								lane.size() == 1 && (isPathClear(command.getFromIndex() - dice.getFace(1), command.getFromIndex()) || isPathClear(command.getFromIndex() - dice.getFace(2), command.getFromIndex()))) {
+								isPossible = true;
+								dice.minusMoveStep(1);
+								dice.minusMoveStep(2);
+							}
+							if (dice.getMoveStep(1) != 0 && dice.getMoveStep(2) != 0 && command.getFromIndex() + 1 == command.getToIndex() + dice.getFace(1) + dice.getFace(2) && 
+								(lanes.get(command.getFromIndex() - dice.getFace(1)).empty() || lanes.get(command.getFromIndex() - dice.getFace(2)).empty() || lanes.get(command.getFromIndex() - dice.getFace(1)).peek().getPieceEntity() == players[1].getPieceEntity() || lanes.get(command.getFromIndex() - dice.getFace(2)).peek().getPieceEntity() == players[1].getPieceEntity())) {
+								isPossible = true;
+								dice.minusMoveStep(1);
+								dice.minusMoveStep(2);
 							}
 						}
 						if (players[0] == players[2]) {
 							maxLane = getMaxLaneOnInnerTable(lanes, 2);
 							for (int i = 1; i <= 2; i++) {
-								if (command.getFromIndex() == maxLane && dice.getMoveStep(i) != 0 && command.getFromIndex() + dice.getFace(i) >= command.getToIndex() + 23) {
+								if (dice.getMoveStep(i) != 0 && command.getFromIndex() == maxLane && command.getFromIndex() + dice.getFace(i) >= command.getToIndex() + 23) {
 									isPossible = true;
-									dice.minusMoveStep(i);
+									moveStepIndex = i;
 								}
-								if (command.getFromIndex() != maxLane && dice.getMoveStep(i) != 0 && command.getFromIndex() + dice.getFace(i) == command.getToIndex() + 23) {
+								if (dice.getMoveStep(i) != 0 && command.getFromIndex() != maxLane && command.getFromIndex() + dice.getFace(i) == command.getToIndex() + 23) {
 									isPossible = true;
-									dice.minusMoveStep(i);
+									moveStepIndex = i;
 								}
 							}
+							if (dice.getMoveStep(1) != 0 && dice.getMoveStep(2) != 0 && command.getFromIndex() == maxLane && command.getFromIndex() + dice.getFace(1) + dice.getFace(2) >= command.getToIndex() + 23 && 
+								(lanes.get(command.getFromIndex() + dice.getFace(1)).empty() || lanes.get(command.getFromIndex() + dice.getFace(2)).empty() || lanes.get(command.getFromIndex() + dice.getFace(1)).peek().getPieceEntity() == players[2].getPieceEntity() || lanes.get(command.getFromIndex() + dice.getFace(2)).peek().getPieceEntity() == players[2].getPieceEntity()) &&
+								lane.size() == 1 && (isPathClear(command.getFromIndex(), command.getFromIndex() + dice.getFace(1)) || isPathClear(command.getFromIndex(), command.getFromIndex() + dice.getFace(2)))) {
+								isPossible = true;
+								dice.minusMoveStep(1);
+								dice.minusMoveStep(2);
+							}
+							if (dice.getMoveStep(1) != 0 && dice.getMoveStep(2) != 0 && command.getFromIndex() + dice.getFace(1) + dice.getFace(2) == command.getToIndex() + 23 && 
+								(lanes.get(command.getFromIndex() + dice.getFace(1)).empty() || lanes.get(command.getFromIndex() + dice.getFace(2)).empty() || lanes.get(command.getFromIndex() + dice.getFace(1)).peek().getPieceEntity() == players[2].getPieceEntity() || lanes.get(command.getFromIndex() + dice.getFace(2)).peek().getPieceEntity() == players[2].getPieceEntity())) {
+								isPossible = true;
+								dice.minusMoveStep(1);
+								dice.minusMoveStep(2);
+							}
 						}
-						if (dice.getMoveStep(1) == 0 && dice.getMoveStep(2) == 0) {
-							if (dice.getFace(1) > dice.getFace(2)) {
-								dice.addMoveStep(2);
-							} else if (dice.getFace(1) < dice.getFace(2))
-								dice.addMoveStep(1);
-						}
+						if (moveStepIndex != -1)
+							dice.minusMoveStep(moveStepIndex);
 					}
-					if (dice.getFace(1) == dice.getFace(2)) {
+					if (dice.getFace(1) == dice.getFace(2) && dice.getMoveStep(1) != 0) {
+						boolean allConditionsMet = true;
+						boolean currentCondition = true;
 						if (players[0] == players[1]) {
 							maxLane = getMaxLaneOnInnerTable(lanes, 1);
-							if (command.getFromIndex() == maxLane && dice.getMoveStep(1) != 0 && command.getFromIndex() + 1 <= command.getToIndex() + dice.getFace(1)) {
+							if (dice.getMoveStep(1) != 0 && command.getFromIndex() == maxLane && command.getFromIndex() + 1 <= command.getToIndex() + dice.getFace(1)) {
 								isPossible = true;
 								dice.minusMoveStep(1);
 							}
-							if (command.getFromIndex() != maxLane && dice.getMoveStep(1) != 0 && command.getFromIndex() + 1 == command.getToIndex() + dice.getFace(1)) {
+							if (dice.getMoveStep(1) != 0 && command.getFromIndex() != maxLane && command.getFromIndex() + 1 == command.getToIndex() + dice.getFace(1)) {
 								isPossible = true;
 								dice.minusMoveStep(1);
+							}
+							for (int i = 2; i <= dice.getMoveStep(1); i++) {
+								if (command.getFromIndex() == maxLane && command.getFromIndex() + 1 <= command.getToIndex() + dice.getFace(1) * i) {
+									for (int j = 1; j <= i - 1; j++) {
+										currentCondition = lanes.get(command.getFromIndex() - dice.getFace(1) * j).empty();
+										allConditionsMet = allConditionsMet && currentCondition;
+									}
+									currentCondition = lane.size() == 1 && isPathClear(command.getFromIndex() - dice.getFace(1) * (i - 1), command.getFromIndex());
+									allConditionsMet = allConditionsMet && currentCondition;
+									if (allConditionsMet) {
+										isPossible = true;
+										for (int j = 0; j < i; j++)
+											dice.minusMoveStep(1);
+									}
+								}
+								if (command.getFromIndex() + 1 == command.getToIndex() + dice.getFace(1) * i) {
+									for (int j = 1; j <= i - 1; j++) {
+										currentCondition = lanes.get(command.getFromIndex() - dice.getFace(1) * j).empty() || lanes.get(command.getFromIndex() - dice.getFace(1) * j).peek().getPieceEntity() == players[1].getPieceEntity();;
+										allConditionsMet = allConditionsMet && currentCondition;
+									}
+									if (allConditionsMet) {
+										isPossible = true;
+										for (int j = 0; j < i; j++)
+											dice.minusMoveStep(1);
+									}
+								}
 							}
 						}
 						if (players[0] == players[2]) {
 							maxLane = getMaxLaneOnInnerTable(lanes, 2);
-							if (command.getFromIndex() == maxLane && dice.getMoveStep(1) != 0 && command.getFromIndex() + dice.getFace(1) >= command.getToIndex() + 23) {
+							if (dice.getMoveStep(1) != 0 && command.getFromIndex() == maxLane && command.getFromIndex() + dice.getFace(1) >= command.getToIndex() + 23) {
 								isPossible = true;
 								dice.minusMoveStep(1);
 							}
-							if (command.getFromIndex() != maxLane && dice.getMoveStep(1) != 0 && command.getFromIndex() + dice.getFace(1) == command.getToIndex() + 23) {
+							if (dice.getMoveStep(1) != 0 && command.getFromIndex() != maxLane && command.getFromIndex() + dice.getFace(1) == command.getToIndex() + 23) {
 								isPossible = true;
 								dice.minusMoveStep(1);
+							}
+							for (int i = 2; i <= dice.getMoveStep(1); i++) {
+								if (command.getFromIndex() == maxLane && command.getFromIndex() + dice.getFace(1) * i >= command.getToIndex() + 23) {
+									for (int j = 1; j <= i - 1; j++) {
+										currentCondition = lanes.get(command.getFromIndex() + dice.getFace(1) * j).empty();
+										allConditionsMet = allConditionsMet && currentCondition;
+									}
+									currentCondition = lane.size() == 1 && isPathClear(command.getFromIndex(), command.getFromIndex() + dice.getFace(1) * (i - 1));
+									allConditionsMet = allConditionsMet && currentCondition;
+									if (allConditionsMet) {
+										isPossible = true;
+										for (int j = 0; j < i; j++)
+											dice.minusMoveStep(1);
+									}
+								}
+								if (command.getFromIndex() + dice.getFace(1) * i == command.getToIndex() + 23) {
+									for (int j = 1; j <= i - 1; j++) {
+										currentCondition = lanes.get(command.getFromIndex() + dice.getFace(1) * j).empty() || lanes.get(command.getFromIndex() + dice.getFace(1) * j).peek().getPieceEntity() == players[2].getPieceEntity();;
+										allConditionsMet = allConditionsMet && currentCondition;
+									}
+									if (allConditionsMet) {
+										isPossible = true;
+										for (int j = 0; j < i; j++)
+											dice.minusMoveStep(1);
+									}
+								}
 							}
 						}
 					}
@@ -269,51 +351,47 @@ public class Board {
 							dice.minusMoveStep(2);
 						}
 					}
-					if (dice.getFace(1) == dice.getFace(2)) {
+					if (dice.getFace(1) == dice.getFace(2) && dice.getMoveStep(1) != 0) {
 						boolean allConditionsMet = true;
 						boolean currentCondition = true;
-						if (dice.getMoveStep(1) != 0) {
-							if (players[0] == players[1]) {
-								if (command.getFromIndex() == command.getToIndex() + dice.getFace(1))
-									if (lanes.get(command.getFromIndex() - dice.getFace(1)).empty() || lanes.get(command.getFromIndex() - dice.getFace(1)).size() == 1 || lanes.get(command.getFromIndex() - dice.getFace(1)).peek().getPieceEntity() == players[1].getPieceEntity()) {
-										isPossible = true;
-										dice.minusMoveStep(1);
-									}
-								for (int i = 2; i <= dice.getMoveStep(1); i++) {
-									if (command.getFromIndex() == command.getToIndex() + dice.getFace(1) * i) {
-										for (int j = 1; j <= i - 1; j++) {
-											currentCondition = lanes.get(command.getFromIndex() - dice.getFace(1) * j).empty() || lanes.get(command.getFromIndex() - dice.getFace(1) * j).peek().getPieceEntity() == players[1].getPieceEntity();
-											allConditionsMet = allConditionsMet && currentCondition;
-										}
-										currentCondition = lanes.get(command.getFromIndex() - dice.getFace(1) * i).empty() || lanes.get(command.getFromIndex() - dice.getFace(1) * i).peek().getPieceEntity() == players[1].getPieceEntity() || lanes.get(command.getFromIndex() - dice.getFace(1) * i).size() == 1;
+						if (players[0] == players[1]) {
+							if (command.getFromIndex() == command.getToIndex() + dice.getFace(1) && (lanes.get(command.getFromIndex() - dice.getFace(1)).empty() || lanes.get(command.getFromIndex() - dice.getFace(1)).size() == 1 || lanes.get(command.getFromIndex() - dice.getFace(1)).peek().getPieceEntity() == players[1].getPieceEntity())) {
+								isPossible = true;
+								dice.minusMoveStep(1);
+							}
+							for (int i = 2; i <= dice.getMoveStep(1); i++) {
+								if (command.getFromIndex() == command.getToIndex() + dice.getFace(1) * i) {
+									for (int j = 1; j <= i - 1; j++) {
+										currentCondition = lanes.get(command.getFromIndex() - dice.getFace(1) * j).empty() || lanes.get(command.getFromIndex() - dice.getFace(1) * j).peek().getPieceEntity() == players[1].getPieceEntity();
 										allConditionsMet = allConditionsMet && currentCondition;
-										if (allConditionsMet) {
-											isPossible = true;
-											for (int j = 0; j < i; j++)
-												dice.minusMoveStep(1);
-										}
+									}
+									currentCondition = lanes.get(command.getFromIndex() - dice.getFace(1) * i).empty() || lanes.get(command.getFromIndex() - dice.getFace(1) * i).peek().getPieceEntity() == players[1].getPieceEntity() || lanes.get(command.getFromIndex() - dice.getFace(1) * i).size() == 1;
+									allConditionsMet = allConditionsMet && currentCondition;
+									if (allConditionsMet) {
+										isPossible = true;
+										for (int j = 0; j < i; j++)
+											dice.minusMoveStep(1);
 									}
 								}
 							}
-							if (players[0] == players[2]) {
-								if (command.getFromIndex() + dice.getFace(1) == command.getToIndex())
-									if (lanes.get(command.getFromIndex() + dice.getFace(1)).empty() || lanes.get(command.getFromIndex() + dice.getFace(1)).size() == 1 || lanes.get(command.getFromIndex() + dice.getFace(1)).peek().getPieceEntity() == players[2].getPieceEntity()) {
-										isPossible = true;
-										dice.minusMoveStep(1);
-									}
-								for (int i = 2; i <= dice.getMoveStep(1); i++) {
-									if (command.getFromIndex() + dice.getFace(1) * i == command.getToIndex()) {
-										for (int j = 1; j <= i - 1; j++) {
-											currentCondition = lanes.get(command.getFromIndex() + dice.getFace(1) * j).empty() || lanes.get(command.getFromIndex() + dice.getFace(1) * j).peek().getPieceEntity() == players[2].getPieceEntity();
-											allConditionsMet = allConditionsMet && currentCondition;
-										}
-										currentCondition = lanes.get(command.getFromIndex() + dice.getFace(1) * i).empty() || lanes.get(command.getFromIndex() + dice.getFace(1) * i).peek().getPieceEntity() == players[2].getPieceEntity() || lanes.get(command.getFromIndex() + dice.getFace(1) * i).size() == 1;
+						}
+						if (players[0] == players[2]) {
+							if (command.getFromIndex() + dice.getFace(1) == command.getToIndex() && (lanes.get(command.getFromIndex() + dice.getFace(1)).empty() || lanes.get(command.getFromIndex() + dice.getFace(1)).size() == 1 || lanes.get(command.getFromIndex() + dice.getFace(1)).peek().getPieceEntity() == players[2].getPieceEntity())) {
+								isPossible = true;
+								dice.minusMoveStep(1);
+							}
+							for (int i = 2; i <= dice.getMoveStep(1); i++) {
+								if (command.getFromIndex() + dice.getFace(1) * i == command.getToIndex()) {
+									for (int j = 1; j <= i - 1; j++) {
+										currentCondition = lanes.get(command.getFromIndex() + dice.getFace(1) * j).empty() || lanes.get(command.getFromIndex() + dice.getFace(1) * j).peek().getPieceEntity() == players[2].getPieceEntity();
 										allConditionsMet = allConditionsMet && currentCondition;
-										if (allConditionsMet) {
-											isPossible = true;
-											for (int j = 0; j < i; j++)
-												dice.minusMoveStep(1);
-										}
+									}
+									currentCondition = lanes.get(command.getFromIndex() + dice.getFace(1) * i).empty() || lanes.get(command.getFromIndex() + dice.getFace(1) * i).peek().getPieceEntity() == players[2].getPieceEntity() || lanes.get(command.getFromIndex() + dice.getFace(1) * i).size() == 1;
+									allConditionsMet = allConditionsMet && currentCondition;
+									if (allConditionsMet) {
+										isPossible = true;
+										for (int j = 0; j < i; j++)
+											dice.minusMoveStep(1);
 									}
 								}
 							}
