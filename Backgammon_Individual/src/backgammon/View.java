@@ -36,30 +36,46 @@ public class View {
 	}
 	
 	public void displayPiece (Board board) {
-		String numberString = Integer.toString(board.getPlayer(0).getPips());
-		int numberSpaces = 4 - numberString.length();
+		String numberStringCurrentPlayerPips = Integer.toString(board.getPlayer(0).getPips());
+		String numberStringPlayerREDScore = Integer.toString(board.getPlayer(1).getScore());
+		String numberStringPlayerWHITEScore = Integer.toString(board.getPlayer(2).getScore());
+		String numberStringMatch = Integer.toString(board.getMatchNumber());
+		String numberStringMatchRound = Integer.toString(board.getMatchRoundNumber());
+		int numberSpacesCurrentPlayerPips = 4 - numberStringCurrentPlayerPips.length();
+		int numberSpacesPlayerREDScore = 10 - numberStringPlayerREDScore.length();
+		int numberSpacesPlayerWHITEScore = 10 - numberStringPlayerWHITEScore.length();
+		int numberSpacesMatch = 6 - numberStringMatch.length();
+		int numberSpacesMatchRound = 6 - numberStringMatchRound.length();
 		int numberUpLane = Math.max(board.getSize("upLane"),1);
 		int numberDownLane = Math.max(board.getSize("downLane"),1);
-		System.out.println("|---------------------------------------------------------------------|");
+		System.out.println("|---------------------------------------------------------------------|---------------|");
 		if (board.getPlayer(0).getColourName() == "RED") {
 			System.out.print("| Current player's color: " + DisplayColour.BOLD_RED + board.getPlayer(0).getColourName() + DisplayColour.RESET + "                               pips: " + board.getPlayer(0).getPips());
 		} else if (board.getPlayer(0).getColourName() == "WHITE")
 			System.out.print("| Current player's color: " + DisplayColour.BOLD_WHITE + board.getPlayer(0).getColourName() + DisplayColour.RESET + "                             pips: " + board.getPlayer(0).getPips());
-		for (int i = 0; i < numberSpaces; i++)
+		for (int i = 0; i < numberSpacesCurrentPlayerPips; i++)
+            System.out.print(" ");
+		System.out.print("|  Match: " + board.getMatchNumber());
+		for (int i = 0; i < numberSpacesMatch; i++)
             System.out.print(" ");
 		System.out.println("|");
-		System.out.println("|---------------------------------------------------------------------|");
+		System.out.println("|---------------------------------------------------------------------|---------------|");
 		if (board.getDiceFace(1) != board.getDiceFace(2)) {
-			System.out.println("| Dice:                     " + board.getDiceFace(1) + "              " + board.getDiceFace(2) + "                          |");
-		}
-		if (board.getDiceFace(1) == board.getDiceFace(2)) {
-			System.out.println("| Dice:      " + board.getDiceFace(1) + "              " + board.getDiceFace(1) + "              " + board.getDiceFace(1) + "              " + board.getDiceFace(1)  + "           |");
-		}
-		System.out.println("|---------------------------------------------------------------------|");
-		System.out.println("| " + DisplayColour.WHITE + "13   14   15   16   17   18" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "B2" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "19   20   21   22   23   24" + DisplayColour.RESET + " | " + DisplayColour.RED + "E1" + DisplayColour.RESET + " |");
+			System.out.print("| Dice:                     " + board.getDiceFace(1) + "              " + board.getDiceFace(2) + "                          |");
+		} else if (board.getDiceFace(1) == board.getDiceFace(2))
+			System.out.print("| Dice:      " + board.getDiceFace(1) + "              " + board.getDiceFace(1) + "              " + board.getDiceFace(1) + "              " + board.getDiceFace(1)  + "           |");
+		System.out.print("  Round: " + board.getMatchRoundNumber());
+		for (int i = 0; i < numberSpacesMatchRound; i++)
+            System.out.print(" ");
+		System.out.println("|");
+		System.out.println("|---------------------------------------------------------------------|---------------|");
+		System.out.println("| " + DisplayColour.WHITE + "13   14   15   16   17   18" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "B2" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "19   20   21   22   23   24" + DisplayColour.RESET + " | " + DisplayColour.RED + "E1" + DisplayColour.RESET + " |   " + DisplayColour.BOLD_RED + board.getPlayer(1).getColourName() + DisplayColour.RESET + " Score   |");
 		System.out.print("| " + DisplayColour.RED + "12   11   10   09   08   07" + DisplayColour.RESET);
 		System.out.print(" | " + DisplayColour.WHITE + "B2"  + DisplayColour.RESET + " | ");
-		System.out.println(DisplayColour.RED + "06   05   04   03   02   01" + DisplayColour.RESET + " | " + DisplayColour.RED + "E1" + DisplayColour.RESET + " |");
+		System.out.print(DisplayColour.RED + "06   05   04   03   02   01" + DisplayColour.RESET + " | " + DisplayColour.RED + "E1" + DisplayColour.RESET + " |     " + board.getPlayer(1).getScore());
+		for (int i = 0; i < numberSpacesPlayerREDScore; i++)
+            System.out.print(" ");
+		System.out.println("|");
 		
 		for (int row = 0; row < numberUpLane; row++) {
 			System.out.print("| ");
@@ -94,9 +110,9 @@ public class View {
 	            System.out.print(BLANK2);
 			if (row==0) {
 				if (board.getEndpointSize(0) < 10)
-			        System.out.print(" | " + DisplayColour.BOLD_RED + "0" + board.getEndpointSize(0) + DisplayColour.RESET + " |");
+			        System.out.print(" | " + DisplayColour.BOLD_RED + "0" + board.getEndpointSize(0) + DisplayColour.RESET + " |---------------|");
 			    else
-			    	System.out.print(" | " + DisplayColour.BOLD_RED + board.getEndpointSize(0) + DisplayColour.RESET + " |");
+			    	System.out.print(" | " + DisplayColour.BOLD_RED + board.getEndpointSize(0) + DisplayColour.RESET + " |---------------|");
 			} else
 				System.out.print(" |    |");
 			System.out.println();
@@ -135,9 +151,9 @@ public class View {
 	            System.out.print(lane23.get(numberDownLane - row - 1));
 			if (row == numberDownLane - 1) {
 				if (board.getEndpointSize(1) < 10)
-			        System.out.print(" | " + DisplayColour.BOLD_WHITE + "0" + board.getEndpointSize(1) + DisplayColour.RESET + " |");
+			        System.out.print(" | " + DisplayColour.BOLD_WHITE + "0" + board.getEndpointSize(1) + DisplayColour.RESET + " |---------------|");
 			    else
-			    	System.out.print(" | " + DisplayColour.BOLD_WHITE + board.getEndpointSize(1) + DisplayColour.RESET + " |");
+			    	System.out.print(" | " + DisplayColour.BOLD_WHITE + board.getEndpointSize(1) + DisplayColour.RESET + " |---------------|");
 			} else
 				System.out.print(" |    |");
 			System.out.println();
@@ -145,9 +161,12 @@ public class View {
 		
 		System.out.print("| " + DisplayColour.WHITE + "12   11   10   09   08   07" + DisplayColour.RESET);
 		System.out.print(" | " + DisplayColour.RED + "B1" + DisplayColour.RESET + " | ");
-		System.out.println(DisplayColour.WHITE + "06   05   04   03   02   01" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "E2" + DisplayColour.RESET + " |");
-		System.out.println("| " + DisplayColour.RED + "13   14   15   16   17   18" + DisplayColour.RESET + " | " + DisplayColour.RED + "B1" + DisplayColour.RESET + " | " + DisplayColour.RED + "19   20   21   22   23   24" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "E2" + DisplayColour.RESET + " |");
-		System.out.println("|---------------------------------------------------------------------|");
+		System.out.println(DisplayColour.WHITE + "06   05   04   03   02   01" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "E2" + DisplayColour.RESET + " |  " + DisplayColour.BOLD_WHITE + board.getPlayer(2).getColourName() + DisplayColour.RESET + " Score  |");
+		System.out.print("| " + DisplayColour.RED + "13   14   15   16   17   18" + DisplayColour.RESET + " | " + DisplayColour.RED + "B1" + DisplayColour.RESET + " | " + DisplayColour.RED + "19   20   21   22   23   24" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "E2" + DisplayColour.RESET + " |     " + board.getPlayer(2).getScore());
+		for (int i = 0; i < numberSpacesPlayerWHITEScore; i++)
+            System.out.print(" ");
+		System.out.println("|");
+		System.out.println("|---------------------------------------------------------------------|---------------|");
 	}
 	
 	public Command getUserInput (Board board) {
@@ -265,7 +284,12 @@ public class View {
 	}
 	
 	public void displayWholeMatchOver (Board board) {
-		System.out.println(board.getPlayer(0).getNamewithColor() + " wins the whole match.");
+		if (board.getPlayer(1).getScore() > board.getPlayer(2).getScore()) {
+			System.out.println(board.getPlayer(1).getNamewithColor() + " wins the whole match.");
+		} else if (board.getPlayer(1).getScore() < board.getPlayer(2).getScore()) {
+			System.out.println(board.getPlayer(2).getNamewithColor() + " wins the whole match.");
+		} else if (board.getPlayer(1).getScore() == board.getPlayer(2).getScore())
+			System.out.println("the two players play to a draw.");
 		System.out.println("Game over.");
 	}
 	

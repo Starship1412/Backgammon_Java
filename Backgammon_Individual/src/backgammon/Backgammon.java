@@ -28,6 +28,8 @@ public class Backgammon {
 						if (board.moveIsPossible(command)) {
 							board.move(command);
 							board.calculateSetPips();
+							if (board.isOneMatchOver())
+								board.addCurrentPlayerScore();
 							view.displayPiece(board);
 							if (board.getDiceMoveNumber() == 0)
 								board.endTurn();
@@ -96,6 +98,7 @@ public class Backgammon {
 						view.getStartInformation(board);
 						board.initializeBoard();
 						board.calculateSetPips();
+						board.setPlayersScoreToZero();
 						view.FirstDiceRoll(board);
 						view.showDice(board.getDiceFace(1), board.getDiceFace(2));
 						view.displayPiece(board);

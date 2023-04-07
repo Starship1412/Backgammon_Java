@@ -2,7 +2,7 @@ package backgammon;
 
 public class Player {
 	
-    private int pips;
+    private int pips, score;
     private String name;
     private PieceEntity pieceEntity;
     
@@ -10,6 +10,7 @@ public class Player {
         this.name = name;
         this.pieceEntity = pieceEntity;
         this.pips = 167;
+        this.score = 0;
     }
     
     public String getNamewithColor () {
@@ -30,6 +31,18 @@ public class Player {
     
     public void setPips (int pips) {
         this.pips = pips;
+    }
+    
+    public int getScore () {
+    	return score;
+    }
+    
+    public void addScore (int score) {
+    	this.score += score;
+    }
+    
+    public void setScore (int score) {
+    	this.score = score;
     }
     
     public String toString () {
