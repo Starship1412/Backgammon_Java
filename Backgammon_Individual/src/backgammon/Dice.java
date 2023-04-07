@@ -46,7 +46,6 @@ public class Dice {
         	moveSteps[1] = 0;
         	moveNumber = moveSteps[0] + moveSteps[1];
         }
-        view.showDice(faces[0],faces[1]);
     }
     
     public void setZero () {
@@ -68,7 +67,7 @@ public class Dice {
         	moveSteps[1] = 0;
         	moveNumber = moveSteps[0] + moveSteps[1];
         }
-        view.showDice(faces[0],faces[1]);
+        view.showDice(face1, face2);
     }
     
     public int getMoveStep (int index) {
@@ -83,7 +82,7 @@ public class Dice {
     	return moveNumber;
     }
     
-    public void minusMoveStep (int index) {
+    public void subtractMoveStep (int index) {
     	switch (index) {
 			case 1 -> moveSteps[0]--;
 			case 2 -> moveSteps[1]--;

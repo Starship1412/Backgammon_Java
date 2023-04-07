@@ -31,6 +31,10 @@ public class View {
 		System.out.println("Note that some commands are temporarily invalid in some cases.");
 	}
 	
+	public void displayRestart () {
+		System.out.println("The game starts over from the beginning!");
+	}
+	
 	public void displayPiece (Board board) {
 		String numberString = Integer.toString(board.getPlayer(0).getPips());
 		int numberSpaces = 4 - numberString.length();
@@ -146,10 +150,6 @@ public class View {
 		System.out.println("|---------------------------------------------------------------------|");
 	}
 	
-	public Command getCommand () {
-		return command;
-	}
-	
 	public Command getUserInput (Board board) {
 		boolean commandEntered = false;
 		do {
@@ -184,13 +184,7 @@ public class View {
 		return command;
 	}
 	
-	public void getUserName (Board board) {
-		System.out.print("Enter name of player RED: ");
-		board.initializePlayer(1);
-		System.out.println("The name of player RED is " + board.getPlayer(1) + ".");
-		System.out.print("Enter name of player WHITE: ");
-		board.initializePlayer(2);
-		System.out.println("The name of player WHITE is " + board.getPlayer(2) + ".");
+	public void FirstDiceRoll (Board board) {
 		do {
 			board.makeDiceRoll();
 			if (board.getDiceFace(1) > board.getDiceFace(2)) {
@@ -205,6 +199,39 @@ public class View {
 		} while (board.getDiceFace(1) == board.getDiceFace(2));
 	}
 	
+	public void getStartInformation (Board board) {
+		boolean validInput = false;
+		String promptMessage = "Please enter the length of the match:";
+		System.out.print("Enter name of player RED: ");
+		board.initializePlayer(1);
+		System.out.println("The name of player RED is " + board.getPlayer(1) + ".");
+		System.out.print("Enter name of player WHITE: ");
+		board.initializePlayer(2);
+		System.out.println("The name of player WHITE is " + board.getPlayer(2) + ".");
+		while (!validInput) {
+            System.out.print(promptMessage);
+            String matchNumberInput = in.nextLine();
+    		if (Command.isText(matchNumberInput))
+    			matchNumberInput = readContentFromFile(matchNumberInput, in, "Please enter a new length of the match: ");
+            try {
+                double doubleValue = Double.parseDouble(matchNumberInput);
+                if (doubleValue > 0 && Math.floor(doubleValue) == doubleValue) {
+                    board.setMatchNumber((int) doubleValue);
+                    board.setMatchRoundNumber(1);
+                    validInput = true;
+                } else if (Math.floor(doubleValue) != doubleValue) {
+                    System.out.println("Error: The entered number is a decimal, please try again.");
+                } else {
+                    System.out.println("Error: The entered number is not a positive integer, please try again.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Error: The entered string cannot be converted to a number, please try again.");
+            }
+            promptMessage = "Please enter a new length of the match:";
+        }
+        System.out.println("The length of the match is: " + board.getMatchNumber());
+	}
+	
 	public void displayCommandNotPossible () {
 		System.out.println("That play is not possible. Try again.");
 	}
@@ -213,8 +240,32 @@ public class View {
 		System.out.println("The command is temporarily invalid. Try again.");
 	}
 	
-	public void displayGameOver (Player player) {
-		System.out.println(player.getNamewithColor() + " wins.");
+	public void displayOneMatchOver (Board board) {
+		System.out.println("Round " + board.getMatchRoundNumber() + " of the competition is over. " + board.getPlayer(0).getNamewithColor() + " wins the current match round.");
+		if (board.getMatchNumber() == 1) {
+			System.out.println("There is " + board.getMatchNumber() + " round in total, so now the whole match is over.");
+		} else if (board.getMatchNumber() > 1)
+			System.out.print("There are " + board.getMatchNumber() + " rounds in total, ");
+		if (board.getMatchNumber() - board.getMatchRoundNumber() == 1) {
+			System.out.println("so there is still " + (board.getMatchNumber() - board.getMatchRoundNumber()) + " round left to play. Please press J to play the next round.");
+		} else if (board.getMatchNumber() - board.getMatchRoundNumber() > 1)
+			System.out.println("so there are still " + (board.getMatchNumber() - board.getMatchRoundNumber()) + " rounds left to play. Please press J to play the next round.");
+	}
+	
+	public void displayForceJump (Board board) {
+		System.out.println("The current match round was forced to end early. No player accumulates points because of this.");
+		if (board.getMatchNumber() == 1) {
+			System.out.println("There is " + board.getMatchNumber() + " round in total, so now the whole match is over.");
+		} else if (board.getMatchNumber() > 1)
+			System.out.print("There are " + board.getMatchNumber() + " rounds in total, ");
+		if (board.getMatchNumber() - board.getMatchRoundNumber() == 1) {
+			System.out.println("so there is still " + (board.getMatchNumber() - board.getMatchRoundNumber()) + " round left to play. The next match round has already begun.");
+		} else if (board.getMatchNumber() - board.getMatchRoundNumber() > 1)
+			System.out.println("so there are still " + (board.getMatchNumber() - board.getMatchRoundNumber()) + " rounds left to play. The next match round has already begun.");
+	}
+	
+	public void displayWholeMatchOver (Board board) {
+		System.out.println(board.getPlayer(0).getNamewithColor() + " wins the whole match.");
 		System.out.println("Game over.");
 	}
 	
@@ -222,9 +273,12 @@ public class View {
 		System.out.println("Quit.");
 	}
 	
-	public void playerTurn (Player player1, Player player2) {
-		System.out.println(player1 + "(" + player1.getColourName() + ") finishes moving.");
-		System.out.println("Now it's the " + player2 + "(" + player2.getColourName() + ")'s turn to play.");
+	public void playerTurnCurrent (Player player) {
+		System.out.println(player + "(" + player.getColourName() + ") finishes moving.");
+	}
+	
+	public void playerTurnNext (Player player) {
+		System.out.println("Now it's the " + player + "(" + player.getColourName() + ")'s turn to play.");
 	}
 	
 	public void showDice (int face1, int face2) {
@@ -285,6 +339,7 @@ public class View {
 		System.out.println("B + 1 digit + 2 digits: move pieces from Bar to outside.");
 		System.out.println("2 digits + E + 1 digit: Move a piece to Terminus.");
 		System.out.println("H: View all allowed commands.");
+		System.out.println("J: Regardless of whether or not the current round is completed, the current round will end and the next round will be played.");
 		System.out.println("Q: Quit the game.");
 		System.out.println("If you type \"test:file_name.txt\", the game will read the commands in that file.");
 	}

@@ -15,6 +15,7 @@ public class Command {
 		WAIVE,
 		PIP,
 		HINT,
+		JUMP,
 		SETFACE
 	}
 	
@@ -40,6 +41,8 @@ public class Command {
 			commandType = CommandType.PIP;
 		} else if (inputFormattedUpper.equals("H")) {
 			commandType = CommandType.HINT;
+		} else if (inputFormattedUpper.equals("J")) {
+			commandType = CommandType.JUMP;
 		} else if (inputFormattedUpper.matches("R[1-6][1-6]")) {
 			commandType = CommandType.SETFACE;
 			dice[0] = inputFormattedUpper.substring(1, 2);
@@ -73,7 +76,7 @@ public class Command {
 	
 	public static boolean isValid (String input) {
 		String inputFormattedUpper = input.trim().toUpperCase();
-		return inputFormattedUpper.equals("Q") || inputFormattedUpper.equals("R") || inputFormattedUpper.equals("S") || inputFormattedUpper.equals("W") || inputFormattedUpper.equals("P") || inputFormattedUpper.equals("H") 
+		return inputFormattedUpper.equals("Q") || inputFormattedUpper.equals("R") || inputFormattedUpper.equals("S") || inputFormattedUpper.equals("W") || inputFormattedUpper.equals("P") || inputFormattedUpper.equals("H") || inputFormattedUpper.equals("J")
 				|| inputFormattedUpper.matches("R[1-6][1-6]") || inputFormattedUpper.matches("(0[1-9]|1[0-9]|2[0-4]|B[1-2])(0[1-9]|1[0-9]|2[0-4]|E[1-2])");
 	}
 	
@@ -109,6 +112,10 @@ public class Command {
 	
 	public boolean isShowHint () {
 		return commandType == CommandType.HINT;
+	}
+	
+	public boolean isJump () {
+		return commandType == CommandType.JUMP;
 	}
 	
 	public boolean isSetFace () {

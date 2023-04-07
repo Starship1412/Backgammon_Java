@@ -11,23 +11,23 @@ public class Backgammon {
 		View view = new View();
 		Command command;
 		int startControl = 0;
-		int restartControl = 0;
-		board.initializeBoard();
+		boolean oneMatchOverDisplayed = false;
 		view.displayWelcome();
 		view.displayStart();
 		do {
 			boolean commandDone = false;
 			do {
 				command = view.getUserInput(board);
-				if (startControl == 1 && restartControl == 0) {
+				if (startControl == 1 && !board.isOneMatchOver())
 					if (command.isRoll()) {
 						board.makeDiceRoll();
+						view.showDice(board.getDiceFace(1), board.getDiceFace(2));
 						view.displayPiece(board);
 						commandDone = true;
 					} else if (command.isMove()) {
 						if (board.moveIsPossible(command)) {
 							board.move(command);
-							board.calculatePips();
+							board.calculateSetPips();
 							view.displayPiece(board);
 							if (board.getDiceMoveNumber() == 0)
 								board.endTurn();
@@ -35,11 +35,21 @@ public class Backgammon {
 						} else
 							view.displayCommandNotPossible();
 					} else if (command.isStart()) {
-						view.displayStart();
+						view.displayRestart();
 						startControl--;
-						restartControl++;
 						commandDone = true;
 					} else if (command.isQuit()) {
+						commandDone = true;
+					} else if (command.isJump()) {
+						view.displayForceJump(board);
+						board.addMatchRoundNumber();
+						if (!board.isWholeMatchOver()) {
+							board.initializeBoard();
+							board.calculateSetPips();
+							view.FirstDiceRoll(board);
+							view.showDice(board.getDiceFace(1), board.getDiceFace(2));
+							view.displayPiece(board);
+						}
 						commandDone = true;
 					} else if (command.isWaive()) {
 						view.displayWaive(board.getPlayer(0));
@@ -49,32 +59,59 @@ public class Backgammon {
 					} else if (command.isShowPips()) {
 						view.displayPips(board);
 					} else if (command.isSetFace()) {
-						board.setFace(command);
+						board.setDiceFace(command);
 						view.displayPiece(board);
 						commandDone = true;
 					} else if (command.isShowHint())
 						view.showHint();
+				if (board.isOneMatchOver()) {
+					if (!oneMatchOverDisplayed) {
+						view.displayOneMatchOver(board);
+						board.addMatchRoundNumber();
+					}
+					if (!board.isWholeMatchOver() && oneMatchOverDisplayed)
+						if (command.isJump()) {
+							board.initializeBoard();
+							board.calculateSetPips();
+							view.FirstDiceRoll(board);
+							view.showDice(board.getDiceFace(1), board.getDiceFace(2));
+							view.displayPiece(board);
+							oneMatchOverDisplayed = false;
+						} else if (command.isRoll() || command.isMove() || command.isWaive() || command.isShowPips() || command.isSetFace()) {
+							view.displayCommandTemporarilyInvalid();
+						} else if (command.isShowHint()) {
+							view.showHint();
+						} else if (command.isStart()) {
+							view.displayRestart();
+							startControl--;
+							oneMatchOverDisplayed = false;
+							commandDone = true;
+						} else if (command.isQuit())
+							commandDone = true;
+					if (!oneMatchOverDisplayed && !command.isJump() && !command.isStart())
+						oneMatchOverDisplayed = true;
 				}
-				if (startControl == 0 && restartControl == 0) {
+				if (startControl == 0) {
 					if (command.isStart()) {
-						view.getUserName(board);
-						startControl++;
-						board.calculatePips();
+						view.getStartInformation(board);
+						board.initializeBoard();
+						board.calculateSetPips();
+						view.FirstDiceRoll(board);
+						view.showDice(board.getDiceFace(1), board.getDiceFace(2));
 						view.displayPiece(board);
+						startControl++;
 						commandDone = true;
-					} else if (command.isRoll() || command.isMove() || command.isWaive() || command.isShowPips() || command.isSetFace()) {
+					} else if (command.isRoll() || command.isMove() || command.isWaive() || command.isShowPips() || command.isSetFace() || command.isJump()) {
 						view.displayCommandTemporarilyInvalid();
 					} else if (command.isShowHint()) {
 						view.showHint();
 					} else if (command.isQuit())
 						commandDone = true;
 				}
-				if (restartControl == 1)
-					restartControl--;
 			} while (!commandDone);
-		} while (!command.isQuit() && !board.isGameOver());
-		if (board.isGameOver()) {
-			view.displayGameOver(board.getPlayer(0));
+		} while (!command.isQuit() && !board.isWholeMatchOver());
+		if (board.isWholeMatchOver()) {
+			view.displayWholeMatchOver(board);
 		} else
 			view.displayQuit();
 	}
