@@ -61,9 +61,40 @@ public class View {
 		System.out.println("|");
 		System.out.println("|---------------------------------------------------------------------|---------------|");
 		if (board.getDiceFace(1) != board.getDiceFace(2)) {
-			System.out.print("| Dice:                     " + board.getDiceFace(1) + "              " + board.getDiceFace(2) + "                          |");
-		} else if (board.getDiceFace(1) == board.getDiceFace(2))
-			System.out.print("| Dice:      " + board.getDiceFace(1) + "              " + board.getDiceFace(1) + "              " + board.getDiceFace(1) + "              " + board.getDiceFace(1)  + "           |");
+			System.out.print("| Dice:                     ");
+			if(board.getDiceMoveStep(1) == 1) {
+				System.out.print(board.getDiceFace(1));
+			} else
+				System.out.print(" ");
+			System.out.print("              ");
+			if(board.getDiceMoveStep(2) == 1) {
+				System.out.print(board.getDiceFace(2));
+			} else
+				System.out.print(" ");
+			System.out.print("                          |");
+		} else if (board.getDiceFace(1) == board.getDiceFace(2)) {
+			System.out.print("| Dice:      ");
+			if(board.getDiceMoveStep(1) >= 1) {
+				System.out.print(board.getDiceFace(1));
+			} else
+				System.out.print(" ");
+			System.out.print("              ");
+			if(board.getDiceMoveStep(1) >= 2) {
+				System.out.print(board.getDiceFace(1));
+			} else
+				System.out.print(" ");
+			System.out.print("              ");
+			if(board.getDiceMoveStep(1) >= 3) {
+				System.out.print(board.getDiceFace(1));
+			} else
+				System.out.print(" ");
+			System.out.print("              ");
+			if(board.getDiceMoveStep(1) == 4) {
+				System.out.print(board.getDiceFace(1));
+			} else
+				System.out.print(" ");
+			System.out.print("           |");
+		}
 		System.out.print("  Round: " + board.getMatchRoundNumber());
 		for (int i = 0; i < numberSpacesMatchRound; i++)
             System.out.print(" ");
