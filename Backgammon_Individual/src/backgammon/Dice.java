@@ -78,6 +78,12 @@ public class Dice {
 		};
     }
     
+    public void setMoveStep (int moveStep1, int moveStep2) {
+    	moveSteps[0] = moveStep1;
+    	moveSteps[1] = moveStep2;
+    	moveNumber = moveSteps[0] + moveSteps[1];
+    }
+    
     public int getMoveNumber () {
     	return moveNumber;
     }

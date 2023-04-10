@@ -209,29 +209,87 @@ public class View {
 				input = readContentFromFile(input, in, "Please enter a new command: ");
 			if (Command.isValid(input)) {
 				command = new Command(input);
-				if (board.getPlayer(0) == board.getPlayer(2) && command.isMove()) {
+				if (command.isMove()) {
 					String inputFormatted = input.trim();
-					String[] inputs = new String[2];
-					inputs[0] = inputFormatted.substring(0, 2);
-					inputs[1] = inputFormatted.substring(2, 4);
-					if (inputs[0].matches("\\d+")) {
-						int number1 = Integer.parseInt(inputs[0]);
-						int result1 = 25 - number1;
-						inputs[0] = String.format("%02d", result1);
+					if (inputFormatted.length() == 4 && board.getPlayer(0) == board.getPlayer(2)) {
+						String[] inputs = new String[2];
+						inputs[0] = inputFormatted.substring(0, 2);
+						inputs[1] = inputFormatted.substring(2, 4);
+						if (inputs[0].matches("\\d+")) {
+							int number1 = Integer.parseInt(inputs[0]);
+							inputs[0] = String.format("%02d", 25 - number1);
+						}
+						if (inputs[1].matches("\\d+")) {
+							int number2 = Integer.parseInt(inputs[1]);
+							inputs[1] = String.format("%02d", 25 - number2);
+						}
+						inputFormatted = inputs[0] + inputs[1];
 					}
-					if (inputs[1].matches("\\d+")) {
-						int number2 = Integer.parseInt(inputs[1]);
-						int result2 = 25 - number2;
-						inputs[1] = String.format("%02d", result2);
-					}
-					input = inputs[0] + inputs[1];
+					command = new Command(inputFormatted);
 				}
-				command = new Command(input);
 				commandEntered = true;
 			} else
 				System.out.println("The command is invalid. Try again.");
 		} while (!commandEntered);
 		return command;
+	}
+	
+	public void showAllAllowedMoves(Board board) {
+		String inputCleaned, inputRaw;
+		int moveStep1, moveStep2;
+		int outputCount = 0;
+	 	String[] prefixes = new String[25];
+	    String[] suffixes = new String[25];
+	    if (board.getPlayer(0) == board.getPlayer(1)) {
+	    	prefixes[0] = "B1";
+			suffixes[0] = "E1";
+		    for (int i = 1; i <= 24; i++) {
+		        prefixes[25 - i] = String.format("%02d", i);
+		        suffixes[25 - i] = String.format("%02d", i);
+		    }
+	    } else if (board.getPlayer(0) == board.getPlayer(2)) {
+	    	prefixes[0] = "B2";
+		    suffixes[0] = "E2";
+		    for (int i = 1; i <= 24; i++) {
+		    	prefixes[25 - i] = String.format("%02d", i);
+		        suffixes[25 - i] = String.format("%02d", i);
+		    }
+	    }
+	    for (int i = 0; i < Command.getAllowedMoves().length; i++)
+	        Command.setAllowedMoves(i, null);
+	    for (int i = 0; i < prefixes.length; i++)
+	        for (int j = 0; j < suffixes.length; j++) {
+	        	inputCleaned = prefixes[i] + suffixes[j];
+	        	inputRaw = inputCleaned;
+                if (board.getPlayer(0) == board.getPlayer(2)) {
+                	String tempPrefix = prefixes[i];
+                    String tempSuffix = suffixes[j];
+					if (prefixes[i].matches("\\d+")) {
+						int number1 = Integer.parseInt(prefixes[i]);
+						tempPrefix = String.format("%02d", 25 - number1);
+					}
+					if (suffixes[j].matches("\\d+")) {
+						int number2 = Integer.parseInt(suffixes[j]);
+						tempSuffix = String.format("%02d", 25 - number2);
+					}
+					inputCleaned = tempPrefix + tempSuffix;
+                }
+				command = new Command(inputCleaned);
+                moveStep1 = board.getDiceMoveStep(1);
+                moveStep2 = board.getDiceMoveStep(2);
+                if (board.moveIsPossible(command)) {
+                	Command.setAllowedMoves(outputCount, inputCleaned);
+                	outputCount++;
+                	if (outputCount == 1)
+                    	System.out.println("Here are the moves you can make:");
+                	if (outputCount > 0 && outputCount < 10)
+                		System.out.print(" ");
+                    System.out.println(outputCount + ": " + inputRaw);
+                }
+                board.setDiceMoveStep(moveStep1, moveStep2);
+	        }
+	    if (outputCount == 0)
+        	System.out.println("You have no moves available at this time, and must forfeit your turn if you have already rolled the dice.");
 	}
 	
 	public void FirstDiceRoll (Board board) {
@@ -387,13 +445,14 @@ public class View {
 	public void showHint () {
 		System.out.println("S: Start Backgammon or restart Backgammon.");
 		System.out.println("R: Roll the dice.");
-		System.out.println("R + 2 digits: roll the specified number of dice.");
+		System.out.println("R + 1 digit + 1 digit: roll the specified number of dice.");
 		System.out.println("W: Abandon the turn.");
 		System.out.println("P: Check the current player's pips.");
 		System.out.println("2 digits + 2 digits: Move a piece on Lane.");
 		System.out.println("B + 1 digit + 2 digits: move pieces from Bar to outside.");
 		System.out.println("2 digits + E + 1 digit: Move a piece to Terminus.");
 		System.out.println("H: View all allowed commands.");
+		System.out.println("M: View all allowed moves.");
 		System.out.println("J: Regardless of whether or not the current round is completed, the current round will end and the next round will be played.");
 		System.out.println("Q: Quit the game.");
 		System.out.println("If you type \"test:file_name.txt\", the game will read the commands in that file.");

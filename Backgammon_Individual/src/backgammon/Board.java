@@ -593,4 +593,8 @@ public class Board {
 			default -> 0;
 		};
     }
+	
+	public void setDiceMoveStep (int moveStep1, int moveStep2) {
+		dice.setMoveStep(moveStep1, moveStep2);
+	}
 }

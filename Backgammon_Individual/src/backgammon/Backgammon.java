@@ -23,6 +23,7 @@ public class Backgammon {
 						board.makeDiceRoll();
 						view.showDice(board.getDiceFace(1), board.getDiceFace(2));
 						view.displayPiece(board);
+						view.showAllAllowedMoves(board);
 						commandDone = true;
 					} else if (command.isMove()) {
 						if (board.moveIsPossible(command)) {
@@ -31,7 +32,9 @@ public class Backgammon {
 							if (board.isOneMatchOver())
 								board.addCurrentPlayerScore();
 							view.displayPiece(board);
-							if (board.getDiceMoveNumber() == 0)
+							if (board.getDiceMoveNumber() != 0) {
+								view.showAllAllowedMoves(board);
+							} else if (board.getDiceMoveNumber() == 0)
 								board.endTurn();
 							commandDone = true;
 						} else
@@ -51,6 +54,7 @@ public class Backgammon {
 							view.FirstDiceRoll(board);
 							view.showDice(board.getDiceFace(1), board.getDiceFace(2));
 							view.displayPiece(board);
+							view.showAllAllowedMoves(board);
 						}
 						commandDone = true;
 					} else if (command.isWaive()) {
@@ -63,9 +67,12 @@ public class Backgammon {
 					} else if (command.isSetFace()) {
 						board.setDiceFace(command);
 						view.displayPiece(board);
+						view.showAllAllowedMoves(board);
 						commandDone = true;
-					} else if (command.isShowHint())
+					} else if (command.isShowHint()) {
 						view.showHint();
+					} else if (command.isShowAllAllowedMoves())
+						view.showAllAllowedMoves(board);
 				if (board.isOneMatchOver()) {
 					if (!oneMatchOverDisplayed) {
 						view.displayOneMatchOver(board);
@@ -78,8 +85,9 @@ public class Backgammon {
 							view.FirstDiceRoll(board);
 							view.showDice(board.getDiceFace(1), board.getDiceFace(2));
 							view.displayPiece(board);
+							view.showAllAllowedMoves(board);
 							oneMatchOverDisplayed = false;
-						} else if (command.isRoll() || command.isMove() || command.isWaive() || command.isShowPips() || command.isSetFace()) {
+						} else if (command.isRoll() || command.isMove() || command.isWaive() || command.isShowPips() || command.isSetFace() || command.isShowAllAllowedMoves()) {
 							view.displayCommandTemporarilyInvalid();
 						} else if (command.isShowHint()) {
 							view.showHint();
@@ -102,9 +110,10 @@ public class Backgammon {
 						view.FirstDiceRoll(board);
 						view.showDice(board.getDiceFace(1), board.getDiceFace(2));
 						view.displayPiece(board);
+						view.showAllAllowedMoves(board);
 						startControl++;
 						commandDone = true;
-					} else if (command.isRoll() || command.isMove() || command.isWaive() || command.isShowPips() || command.isSetFace() || command.isJump()) {
+					} else if (command.isRoll() || command.isMove() || command.isWaive() || command.isShowPips() || command.isSetFace() || command.isJump() || command.isShowAllAllowedMoves()) {
 						view.displayCommandTemporarilyInvalid();
 					} else if (command.isShowHint()) {
 						view.showHint();

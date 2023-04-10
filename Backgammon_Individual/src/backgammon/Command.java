@@ -15,6 +15,7 @@ public class Command {
 		WAIVE,
 		PIP,
 		HINT,
+		ALLMOVES,
 		JUMP,
 		SETFACE
 	}
@@ -23,6 +24,7 @@ public class Command {
 	private String moveFrom, moveTo;
 	private String[] dice;
 	private int[] faces;
+	private static String[] allowedMoves = new String[100];
 	
 	Command (String input) {
 		this.faces = new int[2];
@@ -41,6 +43,8 @@ public class Command {
 			commandType = CommandType.PIP;
 		} else if (inputFormattedUpper.equals("H")) {
 			commandType = CommandType.HINT;
+		} else if (inputFormattedUpper.equals("M")) {
+			commandType = CommandType.ALLMOVES;
 		} else if (inputFormattedUpper.equals("J")) {
 			commandType = CommandType.JUMP;
 		} else if (inputFormattedUpper.matches("R[1-6][1-6]")) {
@@ -53,8 +57,14 @@ public class Command {
 			commandType = CommandType.MOVE;
 			moveFrom = inputFormattedUpper.substring(0, 2);
 			moveTo = inputFormattedUpper.substring(2, 4);
+		} else if (input.matches("([1-9]|0[1-9]|[1-9][0-9])") && allowedMoves[Integer.parseInt(input) - 1] != null) {
+            commandType = CommandType.MOVE;
+            moveFrom = allowedMoves[Integer.parseInt(input) - 1].substring(0, 2);
+            moveTo = allowedMoves[Integer.parseInt(input) - 1].substring(2, 4);
 		}
 	}
+	
+	
 	
 	private int suitToBar (String character) {
 		return switch (character) {
@@ -76,8 +86,8 @@ public class Command {
 	
 	public static boolean isValid (String input) {
 		String inputFormattedUpper = input.trim().toUpperCase();
-		return inputFormattedUpper.equals("Q") || inputFormattedUpper.equals("R") || inputFormattedUpper.equals("S") || inputFormattedUpper.equals("W") || inputFormattedUpper.equals("P") || inputFormattedUpper.equals("H") || inputFormattedUpper.equals("J")
-				|| inputFormattedUpper.matches("R[1-6][1-6]") || inputFormattedUpper.matches("(0[1-9]|1[0-9]|2[0-4]|B[1-2])(0[1-9]|1[0-9]|2[0-4]|E[1-2])");
+		return inputFormattedUpper.equals("Q") || inputFormattedUpper.equals("R") || inputFormattedUpper.equals("S") || inputFormattedUpper.equals("W") || inputFormattedUpper.equals("P") || inputFormattedUpper.equals("H") || inputFormattedUpper.equals("M") || inputFormattedUpper.equals("J")
+				|| inputFormattedUpper.matches("R[1-6][1-6]") || inputFormattedUpper.matches("(0[1-9]|1[0-9]|2[0-4]|B[1-2])(0[1-9]|1[0-9]|2[0-4]|E[1-2])") || input.matches("([1-9]|0[1-9]|[1-9][0-9])") && allowedMoves[Integer.parseInt(input) - 1] != null;
 	}
 	
 	public static boolean isText (String input) {
@@ -112,6 +122,10 @@ public class Command {
 	
 	public boolean isShowHint () {
 		return commandType == CommandType.HINT;
+	}
+	
+	public boolean isShowAllAllowedMoves () {
+		return commandType == CommandType.ALLMOVES;
 	}
 	
 	public boolean isJump () {
@@ -162,5 +176,13 @@ public class Command {
 			case 2 -> faces[1];
 			default -> 0;
 		};
+	}
+	
+	public static void setAllowedMoves (int index, String moveIndex) {
+		allowedMoves[index] = moveIndex;
+	}
+	
+	public static String[] getAllowedMoves () {
+		return allowedMoves;
 	}
 }
