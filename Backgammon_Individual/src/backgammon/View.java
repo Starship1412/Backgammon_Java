@@ -5,7 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.Scanner;
+import java.util.Stack;
 
 /**
  * This class displays to the console and gets user input from the keyboard.
@@ -42,10 +43,12 @@ public class View {
 		String numberStringMatch = Integer.toString(board.getMatchNumber());
 		String numberStringMatchRound = Integer.toString(board.getMatchRoundNumber());
 		int numberSpacesCurrentPlayerPips = 4 - numberStringCurrentPlayerPips.length();
-		int numberSpacesPlayerREDScore = 10 - numberStringPlayerREDScore.length();
-		int numberSpacesPlayerWHITEScore = 10 - numberStringPlayerWHITEScore.length();
-		int numberSpacesMatch = 6 - numberStringMatch.length();
-		int numberSpacesMatchRound = 6 - numberStringMatchRound.length();
+		int numberSpacesPlayerREDScoreFormer = 7 - numberStringPlayerREDScore.length() / 2;
+		int numberSpacesPlayerREDScoreLater = 8 - (numberStringPlayerREDScore.length() + 1) / 2;
+		int numberSpacesPlayerWHITEScoreFormer = 7 - numberStringPlayerWHITEScore.length() / 2;
+		int numberSpacesPlayerWHITEScoreLater = 8 - (numberStringPlayerWHITEScore.length() + 1) / 2;
+		int numberSpacesMatch = 5 - numberStringMatch.length();
+		int numberSpacesMatchRound = 5 - numberStringMatchRound.length();
 		int numberUpLane = Math.max(board.getSize("upLane"),1);
 		int numberDownLane = Math.max(board.getSize("downLane"),1);
 		System.out.println("|---------------------------------------------------------------------|---------------|");
@@ -55,7 +58,7 @@ public class View {
 			System.out.print("| Current player's color: " + DisplayColour.BOLD_WHITE + board.getPlayer(0).getColourName() + DisplayColour.RESET + "                             pips: " + board.getPlayer(0).getPips());
 		for (int i = 0; i < numberSpacesCurrentPlayerPips; i++)
             System.out.print(" ");
-		System.out.print("|  Match: " + board.getMatchNumber());
+		System.out.print("|   Match: " + board.getMatchNumber());
 		for (int i = 0; i < numberSpacesMatch; i++)
             System.out.print(" ");
 		System.out.println("|");
@@ -95,7 +98,7 @@ public class View {
 				System.out.print(" ");
 			System.out.print("           |");
 		}
-		System.out.print("  Round: " + board.getMatchRoundNumber());
+		System.out.print("   Round: " + board.getMatchRoundNumber());
 		for (int i = 0; i < numberSpacesMatchRound; i++)
             System.out.print(" ");
 		System.out.println("|");
@@ -103,8 +106,11 @@ public class View {
 		System.out.println("| " + DisplayColour.WHITE + "13   14   15   16   17   18" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "B2" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "19   20   21   22   23   24" + DisplayColour.RESET + " | " + DisplayColour.RED + "E1" + DisplayColour.RESET + " |   " + DisplayColour.BOLD_RED + board.getPlayer(1).getColourName() + DisplayColour.RESET + " Score   |");
 		System.out.print("| " + DisplayColour.RED + "12   11   10   09   08   07" + DisplayColour.RESET);
 		System.out.print(" | " + DisplayColour.WHITE + "B2"  + DisplayColour.RESET + " | ");
-		System.out.print(DisplayColour.RED + "06   05   04   03   02   01" + DisplayColour.RESET + " | " + DisplayColour.RED + "E1" + DisplayColour.RESET + " |     " + board.getPlayer(1).getScore());
-		for (int i = 0; i < numberSpacesPlayerREDScore; i++)
+		System.out.print(DisplayColour.RED + "06   05   04   03   02   01" + DisplayColour.RESET + " | " + DisplayColour.RED + "E1" + DisplayColour.RESET + " |");
+		for (int i = 0; i < numberSpacesPlayerREDScoreFormer; i++)
+            System.out.print(" ");
+		System.out.print(board.getPlayer(1).getScore());
+		for (int i = 0; i < numberSpacesPlayerREDScoreLater; i++)
             System.out.print(" ");
 		System.out.println("|");
 		
@@ -193,8 +199,11 @@ public class View {
 		System.out.print("| " + DisplayColour.WHITE + "12   11   10   09   08   07" + DisplayColour.RESET);
 		System.out.print(" | " + DisplayColour.RED + "B1" + DisplayColour.RESET + " | ");
 		System.out.println(DisplayColour.WHITE + "06   05   04   03   02   01" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "E2" + DisplayColour.RESET + " |  " + DisplayColour.BOLD_WHITE + board.getPlayer(2).getColourName() + DisplayColour.RESET + " Score  |");
-		System.out.print("| " + DisplayColour.RED + "13   14   15   16   17   18" + DisplayColour.RESET + " | " + DisplayColour.RED + "B1" + DisplayColour.RESET + " | " + DisplayColour.RED + "19   20   21   22   23   24" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "E2" + DisplayColour.RESET + " |     " + board.getPlayer(2).getScore());
-		for (int i = 0; i < numberSpacesPlayerWHITEScore; i++)
+		System.out.print("| " + DisplayColour.RED + "13   14   15   16   17   18" + DisplayColour.RESET + " | " + DisplayColour.RED + "B1" + DisplayColour.RESET + " | " + DisplayColour.RED + "19   20   21   22   23   24" + DisplayColour.RESET + " | " + DisplayColour.WHITE + "E2" + DisplayColour.RESET + " |");
+		for (int i = 0; i < numberSpacesPlayerWHITEScoreFormer; i++)
+            System.out.print(" ");
+		System.out.print(board.getPlayer(2).getScore());
+		for (int i = 0; i < numberSpacesPlayerWHITEScoreLater; i++)
             System.out.print(" ");
 		System.out.println("|");
 		System.out.println("|---------------------------------------------------------------------|---------------|");
@@ -445,15 +454,15 @@ public class View {
 	public void showHint () {
 		System.out.println("S: Start Backgammon or restart Backgammon.");
 		System.out.println("R: Roll the dice.");
-		System.out.println("R + 1 digit + 1 digit: roll the specified number of dice.");
-		System.out.println("W: Abandon the turn.");
-		System.out.println("P: Check the current player's pips.");
+		System.out.println("R + 1 digit + 1 digit: Roll the dice to get 2 dice numbers as specified.");
+		System.out.println("W: Waive current turn.");
+		System.out.println("P: View 2 players' pips.");
 		System.out.println("2 digits + 2 digits: Move a piece on Lane.");
-		System.out.println("B + 1 digit + 2 digits: move pieces from Bar to outside.");
-		System.out.println("2 digits + E + 1 digit: Move a piece to Terminus.");
+		System.out.println("B + 1 digit + 2 digits: Move a piece from Bar to Lane.");
+		System.out.println("2 digits + E + 1 digit: Move a piece from Lane to Endpoint.");
 		System.out.println("H: View all allowed commands.");
 		System.out.println("M: View all allowed moves.");
-		System.out.println("J: Regardless of whether or not the current round is completed, the current round will end and the next round will be played.");
+		System.out.println("J: Regardless of whether or not the current match round is completed, the current match round will end and the next match round will be played.");
 		System.out.println("Q: Quit the game.");
 		System.out.println("If you type \"test:file_name.txt\", the game will read the commands in that file.");
 	}

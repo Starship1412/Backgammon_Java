@@ -7,7 +7,7 @@ package backgammon;
 
 public class Command {
 	
-	private enum CommandType {
+	public enum CommandType { // Set it as a public class just because the Test class needs it.
 		ROLL,
 		MOVE,
 		QUIT,
@@ -184,5 +184,9 @@ public class Command {
 	
 	public static String[] getAllowedMoves () {
 		return allowedMoves;
+	}
+	
+	public CommandType getCommandType () {
+	    return commandType;
 	}
 }
