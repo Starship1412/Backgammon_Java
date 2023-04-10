@@ -24,7 +24,7 @@ public class Command {
 	private String moveFrom, moveTo;
 	private String[] dice;
 	private int[] faces;
-	private static String[] allowedMoves = new String[100];
+	private static String[] allowedMoves = new String[98];
 	
 	Command (String input) {
 		this.faces = new int[2];
