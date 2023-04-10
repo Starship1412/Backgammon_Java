@@ -242,23 +242,23 @@ public class View {
 	    String[] suffixes = new String[25];
 	    if (board.getPlayer(0) == board.getPlayer(1)) {
 	    	prefixes[0] = "B1";
-			suffixes[0] = "E1";
+			suffixes[24] = "E1";
 		    for (int i = 1; i <= 24; i++) {
 		        prefixes[25 - i] = String.format("%02d", i);
-		        suffixes[25 - i] = String.format("%02d", i);
+		        suffixes[24 - i] = String.format("%02d", i);
 		    }
 	    } else if (board.getPlayer(0) == board.getPlayer(2)) {
 	    	prefixes[0] = "B2";
-		    suffixes[0] = "E2";
+		    suffixes[24] = "E2";
 		    for (int i = 1; i <= 24; i++) {
 		    	prefixes[25 - i] = String.format("%02d", i);
-		        suffixes[25 - i] = String.format("%02d", i);
+		        suffixes[24 - i] = String.format("%02d", i);
 		    }
 	    }
 	    for (int i = 0; i < Command.getAllowedMoves().length; i++)
 	        Command.setAllowedMoves(i, null);
 	    for (int i = 0; i < prefixes.length; i++)
-	        for (int j = 0; j < suffixes.length; j++) {
+	        for (int j = i; j < suffixes.length; j++) {
 	        	inputCleaned = prefixes[i] + suffixes[j];
 	        	inputRaw = inputCleaned;
                 if (board.getPlayer(0) == board.getPlayer(2)) {

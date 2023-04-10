@@ -15,7 +15,7 @@ public class Command {
 		WAIVE,
 		PIP,
 		HINT,
-		ALLMOVES,
+		SHOWALLALLOWEDMOVES,
 		JUMP,
 		SETFACE
 	}
@@ -24,7 +24,7 @@ public class Command {
 	private String moveFrom, moveTo;
 	private String[] dice;
 	private int[] faces;
-	private static String[] allowedMoves = new String[98];
+	private static String[] allowedMoves = new String[99];
 	
 	Command (String input) {
 		this.faces = new int[2];
@@ -44,7 +44,7 @@ public class Command {
 		} else if (inputFormattedUpper.equals("H")) {
 			commandType = CommandType.HINT;
 		} else if (inputFormattedUpper.equals("M")) {
-			commandType = CommandType.ALLMOVES;
+			commandType = CommandType.SHOWALLALLOWEDMOVES;
 		} else if (inputFormattedUpper.equals("J")) {
 			commandType = CommandType.JUMP;
 		} else if (inputFormattedUpper.matches("R[1-6][1-6]")) {
@@ -125,7 +125,7 @@ public class Command {
 	}
 	
 	public boolean isShowAllAllowedMoves () {
-		return commandType == CommandType.ALLMOVES;
+		return commandType == CommandType.SHOWALLALLOWEDMOVES;
 	}
 	
 	public boolean isJump () {
