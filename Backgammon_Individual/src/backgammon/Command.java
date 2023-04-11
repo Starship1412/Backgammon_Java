@@ -25,12 +25,13 @@ public class Command {
 	private String[] dice;
 	private int[] faces;
 	private static String[] allowedMoves = new String[99];
+	private String inputFormattedUpper;
 	
 	Command (String input) {
 		this.faces = new int[2];
 		this.dice = new String[2];
 		
-		String inputFormattedUpper = input.trim().toUpperCase();
+		inputFormattedUpper = input.trim().toUpperCase();
 		if (inputFormattedUpper.equals("Q")) {
 			commandType = CommandType.QUIT;
 		} else if (inputFormattedUpper.equals("R")) {
@@ -95,9 +96,12 @@ public class Command {
 		return inputFormatted.matches("test:(.+\\.txt)");
 	}
 	
-	public static String getText (String input) {
-		String inputFormatted = input.trim();
-		return inputFormatted.substring(5);
+	public static String getText(String input) {
+	    String inputFormatted = input.trim();
+	    if (inputFormatted.length() > 5) {
+	        return inputFormatted.substring(5);
+	    } else 
+	        return ""; // Only for Test.
 	}
 	
 	public boolean isQuit () {
@@ -186,7 +190,11 @@ public class Command {
 		return allowedMoves;
 	}
 	
-	public CommandType getCommandType () {
+	public CommandType getCommandType () { // Only for Test.
 	    return commandType;
 	}
+	
+	public String toString() { // Only for Test.
+        return inputFormattedUpper;
+    }
 }

@@ -1,5 +1,6 @@
 package backgammon;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -81,6 +82,11 @@ public class Board {
 	
 	
 	
+	public Board (InputStream inputStream) { // Only for Test.
+        this.in = new Scanner(inputStream);
+        this.players = new Player[3];
+    }
+	
 	public void initializePlayer (int playerIndex) {
 		String playerName = in.nextLine();
 		if (Command.isText(playerName))
@@ -110,33 +116,7 @@ public class Board {
 		}
     }
 	
-//	public void initializeBoard () {
-//		for (int i = 0; i < 24; i++) {
-//	        lanes.get(i).clear();
-//	    }
-//	    for (int i = 0; i < 2; i++) {
-//	    	bars.get(i).clear();
-//	    }
-//	    for (int i = 0; i < 2; i++) {
-//	    	endpoints.get(i).clear();
-//	    }
-//		for (int i = 0; i < 2; i++) {
-//			lanes.get(0).push(new Piece(PieceEntity.W));
-//			lanes.get(23).push(new Piece(PieceEntity.R));
-//		}
-//		for (int i = 0; i < 3; i++) {
-//			lanes.get(16).push(new Piece(PieceEntity.W));
-//			lanes.get(7).push(new Piece(PieceEntity.R));
-//		}
-//		for (int i = 0; i < 5; i++) {
-//			lanes.get(11).push(new Piece(PieceEntity.W));
-//			lanes.get(18).push(new Piece(PieceEntity.W));
-//			lanes.get(5).push(new Piece(PieceEntity.R));
-//			lanes.get(12).push(new Piece(PieceEntity.R));
-//		}
-//	}
-	
-	public void initializeBoard () {						// just for test
+	public void initializeBoard () {
 		for (int i = 0; i < 24; i++) {
 	        lanes.get(i).clear();
 	    }
@@ -146,19 +126,45 @@ public class Board {
 	    for (int i = 0; i < 2; i++) {
 	    	endpoints.get(i).clear();
 	    }
-		for (int i = 0; i < 1; i++) {
-			lanes.get(3).push(new Piece(PieceEntity.R));
-			lanes.get(6).push(new Piece(PieceEntity.W));
-			lanes.get(20).push(new Piece(PieceEntity.W));
-			lanes.get(3).push(new Piece(PieceEntity.R));
-			lanes.get(7).push(new Piece(PieceEntity.W));
-			lanes.get(11).push(new Piece(PieceEntity.R));
+		for (int i = 0; i < 2; i++) {
+			lanes.get(0).push(new Piece(PieceEntity.W));
+			lanes.get(23).push(new Piece(PieceEntity.R));
 		}
-		for (int i = 0; i < 12; i++) {
-			endpoints.get(1).push(new Piece(PieceEntity.W));
-			endpoints.get(0).push(new Piece(PieceEntity.R));
+		for (int i = 0; i < 3; i++) {
+			lanes.get(16).push(new Piece(PieceEntity.W));
+			lanes.get(7).push(new Piece(PieceEntity.R));
+		}
+		for (int i = 0; i < 5; i++) {
+			lanes.get(11).push(new Piece(PieceEntity.W));
+			lanes.get(18).push(new Piece(PieceEntity.W));
+			lanes.get(5).push(new Piece(PieceEntity.R));
+			lanes.get(12).push(new Piece(PieceEntity.R));
 		}
 	}
+	
+//	public void initializeBoard () {						// just for test
+//		for (int i = 0; i < 24; i++) {
+//	        lanes.get(i).clear();
+//	    }
+//	    for (int i = 0; i < 2; i++) {
+//	    	bars.get(i).clear();
+//	    }
+//	    for (int i = 0; i < 2; i++) {
+//	    	endpoints.get(i).clear();
+//	    }
+//		for (int i = 0; i < 1; i++) {
+//			lanes.get(3).push(new Piece(PieceEntity.R));
+//			lanes.get(6).push(new Piece(PieceEntity.W));
+//			lanes.get(20).push(new Piece(PieceEntity.W));
+//			lanes.get(3).push(new Piece(PieceEntity.R));
+//			lanes.get(7).push(new Piece(PieceEntity.W));
+//			lanes.get(11).push(new Piece(PieceEntity.R));
+//		}
+//		for (int i = 0; i < 12; i++) {
+//			endpoints.get(1).push(new Piece(PieceEntity.W));
+//			endpoints.get(0).push(new Piece(PieceEntity.R));
+//		}
+//	}
 	
 	public boolean moveIsPossible (Command command) {
 		boolean isPossible = false;
@@ -623,5 +629,11 @@ public class Board {
 	
 	public void setDiceMoveStep (int moveStep1, int moveStep2) {
 		dice.setMoveStep(moveStep1, moveStep2);
+	}
+	
+	public void setPlayer(int index, Player player) { // Only for Test.
+	    if (index >= 0 && index < players.length) {
+	        players[index] = player;
+	    }
 	}
 }

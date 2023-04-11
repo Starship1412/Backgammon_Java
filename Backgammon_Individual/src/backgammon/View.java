@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -21,6 +22,10 @@ public class View {
 	
 	View () {
 		in = new Scanner(System.in);
+	}
+	
+	public View (InputStream inputStream) {
+	    this.in = new Scanner(inputStream);
 	}
 	
 	public void displayWelcome () {
@@ -419,36 +424,45 @@ public class View {
 		System.out.println(board.getPlayer(2).getNamewithColor() + "'s current pips are " + board.getPlayer(2).getPips() + ".");
 	}
 	
-	public String readContentFromFile (String string, Scanner in, String promptMessage) {
-		boolean fileReadSuccess = false;
-        do {
-			String fileName = Command.getText(string);
+	public String readContentFromFile(String string, Scanner in, String promptMessage) {
+	    boolean fileReadSuccess = false;
+	    String fileContent = "";
+	    do {
+	        String fileName = Command.getText(string);
 	        File dir = new File(".");
 	        File[] exactMatches = dir.listFiles((dir1, name) -> name.equals(fileName));
 	        File[] caseInsensitiveMatches = dir.listFiles((dir1, name) -> name.equalsIgnoreCase(fileName));
-	        if ( !( (caseInsensitiveMatches != null && caseInsensitiveMatches.length > 0) && !(exactMatches != null && exactMatches.length > 0) ) ) {
+	        if (!((caseInsensitiveMatches != null && caseInsensitiveMatches.length > 0) && !(exactMatches != null && exactMatches.length > 0))) {
 	            try {
 	                BufferedReader br = new BufferedReader(new FileReader(fileName));
-	                StringBuilder fileContent = new StringBuilder();
+	                StringBuilder fileContentBuilder = new StringBuilder();
 	                String line;
 	                while ((line = br.readLine()) != null)
-	                    fileContent.append(line);
+	                    fileContentBuilder.append(line).append("\n");
 	                br.close();
-	                string = fileContent.toString();
+	                fileContent = fileContentBuilder.toString().trim(); // Store the file content
 	                fileReadSuccess = true;
 	            } catch (FileNotFoundException e) {
 	                System.out.println("Error: File not found - " + e.getMessage());
 	            } catch (IOException e) {
 	                System.out.println("Error reading file: " + e.getMessage());
 	            }
-	        } else
-	        	System.out.println("A file exists with only the case of the file name different from the input file name.");
+	        } else {
+	            System.out.println("A file exists with only the case of the file name different from the input file name.");
+	        }
 	        if (!fileReadSuccess) {
 	            System.out.print(promptMessage);
-	            string = in.nextLine();
+	            if (in.hasNextLine()) { // Add a condition to check if the Scanner has the next line
+	                string = in.nextLine();
+	            } else
+	                break; // If there's no next line, break the loop
 	        }
-        } while (!fileReadSuccess);
-        return string;
+	    } while (!fileReadSuccess);
+	    return fileContent;
+	}
+	
+	public Scanner getScanner() { // Only for Test.
+	    return in;
 	}
 	
 	public void showHint () {
