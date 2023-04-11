@@ -102,7 +102,7 @@ class ViewTest {
     }
 
     @Test
-    void testShowAllAllowedMoves() {
+    void testShowAllAllowedMoves() { // This test checks if the showAllAllowedMoves() function outputs the correct allowed moves.
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         view.showAllAllowedMoves(board);
@@ -124,14 +124,14 @@ class ViewTest {
     }
 
     @Test
-    void testFirstDiceRoll() {
+    void testFirstDiceRoll() { // This test checks if the FirstDiceRoll() function changes the board state as expected.
         board.setDiceFace(command); // Set up a scenario for testing FirstDiceRoll()
         view.FirstDiceRoll(board);
         assertTrue(board.getDiceFace(1) != 0 && board.getDiceFace(2) != 0); // Check if the board state has changed as expected
     }
 
     @Test
-    void testGetStartInformation() {
+    void testGetStartInformation() { // This test checks if the getStartInformation() function correctly reads the provided input and sets the match number.
         String input = "Player 1\nPlayer 2\n5\n";
         InputStream inputStream = new ByteArrayInputStream(input.getBytes());
         View view = new View(inputStream);
@@ -145,7 +145,7 @@ class ViewTest {
     }
 
     @Test
-    void testDisplayCommandNotPossible() {
+    void testDisplayCommandNotPossible() { // This test checks if the displayCommandNotPossible() function outputs the correct message.
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
         view.displayCommandNotPossible();
@@ -154,7 +154,7 @@ class ViewTest {
     }
 
     @Test
-    void testDisplayCommandTemporarilyInvalid() {
+    void testDisplayCommandTemporarilyInvalid() { // This test checks if the displayCommandTemporarilyInvalid() function outputs the correct message.
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
         view.displayCommandTemporarilyInvalid();
@@ -163,7 +163,7 @@ class ViewTest {
     }
 
     @Test
-    void testDisplayOneMatchOver() {
+    void testDisplayOneMatchOver() { // This test checks if the displayOneMatchOver() function outputs the correct message.
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
         board.setMatchNumber(5); // Set up a scenario for testing displayOneMatchOver()
@@ -175,7 +175,7 @@ class ViewTest {
     }
 
     @Test
-    void testDisplayForceJump() {
+    void testDisplayForceJump() { // This test checks if the displayForceJump() function outputs the correct message.
     	ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         view.displayForceJump(board);
@@ -184,7 +184,7 @@ class ViewTest {
     }
 
     @Test
-    void testDisplayWholeMatchOver() {
+    void testDisplayWholeMatchOver() { // This test checks if the displayWholeMatchOver() function outputs the correct message.
     	ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         view.displayWholeMatchOver(board);
@@ -193,7 +193,7 @@ class ViewTest {
     }
 
     @Test
-    void testDisplayQuit() {
+    void testDisplayQuit() { // This test checks if the displayQuit() function outputs the correct message.
     	ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         view.displayQuit();
@@ -202,7 +202,7 @@ class ViewTest {
     }
 
     @Test
-    void testPlayerTurnCurrent() {
+    void testPlayerTurnCurrent() { // This test checks if the playerTurnCurrent() function outputs the correct message.
     	ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         view.playerTurnCurrent(board.getPlayer(1));
@@ -211,7 +211,7 @@ class ViewTest {
     }
 
     @Test
-    void testPlayerTurnNext() {
+    void testPlayerTurnNext() { // This test checks if the playerTurnNext() function outputs the correct message.
     	ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         view.playerTurnNext(board.getPlayer(2));
@@ -220,7 +220,7 @@ class ViewTest {
     }
 
     @Test
-    void testShowDice() {
+    void testShowDice() { // This test checks if the showDice() function outputs the correct message.
     	ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         view.showDice(2, 3);
@@ -229,7 +229,7 @@ class ViewTest {
     }
 
     @Test
-    void testDisplayWaive() {
+    void testDisplayWaive() { // This test checks if the displayWaive() function outputs the correct message.
     	ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         view.displayWaive(board.getPlayer(1));
@@ -238,7 +238,7 @@ class ViewTest {
     }
 
     @Test
-    void testDisplayPips() {
+    void testDisplayPips() { // This test checks if the displayPips() function outputs the correct message.
     	ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         view.displayPips(board);
@@ -247,7 +247,7 @@ class ViewTest {
     }
 
     @Test
-    void testReadContentFromFile() throws IOException {
+    void testReadContentFromFile() throws IOException { // This test checks if the readContentFromFile() function correctly reads the content from the provided file.
         Path tempFile = Files.createTempFile("", ".txt"); // Create a temporary file with some content
         String fileContent = "J\n";
         Files.write(tempFile, fileContent.getBytes());
@@ -261,7 +261,7 @@ class ViewTest {
     }
 
 	@Test
-	void testShowHint() {
+	void testShowHint() { // This test checks if the showHint() function outputs the correct message.
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         view.showHint();
