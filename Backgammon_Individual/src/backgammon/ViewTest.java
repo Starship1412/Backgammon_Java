@@ -24,9 +24,9 @@ class ViewTest {
 	    board = new Board();
 	    board.setPlayer(1, new Player("Player 1", PieceEntity.R)); // Initialize players with the virtual inputs
 	    board.setPlayer(2, new Player("Player 2", PieceEntity.W));
-	    board.setPlayer(0, board.getPlayer(1));
-	    command = new Command("R12");
-        board.setDiceFace(command);
+	    board.setCurrentPlayer(1);
+	    command = new Command("R12"); // Create a command with 2 dice numbers as specified for the move
+        board.setDiceFace(command); // Set the dice face values
         board.initializeBoard();
         board.setMatchNumber(3);
 	}

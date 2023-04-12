@@ -80,6 +80,13 @@ public class Board {
 	    return true;
 	}
 	
+	private int getPlayerNumber () {
+    	if (players[0].getPieceEntity() == PieceEntity.W) {
+    		return 1;
+    	} else // players[0].getPieceEntity() == PieceEntity.R
+    		return 0;
+    }
+	
 	
 	
 	public Board (InputStream inputStream) { // Only for Test.
@@ -117,15 +124,12 @@ public class Board {
     }
 	
 	public void initializeBoard () {
-		for (int i = 0; i < 24; i++) {
+		for (int i = 0; i < 24; i++)
 	        lanes.get(i).clear();
-	    }
-	    for (int i = 0; i < 2; i++) {
+	    for (int i = 0; i < 2; i++)
 	    	bars.get(i).clear();
-	    }
-	    for (int i = 0; i < 2; i++) {
+	    for (int i = 0; i < 2; i++)
 	    	endpoints.get(i).clear();
-	    }
 		for (int i = 0; i < 2; i++) {
 			lanes.get(0).push(new Piece(PieceEntity.W));
 			lanes.get(23).push(new Piece(PieceEntity.R));
@@ -143,15 +147,12 @@ public class Board {
 	}
 	
 //	public void initializeBoard () {						// just for test
-//		for (int i = 0; i < 24; i++) {
+//		for (int i = 0; i < 24; i++)
 //	        lanes.get(i).clear();
-//	    }
-//	    for (int i = 0; i < 2; i++) {
+//	    for (int i = 0; i < 2; i++)
 //	    	bars.get(i).clear();
-//	    }
-//	    for (int i = 0; i < 2; i++) {
+//	    for (int i = 0; i < 2; i++)
 //	    	endpoints.get(i).clear();
-//	    }
 //		for (int i = 0; i < 1; i++) {
 //			lanes.get(3).push(new Piece(PieceEntity.R));
 //			lanes.get(6).push(new Piece(PieceEntity.W));
@@ -251,7 +252,7 @@ public class Board {
 					}
 			}
 			if (!lane.empty())
-				if (getPlayerNumber(players[0]) == command.getToIndex() && lane.peek().getPieceEntity() == players[0].getPieceEntity() && finalStage == 15 && dice.getMoveNumber() != 0) {
+				if (getPlayerNumber() == command.getToIndex() && lane.peek().getPieceEntity() == players[0].getPieceEntity() && finalStage == 15 && dice.getMoveNumber() != 0) {
 					int maxLane = -1;
 					if (dice.getFace(1) != dice.getFace(2)) {
 						int diceIndexToDecrement = -1;
@@ -374,7 +375,7 @@ public class Board {
 			Stack<Piece> fromLane = lanes.get(command.getFromIndex());
 			Stack<Piece> toLane = lanes.get(command.getToIndex());
 			if (!fromLane.empty())
-				if (bars.get(getPlayerNumber(players[0])).empty() && fromLane.peek().getPieceEntity() == players[0].getPieceEntity() && (toLane.empty() || toLane.size() == 1 || fromLane.peek().getPieceEntity() == toLane.peek().getPieceEntity()) && dice.getMoveNumber() != 0) {
+				if (bars.get(getPlayerNumber()).empty() && fromLane.peek().getPieceEntity() == players[0].getPieceEntity() && (toLane.empty() || toLane.size() == 1 || fromLane.peek().getPieceEntity() == toLane.peek().getPieceEntity()) && dice.getMoveNumber() != 0) {
 					if (dice.getFace(1) != dice.getFace(2)) {
 						for (int i = 1; i <= 2; i++)
 							if (dice.getMoveStep(i) != 0 && (players[0] == players[1] && command.getFromIndex() == command.getToIndex() + dice.getFace(i) || players[0] == players[2] && command.getFromIndex() + dice.getFace(i) == command.getToIndex())) {
@@ -557,13 +558,6 @@ public class Board {
 	public void makeDiceSetZero () {
 		dice.setZero();
 	}
-	
-    public int getPlayerNumber (Player player) {
-    	if (players[0].getPieceEntity() == PieceEntity.W) {
-    		return 1;
-    	} else // players[0].getPieceEntity() == PieceEntity.R
-    		return 0;
-    }
     
     public Player getPlayer (int index) {
     	return switch (index) {
@@ -586,8 +580,8 @@ public class Board {
 		return bars.get(index);
 	}
 	
-	public int getEndpointSize (int index) {
-		return endpoints.get(index).size();
+	public Stack<Piece> getEndpoint (int index) {
+		return endpoints.get(index);
 	}
 	
 	public int getMatchNumber () {

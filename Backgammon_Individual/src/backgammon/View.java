@@ -151,10 +151,10 @@ public class View {
 	        } else
 	            System.out.print(BLANK2);
 			if (row==0) {
-				if (board.getEndpointSize(0) < 10)
-			        System.out.print(" | " + DisplayColour.BOLD_RED + "0" + board.getEndpointSize(0) + DisplayColour.RESET + " |---------------|");
+				if (board.getEndpoint(0).size() < 10)
+			        System.out.print(" | " + DisplayColour.BOLD_RED + "0" + board.getEndpoint(0).size() + DisplayColour.RESET + " |---------------|");
 			    else
-			    	System.out.print(" | " + DisplayColour.BOLD_RED + board.getEndpointSize(0) + DisplayColour.RESET + " |---------------|");
+			    	System.out.print(" | " + DisplayColour.BOLD_RED + board.getEndpoint(0).size() + DisplayColour.RESET + " |---------------|");
 			} else
 				System.out.print(" |    |");
 			System.out.println();
@@ -192,10 +192,10 @@ public class View {
 	        } else
 	            System.out.print(lane23.get(numberDownLane - row - 1));
 			if (row == numberDownLane - 1) {
-				if (board.getEndpointSize(1) < 10)
-			        System.out.print(" | " + DisplayColour.BOLD_WHITE + "0" + board.getEndpointSize(1) + DisplayColour.RESET + " |---------------|");
+				if (board.getEndpoint(1).size() < 10)
+			        System.out.print(" | " + DisplayColour.BOLD_WHITE + "0" + board.getEndpoint(1).size() + DisplayColour.RESET + " |---------------|");
 			    else
-			    	System.out.print(" | " + DisplayColour.BOLD_WHITE + board.getEndpointSize(1) + DisplayColour.RESET + " |---------------|");
+			    	System.out.print(" | " + DisplayColour.BOLD_WHITE + board.getEndpoint(1).size() + DisplayColour.RESET + " |---------------|");
 			} else
 				System.out.print(" |    |");
 			System.out.println();
