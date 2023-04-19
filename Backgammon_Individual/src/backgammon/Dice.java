@@ -9,7 +9,7 @@ public class Dice {
     private Random rand;
     private View view;
     
-    Dice () {
+    Dice () { // Constructor: Initializes a new dice object with default face and move values and a new random number generator.
         rand = new Random();
         view = new View();
         this.faces = new int[2];
@@ -27,7 +27,7 @@ public class Dice {
         }
     }
     
-    public int getFace (int index) {
+    public int getFace (int index) { // Returns the value of the specified face, given the index (1 or 2).
     	return switch (index) {
 			case 1 -> faces[0];
 			case 2 -> faces[1];
@@ -35,7 +35,7 @@ public class Dice {
 		};
     }
     
-    public void roll () {
+    public void roll () { // Rolls the dice, updating the face and move values accordingly.
     	moveSteps[0] = 1;
     	moveSteps[1] = 1;
     	moveNumber = moveSteps[0] + moveSteps[1];
@@ -48,7 +48,7 @@ public class Dice {
         }
     }
     
-    public void setZero () {
+    public void setZero () { // Sets the face and move values to zero.
     	moveSteps[0] = 0;
     	moveSteps[1] = 0;
     	moveNumber = moveSteps[0] + moveSteps[1];
@@ -56,7 +56,7 @@ public class Dice {
         faces[1] = 0;
     }
     
-    public void setFace (int face1, int face2) {
+    public void setFace (int face1, int face2) { // Sets the face values of the dice and updates the move values accordingly.
     	moveSteps[0] = 1;
     	moveSteps[1] = 1;
     	moveNumber = moveSteps[0] + moveSteps[1];
@@ -70,7 +70,7 @@ public class Dice {
         view.showDice(face1, face2);
     }
     
-    public int getMoveStep (int index) {
+    public int getMoveStep (int index) { // Returns the move step value for the specified index (1 or 2).
     	return switch (index) {
 			case 1 -> moveSteps[0];
 			case 2 -> moveSteps[1];
@@ -78,17 +78,17 @@ public class Dice {
 		};
     }
     
-    public void setMoveStep (int moveStep1, int moveStep2) {
+    public void setMoveStep (int moveStep1, int moveStep2) { // Sets the move step values and updates the total move number accordingly.
     	moveSteps[0] = moveStep1;
     	moveSteps[1] = moveStep2;
     	moveNumber = moveSteps[0] + moveSteps[1];
     }
     
-    public int getMoveNumber () {
+    public int getMoveNumber () { // Returns the total move number based on the move steps.
     	return moveNumber;
     }
     
-    public void subtractMoveStep (int index) {
+    public void subtractMoveStep (int index) { // Decreases the move step value for the specified index (1 or 2) and updates the total move number.
     	switch (index) {
 			case 1 -> moveSteps[0]--;
 			case 2 -> moveSteps[1]--;

@@ -27,7 +27,7 @@ public class Board {
 	private int matchNumber;
 	private int matchRoundNumber = 1;
 	
-	Board () {
+	Board () { // Constructor: Initializes a new board object by arranging the game board with displays, inputs, dice, players and the kinds of positions of the pieces.
 		view = new View();
 		in = new Scanner(System.in);
 		dice = new Dice();
@@ -45,7 +45,7 @@ public class Board {
 			endpoints.add(new Stack<>());
 	}
 	
-	private int getMaxLaneOnInnerTable (Command command, List<Stack<Piece>> lanes, int playerIndex) {
+	private int getMaxLaneOnInnerTable (Command command, List<Stack<Piece>> lanes, int playerIndex) { // Get the maximum lane on the inner table
 		int maxLane = -1;
 		if (playerIndex == 1) {
 			for (int i = 0; i <= 5; i++) {
@@ -67,7 +67,7 @@ public class Board {
 		return maxLane;
 	}
 	
-	private boolean isPathClear (int start, int end) {
+	private boolean isPathClear (int start, int end) { // Check if the path is clear for a move
 		if (start < 0)
 	        start = 0;
 		if (end > 23)
@@ -80,7 +80,7 @@ public class Board {
 	    return true;
 	}
 	
-	private int getPlayerNumber () {
+	private int getPlayerNumber () { // Get the player number
     	if (players[0].getPieceEntity() == PieceEntity.W) {
     		return 1;
     	} else // players[0].getPieceEntity() == PieceEntity.R
@@ -94,7 +94,7 @@ public class Board {
         this.players = new Player[3];
     }
 	
-	public void initializePlayer (int playerIndex) {
+	public void initializePlayer (int playerIndex) { // Initialize a player with the given index
 		String playerName = in.nextLine();
 		if (Command.isText(playerName))
 			playerName = view.readContentFromFile(playerName, in, "Please enter a new player name: ");
@@ -104,7 +104,7 @@ public class Board {
 			players[playerIndex] = new Player(playerName, PieceEntity.W);
 	}
 	
-	public void endTurn () {
+	public void endTurn () { // End the current player's turn
 		if (!isOneMatchOver()) {
 	        if (players[0] == players[1]) {
 	            players[0] = players[2];
@@ -123,7 +123,7 @@ public class Board {
 		}
     }
 	
-	public void initializeBoard () {
+	public void initializeBoard () { // Initialize the board
 		for (int i = 0; i < 24; i++)
 	        lanes.get(i).clear();
 	    for (int i = 0; i < 2; i++)
@@ -146,28 +146,7 @@ public class Board {
 		}
 	}
 	
-//	public void initializeBoard () {						// just for test
-//		for (int i = 0; i < 24; i++)
-//	        lanes.get(i).clear();
-//	    for (int i = 0; i < 2; i++)
-//	    	bars.get(i).clear();
-//	    for (int i = 0; i < 2; i++)
-//	    	endpoints.get(i).clear();
-//		for (int i = 0; i < 1; i++) {
-//			lanes.get(3).push(new Piece(PieceEntity.R));
-//			lanes.get(6).push(new Piece(PieceEntity.W));
-//			lanes.get(20).push(new Piece(PieceEntity.W));
-//			lanes.get(3).push(new Piece(PieceEntity.R));
-//			lanes.get(7).push(new Piece(PieceEntity.W));
-//			lanes.get(11).push(new Piece(PieceEntity.R));
-//		}
-//		for (int i = 0; i < 12; i++) {
-//			endpoints.get(1).push(new Piece(PieceEntity.W));
-//			endpoints.get(0).push(new Piece(PieceEntity.R));
-//		}
-//	}
-	
-	public boolean moveIsPossible (Command command) {
+	public boolean moveIsPossible (Command command) { // Check if a move is possible after giving a command
 		boolean isPossible = false;
 		if (command.isMoveFromBar() && command.isMoveToLane()) {
 			Stack<Piece> bar = bars.get(command.getFromIndex());
@@ -441,7 +420,7 @@ public class Board {
 		return isPossible;
 	}
 	
-	public void move (Command command) {
+	public void move (Command command) { // Move a piece on the board according to the given command
 		if (command.isMoveFromBar() && command.isMoveToLane()) {
 			Stack<Piece> bar = bars.get(command.getFromIndex());
 			Stack<Piece> lane = lanes.get(command.getToIndex());
@@ -484,11 +463,11 @@ public class Board {
 		}
 	}
 	
-	public void setDiceFace (Command command) {
+	public void setDiceFace (Command command) { // Set the dice face according to the given command
 		dice.setFace(command.getFaceInput(1), command.getFaceInput(2));
 	}
 	
-	public int getDiceFace (int index) {
+	public int getDiceFace (int index) { // Get the dice face for the given index
 		return switch (index) {
 			case 1 -> dice.getFace(1);
 			case 2 -> dice.getFace(2);
@@ -496,18 +475,18 @@ public class Board {
 		};
 	}
 	
-	public boolean isOneMatchOver () {
+	public boolean isOneMatchOver () { // Check if one match in the game is over
 		for (Stack<Piece> endpoint : endpoints)
 			if (endpoint.size() == 15)
 				return true;
 		return false;
 	}
 	
-	public boolean isWholeMatchOver () {
+	public boolean isWholeMatchOver () { // Check if the whole match in the game is over
 		return matchNumber + 1 == matchRoundNumber;
 	}
 	
-	public int getSize (String index) {
+	public int getSize (String index) { // Get the size of the largest stack of pieces for the specified index (upLane or downLane)
 		int upLaneSize = 0;
 		int downLaneSize = 0;
 		List<Stack<Piece>> up12Lanes = lanes.subList(0, 12);
@@ -529,7 +508,7 @@ public class Board {
 		};
 	}
 	
-	public void calculateSetPips () {
+	public void calculateSetPips () { // Calculate the number of pips for each player
 		int pip1 = 0;
 		int pip2 = 0;
    		for (int i=0; i<24; i++) {
@@ -547,19 +526,19 @@ public class Board {
    		}
 	}
 	
-	public void makeDiceRoll () {
+	public void makeDiceRoll () { // Roll the dice
 		dice.roll();
 	}
 	
-	public int getDiceMoveNumber () {
+	public int getDiceMoveNumber () { // Get the total distance number that pieces can be moved
 		return dice.getMoveNumber();
 	}
 	
-	public void makeDiceSetZero () {
+	public void makeDiceSetZero () { // Set the dice values to zero
 		dice.setZero();
 	}
     
-    public Player getPlayer (int index) {
+    public Player getPlayer (int index) { // Get the player object for the given index
     	return switch (index) {
 			case 0 -> players[0];
 			case 1 -> players[1];
@@ -568,52 +547,52 @@ public class Board {
     	};
     }
     
-    public void setCurrentPlayer (int playerIndex) {
+    public void setCurrentPlayer (int playerIndex) { // Set the current player using the given player index
     	players[0] = players[playerIndex];
     }
 	
-	public Stack<Piece> getLane (int index) {
+	public Stack<Piece> getLane (int index) { // Get the lane stack at the specified index
 		return lanes.get(index);
 	}
 	
-	public Stack<Piece> getBar (int index) {
+	public Stack<Piece> getBar (int index) { // Get the bar stack at the specified index
 		return bars.get(index);
 	}
 	
-	public Stack<Piece> getEndpoint (int index) {
+	public Stack<Piece> getEndpoint (int index) { // Get the endpoint stack at the specified index
 		return endpoints.get(index);
 	}
 	
-	public int getMatchNumber () {
+	public int getMatchNumber () { // Get the current match number
 		return matchNumber;
 	}
 	
-	public void setMatchNumber (int matchNumber) {
+	public void setMatchNumber (int matchNumber) { // Set the match number
 		this.matchNumber = matchNumber;
 	}
 	
-	public int getMatchRoundNumber () {
+	public int getMatchRoundNumber () { // Get the match round number
 		return matchRoundNumber;
 	}
 	
-	public void setMatchRoundNumber (int matchRoundNumber) {
+	public void setMatchRoundNumber (int matchRoundNumber) { // Set the match round number
 		this.matchRoundNumber = matchRoundNumber;
 	}
 	
-	public void addMatchRoundNumber () {
+	public void addMatchRoundNumber () { // Increment the match round number
 		matchRoundNumber++;
 	}
 	
-	public void setPlayersScoreToZero () {
+	public void setPlayersScoreToZero () { // Set both players' scores to zero
 		players[1].setScore(0);
 		players[2].setScore(0);
 	}
 	
-	public void addCurrentPlayerScore () {
+	public void addCurrentPlayerScore () { // Add score to the current player
 		players[0].addScore(10);
 	}
 	
-	public int getDiceMoveStep (int index) {
+	public int getDiceMoveStep (int index) { // Get the move step of the dice for the given index
     	return switch (index) {
 			case 1 -> dice.getMoveStep(1);
 			case 2 -> dice.getMoveStep(2);
@@ -621,13 +600,46 @@ public class Board {
 		};
     }
 	
-	public void setDiceMoveStep (int moveStep1, int moveStep2) {
+	public void setDiceMoveStep (int moveStep1, int moveStep2) { // Set the move steps by the given number of dice
 		dice.setMoveStep(moveStep1, moveStep2);
 	}
 	
-	public void setPlayer(int index, Player player) { // Only for Test.
+	public void setPlayer(int index, Player player) { // Only for Test. Set the player object at the given index.
 	    if (index >= 0 && index < players.length) {
 	        players[index] = player;
 	    }
+	}
+	
+	public int getPieceCountAtLane(int laneIndex) { // Get the number of pieces at the specified lane index
+	    return lanes.get(laneIndex).size();
+	}
+	
+	@Override
+	public boolean equals(Object o) { // Only for Test. Check if two board objects are equal.
+	    if (this == o) return true;
+	    if (o == null || getClass() != o.getClass()) return false;
+	    Board board = (Board) o;
+	    boolean lanesEqual = true;
+	    boolean barsEqual = true;
+	    boolean endpointsEqual = true;
+	    for (int i = 0; i < 24; i++) {
+	        if (!this.getLane(i).equals(board.getLane(i))) {
+	            lanesEqual = false;
+	            break;
+	        }
+	    }
+	    for (int i = 0; i < 2; i++) {
+	        if (!this.getBar(i).equals(board.getBar(i))) {
+	            barsEqual = false;
+	            break;
+	        }
+	    }
+	    for (int i = 0; i < 2; i++) {
+	        if (!this.getEndpoint(i).equals(board.getEndpoint(i))) {
+	            endpointsEqual = false;
+	            break;
+	        }
+	    }
+	    return lanesEqual && barsEqual && endpointsEqual;
 	}
 }

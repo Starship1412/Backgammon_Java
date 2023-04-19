@@ -11,21 +11,21 @@ public enum PieceEntity {
 	
 	private String symbol, display, colour;
 	
-	PieceEntity (String symbol, String display, String colour) {
+	PieceEntity (String symbol, String display, String colour) { // Constructor: Initializes a new piece entity with a symbol, display, and color.
 		this.symbol = symbol;
 		this.display = display;
 		this.colour = colour;
 	}
 	
-	public String getDisplay () {
+	public String getDisplay () { // Returns the display value of the piece entity.
 		return display;
 	}
 	
-	public String getColour () {
+	public String getColour () { // Returns the color value of the piece entity.
 		return colour;
 	}
 	
-	public String toString () {
+	public String toString () { // Returns a string representation of the piece entity, including its symbol.
 		return symbol;
 	}
 }

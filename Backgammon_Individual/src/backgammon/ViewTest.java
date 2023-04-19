@@ -96,7 +96,7 @@ class ViewTest {
         String input = "Q\n"; // Prepare input stream with simulated user input
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
         System.setIn(inputStream);
-        View view = new View(); // Instantiate your view class
+        View view = new View(); // Instantiate View class
         Command command = view.getUserInput(board); // Call the getUserInput method
         assertEquals("Q", command.toString()); // Assert that the returned command is "Q" as expected
     }
@@ -252,8 +252,8 @@ class ViewTest {
         String fileContent = "J\n";
         Files.write(tempFile, fileContent.getBytes());
         String inputString = tempFile.toString() + "\n"; // Create a Scanner with the temporary file's path as input
-        Scanner scanner = new Scanner(new ByteArrayInputStream(inputString.getBytes()));
-        String promptMessage = "Please enter the file name: "; // Read the content from the temporary file
+        Scanner scanner = new Scanner(new ByteArrayInputStream(inputString.getBytes())); // Read the content from the temporary file
+        String promptMessage = "Please enter the file name: ";
         String actualContent = view.readContentFromFile("test:M.txt", scanner, promptMessage); // M.txt is a file located locally on my computer.
         assertEquals(fileContent.replaceAll("\\s+", " ").trim(), actualContent.replaceAll("\\s+", " ").trim()); // Compare the expected content with the actual content read from the file after normalizing strings
         Files.delete(tempFile); // Delete the temporary file

@@ -27,7 +27,7 @@ public class Command {
 	private static String[] allowedMoves = new String[99];
 	private String inputFormattedUpper;
 	
-	Command (String input) {
+	Command (String input) { // Constructor: Initializes a new command object by parsing the input string.
 		this.faces = new int[2];
 		this.dice = new String[2];
 		
@@ -65,9 +65,7 @@ public class Command {
 		}
 	}
 	
-	
-	
-	private int suitToBar (String character) {
+	private int suitToBar (String character) { // Converts a bar character to its corresponding index value.
 		return switch (character) {
 			case "B1" -> 0;
 			case "B2" -> 1;
@@ -75,7 +73,7 @@ public class Command {
 		};
 	}
 	
-	private int suitToEndpoint (String character) {
+	private int suitToEndpoint (String character) { // Converts an endpoint character to its corresponding index value.
 		return switch (character) {
 			case "E1" -> 0;
 			case "E2" -> 1;
@@ -85,18 +83,18 @@ public class Command {
 	
 	
 	
-	public static boolean isValid (String input) {
+	public static boolean isValid (String input) { // Checks if the input string represents a valid command.
 		String inputFormattedUpper = input.trim().toUpperCase();
 		return inputFormattedUpper.equals("Q") || inputFormattedUpper.equals("R") || inputFormattedUpper.equals("S") || inputFormattedUpper.equals("W") || inputFormattedUpper.equals("P") || inputFormattedUpper.equals("H") || inputFormattedUpper.equals("M") || inputFormattedUpper.equals("J")
 				|| inputFormattedUpper.matches("R[1-6][1-6]") || inputFormattedUpper.matches("(0[1-9]|1[0-9]|2[0-4]|B[1-2])(0[1-9]|1[0-9]|2[0-4]|E[1-2])") || input.matches("([1-9]|0[1-9]|[1-9][0-9])") && allowedMoves[Integer.parseInt(input) - 1] != null;
 	}
 	
-	public static boolean isText (String input) {
+	public static boolean isText (String input) { // Checks if the input string represents a text command.
 		String inputFormatted = input.trim();
 		return inputFormatted.matches("test:(.+\\.txt)");
 	}
 	
-	public static String getText(String input) {
+	public static String getText(String input) { // Retrieves the text from the input string if it's a text command.
 	    String inputFormatted = input.trim();
 	    if (inputFormatted.length() > 5) {
 	        return inputFormatted.substring(5);
@@ -104,77 +102,77 @@ public class Command {
 	        return ""; // Only for Test.
 	}
 	
-	public boolean isQuit () {
+	public boolean isQuit () { // Checks if the command is a QUIT command.
 		return commandType == CommandType.QUIT;
 	}
 	
-	public boolean isRoll () {
+	public boolean isRoll () { // Checks if the command is a ROLL command.
 		return commandType == CommandType.ROLL;
 	}
 	
-	public boolean isStart () {
+	public boolean isStart () { // Checks if the command is a START command.
 		return commandType == CommandType.START;
 	}
 	
-	public boolean isWaive () {
+	public boolean isWaive () { // Checks if the command is a WAIVE command.
 		return commandType == CommandType.WAIVE;
 	}
 	
-	public boolean isShowPips () {
+	public boolean isShowPips () { // Checks if the command is a PIP command.
 		return commandType == CommandType.PIP;
 	}
 	
-	public boolean isShowHint () {
+	public boolean isShowHint () { // Checks if the command is a HINT command.
 		return commandType == CommandType.HINT;
 	}
 	
-	public boolean isShowAllAllowedMoves () {
+	public boolean isShowAllAllowedMoves () { // Checks if the command is a SHOWALLALLOWEDMOVES command.
 		return commandType == CommandType.SHOWALLALLOWEDMOVES;
 	}
 	
-	public boolean isJump () {
+	public boolean isJump () { // Checks if the command is a JUMP command.
 		return commandType == CommandType.JUMP;
 	}
 	
-	public boolean isSetFace () {
+	public boolean isSetFace () { // Checks if the command is a SETFACE command.
 		return commandType == CommandType.SETFACE;
 	}
 	
-	public boolean isMove () {
+	public boolean isMove () { // Checks if the command is a MOVE command.
 		return commandType == CommandType.MOVE;
 	}
 	
-	public boolean isMoveFromBar () {
+	public boolean isMoveFromBar () { // Checks if the move is from a bar.
 		return moveFrom.matches("B1|B2");
 	}
 	
-	public boolean isMoveFromLane () {
+	public boolean isMoveFromLane () { // Checks if the move is from a lane.
 		return moveFrom.matches("0[1-9]|1[0-9]|2[0-4]");
 	}
 	
-	public boolean isMoveToLane () {
+	public boolean isMoveToLane () { // Checks if the move is to a lane.
 		return moveTo.matches("0[1-9]|1[0-9]|2[0-4]");
 	}
 	
-	public boolean isMoveToEndpoint () {
+	public boolean isMoveToEndpoint () { // Checks if the move is to an endpoint.
 		return moveTo.matches("E1|E2");
 	}
 	
-	public int getFromIndex () {
+	public int getFromIndex () { // Returns the index of the starting position for the move.
 		if (isMoveFromLane())
 			return Integer.parseInt(moveFrom) - 1;
 		else // isMoveFromBar()
 			return suitToBar(moveFrom);
 	}
 	
-	public int getToIndex () {
+	public int getToIndex () { // Returns the index of the destination position for the move.
 		if (isMoveToLane())
 			return Integer.parseInt(moveTo) - 1;
 		else // isMoveToEndpoint()
 			return suitToEndpoint(moveTo);
 	}
 	
-	public int getFaceInput (int index) {
+	public int getFaceInput (int index) { // Returns the specified face value (1 or 2) if the command is a SETFACE command.
 		return switch (index) {
 			case 1 -> faces[0];
 			case 2 -> faces[1];
@@ -182,19 +180,19 @@ public class Command {
 		};
 	}
 	
-	public static void setAllowedMoves (int index, String moveIndex) {
+	public static void setAllowedMoves (int index, String moveIndex) { // Sets an allowed move at the specified index in the allowedMoves array.
 		allowedMoves[index] = moveIndex;
 	}
 	
-	public static String[] getAllowedMoves () {
+	public static String[] getAllowedMoves () { // Returns the array of allowed moves.
 		return allowedMoves;
 	}
 	
-	public CommandType getCommandType () { // Only for Test.
+	public CommandType getCommandType () { // Only for Test. Returns the CommandType of the command object.
 	    return commandType;
 	}
 	
-	public String toString() { // Only for Test.
+	public String toString() { // Only for Test. Returns a string representation of the command object.
         return inputFormattedUpper;
     }
 }

@@ -20,28 +20,28 @@ public class View {
 	private Scanner in;
 	private Command command;
 	
-	View () {
+	View () { // Constructor: Initializes a new View object.
 		in = new Scanner(System.in);
 	}
 	
-	public View (InputStream inputStream) {
+	public View (InputStream inputStream) { // Constructor: Initializes a new View object with a specified input stream.
 	    this.in = new Scanner(inputStream);
 	}
 	
-	public void displayWelcome () {
+	public void displayWelcome () { // Displays a welcome message when the game starts.
 		System.out.println("Welcome to Backgammon");
 	}
 	
-	public void displayStart () {
+	public void displayStart () { // Displays a start menu message with options to start, restart, exit the game, or view allowed commands.
 		System.out.println("Enter S to start the game or restart the game. Enter Q to exit the game. Enter H to view all allowed commands.");
 		System.out.println("Note that some commands are temporarily invalid in some cases.");
 	}
 	
-	public void displayRestart () {
+	public void displayRestart () { // Displays a message when the game is restarted.
 		System.out.println("The game starts over from the beginning!");
 	}
 	
-	public void displayPiece (Board board) {
+	public void displayPiece (Board board) { // Displays the board, players, and scores to the console.
 		String numberStringCurrentPlayerPips = Integer.toString(board.getPlayer(0).getPips());
 		String numberStringPlayerREDScore = Integer.toString(board.getPlayer(1).getScore());
 		String numberStringPlayerWHITEScore = Integer.toString(board.getPlayer(2).getScore());
@@ -214,7 +214,7 @@ public class View {
 		System.out.println("|---------------------------------------------------------------------|---------------|");
 	}
 	
-	public Command getUserInput (Board board) {
+	public Command getUserInput (Board board) { // Get user input and validate the command
 		boolean commandEntered = false;
 		do {
 			System.out.print("Enter command: ");
@@ -248,7 +248,7 @@ public class View {
 		return command;
 	}
 	
-	public void showAllAllowedMoves(Board board) {
+	public void showAllAllowedMoves(Board board) { // Show all allowed moves for the current player
 		String inputCleaned, inputRaw;
 		int moveStep1, moveStep2;
 		int outputCount = 0;
@@ -306,7 +306,7 @@ public class View {
         	System.out.println("You have no moves available at this time, and must forfeit your turn if you have already rolled the dice.");
 	}
 	
-	public void FirstDiceRoll (Board board) {
+	public void FirstDiceRoll (Board board) { // Determine the first player based on the first dice roll
 		do {
 			board.makeDiceRoll();
 			if (board.getDiceFace(1) > board.getDiceFace(2)) {
@@ -321,7 +321,7 @@ public class View {
 		} while (board.getDiceFace(1) == board.getDiceFace(2));
 	}
 	
-	public void getStartInformation (Board board) {
+	public void getStartInformation (Board board) { // Get starting information such as player names and match length
 		boolean validInput = false;
 		String promptMessage = "Please enter the length of the match:";
 		System.out.print("Enter name of player RED: ");
@@ -354,15 +354,15 @@ public class View {
         System.out.println("The length of the match is: " + board.getMatchNumber());
 	}
 	
-	public void displayCommandNotPossible () {
+	public void displayCommandNotPossible () { // Display a message when the entered command is not possible
 		System.out.println("That play is not possible. Try again.");
 	}
 	
-	public void displayCommandTemporarilyInvalid () {
+	public void displayCommandTemporarilyInvalid () { // Display a message when the entered command is temporarily invalid
 		System.out.println("The command is temporarily invalid. Try again.");
 	}
 	
-	public void displayOneMatchOver (Board board) {
+	public void displayOneMatchOver (Board board) { // Display a message when one match round is over
 		System.out.println("Round " + board.getMatchRoundNumber() + " of the competition is over. " + board.getPlayer(0).getNamewithColor() + " wins the current match round.");
 		if (board.getMatchNumber() == 1) {
 			System.out.println("There is " + board.getMatchNumber() + " round in total, so now the whole match is over.");
@@ -374,7 +374,7 @@ public class View {
 			System.out.println("so there are still " + (board.getMatchNumber() - board.getMatchRoundNumber()) + " rounds left to play. Please press J to play the next round.");
 	}
 	
-	public void displayForceJump (Board board) {
+	public void displayForceJump (Board board) { // Display a message when the match round is forced to end early
 		System.out.println("The current match round was forced to end early. No player accumulates points because of this.");
 		if (board.getMatchNumber() == 1) {
 			System.out.println("There is " + board.getMatchNumber() + " round in total, so now the whole match is over.");
@@ -386,7 +386,7 @@ public class View {
 			System.out.println("so there are still " + (board.getMatchNumber() - board.getMatchRoundNumber()) + " rounds left to play. The next match round has already begun.");
 	}
 	
-	public void displayWholeMatchOver (Board board) {
+	public void displayWholeMatchOver (Board board) { // Display a message when the whole match is over
 		if (board.getPlayer(1).getScore() > board.getPlayer(2).getScore()) {
 			System.out.println(board.getPlayer(1).getNamewithColor() + " wins the whole match.");
 		} else if (board.getPlayer(1).getScore() < board.getPlayer(2).getScore()) {
@@ -396,35 +396,35 @@ public class View {
 		System.out.println("Game over.");
 	}
 	
-	public void displayQuit () {
+	public void displayQuit () { // Display a message when the user quits
 		System.out.println("Quit.");
 	}
 	
-	public void playerTurnCurrent (Player player) {
+	public void playerTurnCurrent (Player player) { // Display a message when the current player's turn is over
 		System.out.println(player + "(" + player.getColourName() + ") finishes moving.");
 	}
 	
-	public void playerTurnNext (Player player) {
+	public void playerTurnNext (Player player) { // Display a message when the next player's turn starts
 		System.out.println("Now it's the " + player + "(" + player.getColourName() + ")'s turn to play.");
 	}
 	
-	public void showDice (int face1, int face2) {
+	public void showDice (int face1, int face2) { // Show the result of the dice roll
 		if (face1 != face2) {
 			System.out.println("The number of 2 dice thrown are " + face1 + " and " + face2 + ". So please move 2 times.");
 		} else if (face1 == face2)
 			System.out.println("The number of 2 dice thrown are " + face1 + " and " + face2 + ", which means that the number of moveable dice is doubled because 2 dice rolled show the same number. So please move 4 times.");
 	}
 	
-	public void displayWaive (Player player) {
+	public void displayWaive (Player player) { // Display a message when a player waives his or her turn
 		System.out.println(player + " forfeits the turn as he has no pieces to play legally or he doesn't know how to move the pieces further. Now skip to the other player's turn.");
 	}
 	
-	public void displayPips (Board board) {
+	public void displayPips (Board board) { // Display each player's current pips
 		System.out.println(board.getPlayer(1).getNamewithColor() + "'s current pips are " + board.getPlayer(1).getPips() + ".");
 		System.out.println(board.getPlayer(2).getNamewithColor() + "'s current pips are " + board.getPlayer(2).getPips() + ".");
 	}
 	
-	public String readContentFromFile(String string, Scanner in, String promptMessage) {
+	public String readContentFromFile(String string, Scanner in, String promptMessage) { // Read content as input from a file
 	    boolean fileReadSuccess = false;
 	    String fileContent = "";
 	    do {
@@ -461,11 +461,11 @@ public class View {
 	    return fileContent;
 	}
 	
-	public Scanner getScanner() { // Only for Test.
+	public Scanner getScanner() { // Only for Test. Get the scanner object.
 	    return in;
 	}
 	
-	public void showHint () {
+	public void showHint () { // Show a hint with a list of available commands
 		System.out.println("S: Start Backgammon or restart Backgammon.");
 		System.out.println("R: Roll the dice.");
 		System.out.println("R + 1 digit + 1 digit: Roll the dice to get 2 dice numbers as specified.");
