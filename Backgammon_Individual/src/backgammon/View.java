@@ -474,6 +474,7 @@ public class View {
 		System.out.println("2 digits + 2 digits: Move a piece on Lane.");
 		System.out.println("B + 1 digit + 2 digits: Move a piece from Bar to Lane.");
 		System.out.println("2 digits + E + 1 digit: Move a piece from Lane to Endpoint.");
+		System.out.println("1 digit or 2 digits: Move a piece by the serial number of the specific movement step.");
 		System.out.println("H: View all allowed commands.");
 		System.out.println("M: View all allowed moves.");
 		System.out.println("J: Regardless of whether or not the current match round is completed, the current match round will end and the next match round will be played.");

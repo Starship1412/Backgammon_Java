@@ -274,6 +274,7 @@ class ViewTest {
         		2 digits + 2 digits: Move a piece on Lane.
         		B + 1 digit + 2 digits: Move a piece from Bar to Lane.
         		2 digits + E + 1 digit: Move a piece from Lane to Endpoint.
+        		1 digit or 2 digits: Move a piece by the serial number of the specific movement step.
         		H: View all allowed commands.
         		M: View all allowed moves.
         		J: Regardless of whether or not the current match round is completed, the current match round will end and the next match round will be played.
